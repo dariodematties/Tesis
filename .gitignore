@@ -1,0 +1,16 @@
+# Ignore output files from latex
+
+*.aux
+*.bbl
+*.blg
+*.glo
+*.xdy
+*.log
+thesis.pdf
+*.dvi
+*.swp
+*.out
+*.lof
+*.log
+*.lot
+*.toc

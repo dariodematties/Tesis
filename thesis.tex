@@ -1,0 +1,43 @@
+\documentclass[a4paper,12pt,twoside]{report}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=3cm]{geometry}
+
+\include{thesis.preamble}
+
+
+\begin{document}
+
+\title{\LARGE {\bf Adquisición de fonética en dinámica cortical, un enfoque computacional}\\
+ \vspace*{6mm}
+}
+
+\author{Dar\'io Dematties}
+\submitdate{August 2018}
+
+\normallinespacing
+\maketitle
+
+\preface
+\input{abstract/abstract}
+%\input{acknowledgements/acknowledgements}
+%\input{dedication/dedication}
+%\input{quotes/quotes}
+
+\body
+\input{introduction/introduction}
+\input{background/background}
+\input{implementation/implementation}
+\input{experiments/experiments}
+
+% body of thesis comes here
+
+\input{conclusion/conclusion}
+
+\appendix
+% appendices come here
+
+
+\addcontentsline{toc}{chapter}{Bibliograf\'ia}
+\bibliographystyle{abbrv}
+\bibliography{bibliography/bibliography}
+
+\end{document}
