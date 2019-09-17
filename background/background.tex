@@ -173,6 +173,37 @@ Se ha mostrado que el overfitting--un fenómeno in el cual un modelo estadístic
 
 \subsection{Implementación Algorítmica}
 
+\section{Análisis Multiresolución Espectro-Temporal de Sonidos (AMRETS)}
+\label{mrstsa}
+
+Implementamos la etapa inicial del \gls{mrstsa} con la aplicación de la \gls{fft} al vector de audio con una ventana de muestreo diferente para cada resolución. Luego extraemos la densidad espectral de potencia desde cada resolución. Aplicamos \gls{fft} a los archivos de audio con un período de muestreo de 8 milisegundos, para ello utilizamos el paquete FFTW \cite{FFTW05, fftw} con ventanas temporales de 8, 16, 32, 64 y 128 milisegundos. De esta manera obtenemos un análisis espectral de la señal de audio de resolución múltiple con alta resolución espectral y baja resolución temporal para ventanas grandes y vice versa. Tales diferencias en las ventanas temporales en la aplicación de la \gls{fft} incorporan--al mismo tiempo--filtros pasa-bajo de fuga con una constante de tiempo diferente para cada resolución representando la pérdida de fase en el nervio auditivo. Luego aplicamos \gls{mfb} con 128 elementos a cada espectro a los fines de representar el análisis espectral realizado por el banco de filtros cocleares (Fig.\ref{fig:MRSTSA}).
+
+%We implemented the initial stage in the \gls{mrstsa} with the application of \gls{fft} to the audio vector with a different sample window for each resolution. We then extracted the power spectral density from each resolution. We applied \gls{fft} to the audio files with a sample period of 8 milliseconds, to that end we used the FFTW package \cite{FFTW05, fftw} with time windows of 8, 16, 32, 64 and 128 milliseconds. In this way we obtained a multiresolution spectral analysis of the audio signal, with high spectral and low temporal resolution for wider sample windows and vice versa. Such different time windows in the \gls{fft}, incorporated--at the same time--leakage low-pass filters with a time constant for each resolution accounting for decrease of phase-locking in the auditory nerve. We then applied a \gls{mfb} with 128 elements to each spectrum in order to represent the spectral analysis performed by the cochlear filter bank (Fig.\ref{fig:MRSTSA}).
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{MRSTSA.png}
+    \caption{Algoritmo \glsfirst{mrstsa}. Las ondas de sonido son procesadas por \glspl{fft} con ventanas de tiempo diferentes, luego cada espectro es procesado por
+    un \glsfirst{mfb} y cada resolución es convolucionada con una señal compleja con un coeficiente diferente. Luego, el coeficiente de cada filtro
+    es obtenido computando el módulo desde la convolución y aplicando control automático de ganancia.}
+    %\caption{\glsfirst{mrstsa} algorithm. Sound waves are processed by \glspl{fft} with different time windows, then each spectrum is processed by
+    %a \glsfirst{mfb} and each resolution is convolved with a complex signal with a different coefficient. Then, each filter coefficient
+    %is obtained computing the modulus from the convolution and then applying a authomatic gain control.}
+    \label{fig:MRSTSA}
+\end{figure}
+
+Luego, convolucionamos cada resolución obtenida en el último paso a lo largo de su eje tonotópico con una función multiresolución compleja cuya parte real es un sobrero Mexicano simétrico y su parte imaginaria es su transformada antisimétrica de Hilbert. Los coeficientes de la función son 10 para la ventana de tiempo de 8 ms, 8 para la ventana de tiempo de 16 ms, 6 para la ventana de tiempo de 32 ms, 4 para la ventana de tiempo de 64 ms y 2 para la ventana de tiempo de 128 ms (Fig.\ref{fig:MRSTSA}). Con esta estrategia incorporamos el fenómeno de simetría \cite{shamma_1993}, ancho de banda \cite{schreiner_1990} y selectividad a la modulación de frecuencia \cite{shamma_1993,heil_1992,mendelson_1985} hallada en \gls{a1} e incorporado en el algoritmo original \cite{wang_1995}.
+
+%Then, we convolved each resolution obtained in the last step along its tonotopic axis with a complex multiresolution function whose real part was a symmetric Mexican hat function and its imaginary part was its antisymmetric Hilbert transform. The function coefficients are 10 for the 8 ms time window, 8 for the 16 ms time window, 6 for the 32 ms time window, 4 for the 64 ms time window and 2 for the 128 ms time window (Fig.\ref{fig:MRSTSA}). With this strategy we incorporated the phenomena of symmetry \cite{shamma_1993}, bandwidth \cite{schreiner_1990} and frequency modulation selectivity \cite{shamma_1993,heil_1992,mendelson_1985} found in \gls{a1} and incorporated in the original algorithms \cite{wang_1995}.
+
+Obtuvimos la magnitud de cada convolución y aplicamos normalización a cada ventana de tiempo como un control automático de ganancia para priorizar la información entregada por la configuración espectral y no por los valores absolutos entregados por los filtros. Por medio de este mecanismo estamos teniendo en cuenta las propiedades químicas y mecánicas de las células poliosas en el oído interno de los mamíferos las cuales constituyen un mecanismo de transducción el cual parece adaptarse a la historia reciente en los estímulos de manera que puede afectar su ganancia \cite{eatock_2000,holt_2000,le_goff_2005}. Decidimos ser conservativos y no incluir la dimensión de intensidad de sonido sólo incluyendo la silueta en las respuestas de los filtros. 
+
+%We obtained the magnitude of each convolution and applied normalization to each time window as a mean of automatic gain control in order to prioritize the information delivered by the spectral configuration and not the absolute values delivered by the filters. By means of this constraint we account for the mechanical and chemical properties of hair cells in the mammalian inner ear which constitute a transduction mechanism that appears to adapt to recent stimulus history in a way that can affect its gain \cite{eatock_2000,holt_2000,le_goff_2005}. We decided to be conservative, not including sound intensity dimension but just the shape of the filter responses.
+
+Por medio de este procedimiento desde el archivo de audio obtuvimos una respuesta multiresolución espectro-temporal compuesta por un arreglo de 128 columnas--una columna por filtro--y 5 filas--una fila por resolución--con números reales cuyo rango se encuentra entre 0 y 1, para cada paso de tiempo.
+
+%By this procedure we obtained from the audio file a multiresolution spectro-temporal response composed by an array of 128 columns--one column per filter--and 5 rows--one row per resolution--with real numbers which range from 0 to 1, for each time step.
+
 \subsubsection{Plasticidad en las conexiones dendríticas próximas del \glsfirst{el}}
 \label{proximal_dendrites}
 

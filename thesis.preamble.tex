@@ -3,14 +3,26 @@
 \usepackage{latexsym}
 \usepackage{mathchars}
 \usepackage{setspace}
-\usepackage[spanish]{babel} 
 \usepackage[utf8]{inputenc}
-\usepackage[xindy]{glossaries}
+%\usepackage[toc]{glossaries}
+\usepackage[xindy, shortcuts]{glossaries}
 \usepackage{hyperref}
 
 \usepackage{algorithm}
 \usepackage{caption}
 \usepackage{algorithmic}
+
+\usepackage{etoolbox}
+
+\newtoggle{DEBUG}
+\toggletrue{DEBUG}
+%\togglefalse{DEBUG}
+
+\iftoggle{DEBUG}{
+	\usepackage[spanish]{babel} 
+}{
+	\usepackage[english]{babel} 
+}
 
 \input{blocked.sty}
 \input{uhead.sty}
@@ -144,5 +156,4 @@
 }
 
 \loadglsentries{acronyms.tex}
-
 

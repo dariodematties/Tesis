@@ -8,6 +8,7 @@
 \linespread{1.5}
 \def\submitdate#1{\gdef\@submitdate{#1}}
 
+\iftoggle{DEBUG}{
 \def\maketitle{
   \begin{titlepage}{
     %\linespread{1.5}
@@ -34,6 +35,39 @@
   \vfil
   \end{titlepage}
 }
+}{
+\def\maketitle{
+  \begin{titlepage}{
+    %\linespread{1.5}
+    %\Large Universidad de Buenos Aires \\
+    %\linebreak
+    %Facultad de Ingenier\'ia \\
+    %\linebreak
+    %Instituto de Ingenier\'ia Biom\'edica
+    \includegraphics[width=8cm]{Logo_FIUBA.jpg} % also works with logo.pdf
+    \rm
+    \vskip 2.7in
+    \Large \bf \@title \par
+  }
+  \vskip 0.3in
+  \par
+  {\Large \@author}
+  \vskip 3.9in
+  \par
+  %Entregado como parte del cumplimiento de requisitos impuestos para obtener el grado de
+  Submitted in part fulfilment of the requirements for the degree of 
+  \linebreak
+  %Doctor en Ingeniería de la Universidad de Buenos Aires, \@submitdate
+  Doctor of Philosophy in Engineering of the Universidad de Buenos Aires, \@submitdate
+  \vfil
+  \end{titlepage}
+}
+}
+
+
+
+
+
 
 \def\titlepage{
   \newpage
@@ -51,44 +85,108 @@
   \cleardoublepage
 }
 
-\def\abstract{
-  \begin{center}{
-    \large\bf Resumen}
-  \end{center}
-  \small
-  %\def\baselinestretch{1.5}
-  \linespread{1.5}
-  \normalsize
-}
-\def\endabstract{
-  \par
+
+
+
+
+
+
+
+\iftoggle{DEBUG}{
+	\def\abstract{
+	  \begin{center}{
+	    \large\bf Resumen}
+	  \end{center}
+	  \small
+	  %\def\baselinestretch{1.5}
+	  \linespread{1.5}
+	  \normalsize
+	}
+	\def\endabstract{
+	  \par
+	}
+
+	\newenvironment{acknowledgements}{
+	  \cleardoublepage
+	  \begin{center}{
+	    \large \bf Reconocimientos}
+	  \end{center}
+	  \small
+	  \linespread{1.5}
+	  \normalsize
+	}{\cleardoublepage}
+	\def\endacknowledgements{
+	  \par
+	}
+
+	\newenvironment{dedication}{
+	  \cleardoublepage
+	  \begin{center}{
+	    \large \bf Dedicatorias}
+	  \end{center}
+	  \small
+	  \linespread{1.5}
+	  \normalsize
+	}{\cleardoublepage}
+	\def\enddedication{
+	  \par
+	}
+}{
+	\def\abstract{
+	  \begin{center}{
+	    \large\bf Abstract}
+	  \end{center}
+	  \small
+	  %\def\baselinestretch{1.5}
+	  \linespread{1.5}
+	  \normalsize
+	}
+	\def\endabstract{
+	  \par
+	}
+
+	\newenvironment{acknowledgements}{
+	  \cleardoublepage
+	  \begin{center}{
+	    \large \bf Acknowledgements}
+	  \end{center}
+	  \small
+	  \linespread{1.5}
+	  \normalsize
+	}{\cleardoublepage}
+	\def\endacknowledgements{
+	  \par
+	}
+
+	\newenvironment{dedication}{
+	  \cleardoublepage
+	  \begin{center}{
+	    \large \bf Dedication}
+	  \end{center}
+	  \small
+	  \linespread{1.5}
+	  \normalsize
+	}{\cleardoublepage}
+	\def\enddedication{
+	  \par
+	}
 }
 
-\newenvironment{acknowledgements}{
-  \cleardoublepage
-  \begin{center}{
-    \large \bf Reconocimientos}
-  \end{center}
-  \small
-  \linespread{1.5}
-  \normalsize
-}{\cleardoublepage}
-\def\endacknowledgements{
-  \par
-}
 
-\newenvironment{dedication}{
-  \cleardoublepage
-  \begin{center}{
-    \large \bf Dedicatorias}
-  \end{center}
-  \small
-  \linespread{1.5}
-  \normalsize
-}{\cleardoublepage}
-\def\enddedication{
-  \par
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \def\preface{
     \pagenumbering{roman}

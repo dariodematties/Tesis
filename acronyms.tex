@@ -48,13 +48,20 @@
 
 \newacronym{csom}{CSOM}{Complex Self-Organizing Map}
 
+\iftoggle{DEBUG}{
+\newacronym{el}{CE}{Capa Encoder}
+\newacronym{el_pl}{CEs}{Capas Encoders}
+}{
 \newacronym{el}{EL}{Encoder Layer}
-%\newacronym{ce}{CE}{Capa Encoder}
+}
 
 \newacronym{omp}{OpenMP}{Open Multi-Processing}
 
+\iftoggle{DEBUG}{
+\newacronym{mrstsa}{AMRETS}{Análisis Multiresolución Espectro-Temporal de Sonidos}
+}{
 \newacronym{mrstsa}{MRSTSA}{Multiresolution Spectro-Temporal Sound Analysis}
-\newacronym{amrets}{AMRETS}{Análisis Multiresolución Espectro-Temporal de Sonidos}
+}
 
 \newacronym{mfb}{MFB}{Mel Filter Bank}
 
@@ -66,13 +73,21 @@
 
 \newacronym{cla}{CLA}{Cortical Learning Algorithm}
 
+\iftoggle{DEBUG}{
+\newacronym{a1}{A1}{Corteza Auditiva Primaria}
+\newacronym{a1_pl}{A1s}{Cortezas Auditivas Primarias}
+}{
 \newacronym{a1}{A1}{Primary Auditory Cortex}
-%\newacronym{a1}{A1}{Corteza Auditiva Primaria}
+}
 
 \newacronym{stg}{STG}{Superior Temporal Gyrus}
 
+\iftoggle{DEBUG}{
+\newacronym{cc}{CC}{Columna Cortical}
+\newacronym{cc_pl}{CCs}{Columnas Corticales}
+}{
 \newacronym{cc}{CC}{Cortical Column}
-%\newacronym{cc}{CC}{Columna Cortical}
+}
 
 \newacronym{cstm}{CSTM}{Cortical Spectro-Temporal Model}
 \newacronym{metc}{METC}{Modelo Espectro-Temporal Cortical}
@@ -149,10 +164,19 @@
 
 \newacronym{vcvc}{VCVC}{vowel-consonant-vowel-consonant}
 
+\iftoggle{DEBUG}{
+\newacronym{sdr}{RDD}{Representación Dispersa y Distribuida}
+\newacronym{sdr_pl}{RDDs}{Representaciónes Dispersas y Distribuidas}
+}{
 \newacronym{sdr}{SDR}{Sparse Distributed Representation}
-%\newacronym{rdd}{RDD}{Representación Dispersa Distribuida}
+}
 
+\iftoggle{DEBUG}{
+\newacronym{nmda}{NMDA}{\'acido N-metil-d-aspartato}
+\newacronym{nmda_pl}{NMDAs}{\'acidos N-metil-d-aspartato}
+}{
 \newacronym{nmda}{NMDA}{N-Methyl-D-aspartic acid}
+}
 
 \newacronym{svm}{SVM}{Support Vector Machine}
 

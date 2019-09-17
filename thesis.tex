@@ -5,39 +5,53 @@
 
 \begin{document}
 
-\title{\LARGE {\bf Adquisición temprana de lenguaje en dinámica cortical, un enfoque computacional}\\
- \vspace*{6mm}
+\iftoggle{DEBUG}{
+	\title{\LARGE {\bf Adquisición temprana de lenguaje en dinámica cortical, un enfoque computacional}\\
+	 \vspace*{6mm}
 }
+}{
+	\title{\LARGE {\bf Early language acquisition in cortical dynamics, a computational approach}\\
+	 \vspace*{6mm}
+}}
+
 
 \author{Dar\'io Dematties}
-\submitdate{Febrero 2020}
+\iftoggle{DEBUG}{
+	\submitdate{Febrero 2020}
+}{
+	\submitdate{February 2020}
+}
 \normallinespacing
 \maketitle
 
 
 \preface
-\input{abstract/abstract}
+%\input{abstract/abstract}
 %\input{acknowledgements/acknowledgements}
 %\input{dedication/dedication}
 %\input{quotes/quotes}
 
 \body
-\input{introduction/introduction}
-\input{background/background}
+%\input{introduction/introduction}
+%\input{background/background}
 \input{phonetics/phonetics}
-\input{grammar/grammar}
-\input{implementation/implementation}
-\input{experiments/experiments}
+%\input{grammar/grammar}
+%\input{implementation/implementation}
+%\input{experiments/experiments}
 
 % body of thesis comes here
 
-\input{conclusion/conclusion}
+%\input{conclusion/conclusion}
 
 \appendix
 % appendices come here
 
 
-\addcontentsline{toc}{chapter}{Bibliograf\'ia}
+\iftoggle{DEBUG}{
+	\addcontentsline{toc}{chapter}{Bibliograf\'ia}
+}{
+	\addcontentsline{toc}{chapter}{Bibliography}
+}
 \bibliographystyle{abbrv}
 \bibliography{bibliography/bibliography}
 
