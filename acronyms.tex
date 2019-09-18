@@ -20,13 +20,28 @@
 \newacronym{dnn}{DNN}{Deep Neural Network}
 %\newacronym{rnp}{RNP}{Red Neuronal Profunda}
 
+\iftoggle{DEBUG}{
+\newacronym{snr}{RSR}{Relaci\'on de Señal a Ruido}
+\newacronym{snr_pl}{RSRs}{Relaci\'ones de Señal a Ruido}
+}{
 \newacronym{snr}{SNR}{Signal to Noise Ratio}
+}
 
+\iftoggle{DEBUG}{
+\newacronym{gsom}{MAOC}{Mapa Auto-Organizado Creciente}
+\newacronym{gsom_pl}{MAOCs}{Mapas Auto-Organizados Crecientes}
+}{
 \newacronym{gsom}{GSOM}{Growing Self Organizing Map}
+}
 
 \newacronym{se}{SE}{Standard Error}
 
-\newacronym{cdbn}{CDBN}{Convolutional Deep Belief Networks}
+\iftoggle{DEBUG}{
+\newacronym{cdbn}{RCCP}{Red Convolucional de Creencia Profunda}
+\newacronym{cdbn_pl}{RCCP}{Redes Convolucionales de Creencia Profunda}
+}{
+\newacronym{cdbn}{CDBN}{Convolutional Deep Belief Network}
+}
 
 \newacronym{rms}{RMS}{Root Mean Square}
 
@@ -40,13 +55,33 @@
 
 \newacronym{stl}{STL}{Standard Template Library}
 
+\iftoggle{DEBUG}{
+\newacronym{ap}{PA}{Potencial de Acci\'on}
+\newacronym{ap_pl}{PAs}{Potenciales de Acci\'on}
+}{
 \newacronym{ap}{AP}{Action Potantial}
+}
 
+\iftoggle{DEBUG}{
+\newacronym{ssom}{MAOE}{Mapa Auto-Organizado Est\'atico}
+\newacronym{ssom_pl}{MAOEs}{Mapas Auto-Organizados Est\'aticos}
+}{
 \newacronym{ssom}{SSOM}{Static Self-Organizing Map}
+}
 
+\iftoggle{DEBUG}{
+\newacronym{dsom}{MAOD}{Mapa Auto-Organizado Din\'amico}
+\newacronym{dsom_pl}{MAODs}{Mapas Auto-Organizados Din\'amicos}
+}{
 \newacronym{dsom}{DSOM}{Dynamic Self-Organizing Map}
+}
 
+\iftoggle{DEBUG}{
+\newacronym{csom}{MAOC}{Mapa Auto-Organizado Complejo}
+\newacronym{csom_pl}{MAOCs}{Mapas Auto-Organizados Complejos}
+}{
 \newacronym{csom}{CSOM}{Complex Self-Organizing Map}
+}
 
 \iftoggle{DEBUG}{
 \newacronym{el}{CE}{Capa Encoder}
@@ -63,11 +98,26 @@
 \newacronym{mrstsa}{MRSTSA}{Multiresolution Spectro-Temporal Sound Analysis}
 }
 
+\iftoggle{DEBUG}{
+\newacronym{mfb}{BFM}{Banco de Filtros Mel}
+\newacronym{mfb_pl}{BFMs}{Bancos de Filtros Mel}
+}{
 \newacronym{mfb}{MFB}{Mel Filter Bank}
+}
 
+\iftoggle{DEBUG}{
+\newacronym{strf}{CRST}{Campo Receptivo Espectro-Temporal}
+\newacronym{strf_pl}{CRSTs}{Campos Receptivos Espectro-Temporales}
+}{
 \newacronym{strf}{STRF}{Spectro-Temporal Receptive Field}
+}
 
+\iftoggle{DEBUG}{
+\newacronym{fft}{TRF}{Transformada R\'apida de Fourier}
+\newacronym{fft_pl}{TRFs}{Transformadas R\'apidas de Fourier}
+}{
 \newacronym{fft}{FFT}{Fast Fourier Transform}
+}
 
 \newacronym{htm}{HTM}{Hierarchical Temporal Memory}
 
@@ -89,8 +139,11 @@
 \newacronym{cc}{CC}{Cortical Column}
 }
 
+\iftoggle{DEBUG}{
+\newacronym{cstm}{METC}{Modelo Espectro-Temporal Cortical}
+}{
 \newacronym{cstm}{CSTM}{Cortical Spectro-Temporal Model}
-\newacronym{metc}{METC}{Modelo Espectro-Temporal Cortical}
+}
 
 \newacronym{pp}{PP}{Predictive Population}
 
@@ -114,9 +167,17 @@
 
 \newacronym{ps}{PS}{Population Structure}
 
+\iftoggle{DEBUG}{
+\newacronym{ltp}{PLT}{Potenciaci\'on de Largo T\'ermino}
+}{
 \newacronym{ltp}{LTP}{Long-Term Potentiation}
+}
 
+\iftoggle{DEBUG}{
+\newacronym{ltd}{PCT}{Potenciaci\'on de Corto T\'ermino}
+}{
 \newacronym{ltd}{LTD}{Long-Term Depression}
+}
 
 \newacronym{igr}{iGluRs}{ionotropic Glutamate Receptors}
 
@@ -130,10 +191,18 @@
 
 \newacronym{mog}{MOG}{Mixture of Gaussians}
 
+\iftoggle{DEBUG}{
+\newacronym{mfcc}{CCFM}{Coeficientes Ceptrales de Frecuencias Mel}
+}{
 \newacronym{mfcc}{MFCC}{Mel Frequency Cepstral Coefficients}
-\newacronym{ccfm}{CCFM}{Coeficientes Ceptrales de Frecuencias Mel}
+}
 
+\iftoggle{DEBUG}{
+\newacronym{som}{MAO}{Mapa Auto-Organizado}
+\newacronym{som_pl}{MAOs}{Mapas Auto-Organizados}
+}{
 \newacronym{som}{SOM}{Self Organizing Map}
+}
 
 \newacronym{vot}{VOT}{Voice Onset Time}
 \newacronym{tiv}{TIV}{Tiempo de Inicio de Voz}
@@ -151,10 +220,18 @@
 
 \newacronym{dft}{DFT}{Discrete Fourier Transform}
 
+\iftoggle{DEBUG}{
+\newacronym{mfe}{EDM}{Evento de Disparo Masivo}
+\newacronym{mfe_pl}{EDMs}{Eventos de Disparo Masivos}
+}{
 \newacronym{mfe}{MFE}{Massive Firing Event}
-%\newacronym{edm}{EDM}{Evento de Disparo Masivo}
+}
 
+\iftoggle{DEBUG}{
+\newacronym{stdp}{PDTD}{Plasticidad Dependiente del Tiempo de Disparo}
+}{
 \newacronym{stdp}{STDP}{Spike-timing dependent plasticity}
+}
 
 \newacronym{sopm}{SOPM}{Self Organizing Predictive Map}
 
@@ -178,7 +255,11 @@
 \newacronym{nmda}{NMDA}{N-Methyl-D-aspartic acid}
 }
 
+\iftoggle{DEBUG}{
+\newacronym{svm}{MVS}{M\'aquinas de Vectores Soporte}
+}{
 \newacronym{svm}{SVM}{Support Vector Machine}
+}
 
 \newacronym{libsvm}{LIBSVM}{Library for Support Vector Machine}
 
@@ -186,7 +267,11 @@
 
 \newacronym{timit}{TIMIT}{Acoustic-Phonetic Continuous Speech Corpus}
 
+\iftoggle{DEBUG}{
+\newacronym{hpc}{CAD}{Computaci\'on de Alto Desempeño}
+}{
 \newacronym{hpc}{HPC}{High Performance Computing}
+}
 
 \newacronym{mpi}{MPI}{Message Passing Interface}
 

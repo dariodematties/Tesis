@@ -73,7 +73,7 @@ Una de las principales características neuroanatómicas de la corteza cerebral 
 
 Una de las propiedades funcionales halladas en muchas de estas redes es la adaptación a los estímulos contextuales \cite{KRAUSE201436,doi:10.1167/16.13.1}. Se piensa que tal mecanismo sirve para aumentar la eficiencia en la codificación de la información sensorial. Por ejemplo, una reducción en las respuestas a sonidos frecuentes por medio de redes inhibitorias podría aumentar la sensibilidad cortical ante ruidos raros que podrían representar eventos inesperados~\cite{Natan2015ComplementaryCO,nachum_2003,Javitt11962}.
 
-Finalmente, hallazgos recientes en neurociencia muestran que la corteza de los mamíferos procesa la información por medio de \gls{sdr_pl}~\cite{barth_2012}. Este mecanismo ofrece discriminación robusta y de baja tasa de error de la representación de los estímulos minimizando la activación neuronal durante la tarea en relación a los recursos neuronales disponibles para la representación~\cite{ahmad_2016}. En Hawkins et al. \cite{hawkins_2016} sostienen que uno de los mecanismos que podría estar involucrado en las redes corticales para formar \gls{sdr_pl} implica una depolarización extendida del núcleo de la célula como resultado de activaciones \gls{nmda} de ramas dendríticas independientes producidas por la excitación de cierto número de sinápsis distales~\cite{antic_2010, major_2013}.
+Finalmente, hallazgos recientes en neurociencia muestran que la corteza de los mamíferos procesa la información por medio de \gls{sdr_pl}~\cite{barth_2012}. Este mecanismo ofrece discriminación robusta y de baja tasa de error de la representación de los estímulos minimizando la activación neuronal durante la tarea en relación a los recursos neuronales disponibles para la representación~\cite{ahmad_2016}. En Hawkins et al. \cite{hawkins_2016} sostienen que uno de los mecanismos que podría estar involucrado en las redes corticales para formar \gls{sdr_pl} implica una depolarización extendida del núcleo de la célula como resultado de activaciones \gls{nmda} de ramas dendríticas independientes producidas por la excitación de cierto número de sinapsis distales~\cite{antic_2010, major_2013}.
 
 En el presente trabajo las características neurofisiológicas y anatómicas de la corteza de los mamíferos arriba mencionadas son agrupadas como potencialmente relevantes a la hora de obtener invarianza fonética en la corteza auditiva de los mismos. Nuestro modelo de neurona piramidal disocia las ramas dendríticas distales de las próximas (Fig.~\ref{fig:PyramidalCell}). Las dendritas próximas actúan como un conjunto homogéneo recibiendo solo información aferente. La información en las dendritas próximas determinan un conjunto de unidades neuronales en una \gls{cc}, las cuales podrían ser activadas dependiendo de las activaciones previas en \glspl{cc} vecinas así como en la misma \gls{cc}.
 
@@ -183,16 +183,16 @@ We test those principles paying special attention to temporal dynamics of speech
 Generamos corpus de 500 palabras utilizando diez vocabularios diferentes con palabras monosilábicas, bisilábicas y tri-silábicas elegidas de manera aleatoria del idioma Inglés y utilizando el sintetizador \gls{festival} \cite{festival2014}.
 
 
-Generamos archivos de marcado de lenguaje con SABLE \cite{sable}. Con tales archivos instruimos \gls{festival} para que genere corpus con 500  palabras de vacabularios de 5 palabras utilizando diez voces diferentes disponibles en el sintetizador.
+Generamos archivos de marcado de lenguaje con SABLE \cite{sable}. Con tales archivos instruimos \gls{festival} para que genere corpus con 500  palabras de vocabularios de 5 palabras utilizando diez voces diferentes disponibles en el sintetizador.
 
-La organización de los corpus presenta ciertas reglas y restricciones a los fines de evitar sesgoz en los procesos de entrenamiento. Las voces se van eligiendo secuencialmente (seudo-aleatoriamente) con la restricción de que ninguna voz se puede utilizar por segunda vez hasta que la totalidad de las voces hayan tenido su turno. Cada voz se utiliza para producir dos palabras por turno--de manera pseudo-aleatoria--y ninguna palabra es repetida hasta que todas las palabras son producidas por tal voz.
+La organización de los corpus presenta ciertas reglas y restricciones a los fines de evitar sesgos en los procesos de entrenamiento. Las voces se van eligiendo secuencialmente (seudo-aleatoriamente) con la restricción de que ninguna voz se puede utilizar por segunda vez hasta que la totalidad de las voces hayan tenido su turno. Cada voz se utiliza para producir dos palabras por turno--de manera pseudo-aleatoria--y ninguna palabra es repetida hasta que todas las palabras son producidas por tal voz.
 
 
-Utilizamos dos conjuntos de voces, cada uno con 10 voces de origen Inglés provistos por Festival. El primer conjunto consistia de 8 voces masculinas y 2 femeninas: \texttt{cmu\_us\_fem\_cg, cmu\_us\_gka\_cg, cmu\_us\_ksp\_cg, cmu\_us\_rxr\_cg, cmu\_us\_jmk\_cg, cmu\_us\_rms\_cg, cmu\_us\_slt\_cg, cmu\_us\_jmk\_arctic\_clunits, cmu\_us\_rms\_arctic\_clunits, cmu\_us\_slt\_arctic\_clunits}. El otro conjunto consistía de 5 voces masculinas y 5 femeninas: \texttt{cmu\_us\_ahw\_cg, cmu\_us\_aup\_cg, cmu\_us\_axb\_cg, cmu\_us\_eey\_cg, cmu\_us\_awb\_cg, cmu\_us\_bdl\_cg, cmu\_us\_clb\_cg, cmu\_us\_ljm\_cg, cmu\_us\_bdl\_arctic\_clunits, cmu\_us\_clb\_arctic\_clunits}.
+Utilizamos dos conjuntos de voces, cada uno con 10 voces de origen Inglés provistos por Festival. El primer conjunto consistía de 8 voces masculinas y 2 femeninas: \texttt{cmu\_us\_fem\_cg, cmu\_us\_gka\_cg, cmu\_us\_ksp\_cg, cmu\_us\_rxr\_cg, cmu\_us\_jmk\_cg, cmu\_us\_rms\_cg, cmu\_us\_slt\_cg, cmu\_us\_jmk\_arctic\_clunits, cmu\_us\_rms\_arctic\_clunits, cmu\_us\_slt\_arctic\_clunits}. El segundo conjunto consistía de 5 voces masculinas y 5 femeninas: \texttt{cmu\_us\_ahw\_cg, cmu\_us\_aup\_cg, cmu\_us\_axb\_cg, cmu\_us\_eey\_cg, cmu\_us\_awb\_cg, cmu\_us\_bdl\_cg, cmu\_us\_clb\_cg, cmu\_us\_ljm\_cg, cmu\_us\_bdl\_arctic\_clunits, cmu\_us\_clb\_arctic\_clunits}.
 
 Cada palabra en el archivo de audio es seguida por una brecha de silencio cuya duración equivale a la pronunciación de la palabra \texttt{cat} producida por la misma voz utilizada para producir la última palabra. Utilizamos el programa \texttt{text2wave} provisto por Festival para generar un archivo de extensión \texttt{wav} desde el archivo SABLE.
 
-Generamos todos los datasets (archivos de audio de los corpus) utilizados en el presente trabajo para entrenar la \gls{el} y los \glspl{svm} y para probar el \gls{cstm} completo. Tal carpeta icluye un conjunto de 840 corpus distribuidos en dos corpus por cada configuración organizada por dos conjuntos de voces sintetizadas, tres condiciones silábicas y diez vocabularios distribuidos en 6 variantes acústicas aparte de los corpus en sus versiones originales. Las 6 variantes acústicas corresponden a: dos niveles de ruido blanco (19.8 dB y 13.8 dB \gls{snr} promedio \gls{rms} tasa de potensia), dos niveles de reverberación (\gls{rt} con valores de 0.61 segundos y 1.78 segundos) y variaciones de tono en ambas direcciones (de E a G y de E a C) \cite{dematties_dario_2019_2576130}.
+Generamos todos los conjuntos de datos (archivos de audio de los corpus) utilizados en el presente trabajo para entrenar la \gls{el} y las \glsfirst{svm} y para probar el \glsfirst{cstm} completo. Tal carpeta incluye un conjunto de 840 corpus distribuidos en dos corpus por cada configuración organizada por dos conjuntos de voces sintetizadas, tres condiciones silábicas y diez vocabularios distribuidos en 6 variantes acústicas aparte de los corpus en sus versiones originales. Las 6 variantes acústicas corresponden a: dos niveles de ruido blanco (19.8 dB y 13.8 dB \gls{snr} promedio \gls{rms} tasa de potensia), dos niveles de reverberación (\gls{rt} con valores de 0.61 segundos y 1.78 segundos) y variaciones de tono en ambas direcciones (de E a G y de E a C) \cite{dematties_dario_2019_2576130}.
 }{
 \subsection{Corpora generation}
 \label{CorpGen}
@@ -239,38 +239,40 @@ We generated all the datasets (audio file corpora) employed in the present resea
 
 \iftoggle{DEBUG}{
 \subsection{Modelo Computacional}
+\label{model-implementation}
 
-Proponemos un modelo computacional llamado \gls{cstm}, que simula un parche de tejido cortical e incorpora organización columnar, formación micro-columnar espontánea, depolarización \gls{nmda} parcial y adaptación a activaciones contextuales. Simulamos células priramidales con conexiones próximas desde ramas dendríticas aferentes y conexiones distales desde ramas dendríticas laterales. Estímulos aferentes similares activan cúmulos de neuronas en localizaciones físicas próximas en una \gls{cc} de la misma manera que información aferente activa las minicolumnas halladas en el tejido cortical.
+Proponemos un modelo computacional llamado \glsfirst{cstm}, que simula un parche de tejido cortical e incorpora organización columnar, formación micro-columnar espontánea, depolarización \gls{nmda} parcial y adaptación a activaciones contextuales. Simulamos células priramidales con conexiones próximas desde ramas dendríticas aferentes y conexiones distales desde ramas dendríticas laterales. Estímulos aferentes similares activan cúmulos de neuronas en localizaciones físicas próximas en una \gls{cc} de la misma manera en que la información aferente activa las minicolumnas que se encuentran en el tejido cortical.
 
-La información aferente activa cúmulos diferentes de unidades en una \gls{cc} estableciendo una aproximación preliminar y cruda de las características fonéticas abstraídas desde el flujo de entrada auditivo. Nuestro modelo refina tales características crudas por medio de activaciones contextuales previas producidas en la misma y/o en \glspl{cc} vecinas. Tal información contextual se envía a cada \gls{cc} por medio de ramas dendríticas distales laterales que trabajan como elementos de procesamiento independientes en una célula. LAs activaciones actuales en tales elementos dendríticos afectarán la manera en la cual las células reciben información aferente futura.
+La información aferente activa cúmulos diferentes de unidades en una \gls{cc} estableciendo una aproximación preliminar--y de alguna manera cruda--de las características fonéticas abstraídas desde el flujo de entrada auditivo. Nuestro modelo refina tales características crudas por medio de activaciones contextuales previas producidas en la misma y/o en \glspl{cc} vecinas. Tal información contextual se envía a cada \gls{cc} por medio de ramas dendríticas distales laterales que trabajan como elementos de procesamiento independientes en una célula. Las activaciones actuales en tales elementos dendríticos afectarán la manera en la cual las células reciben información aferente futura.
 
-Teorías computacionales novedosas han provisto explicaciones posibles acerca del rol de las sinápsis distales relacionadas al
-fenómeno \gls{nmda} \cite{hawkins_2016} combinandolo con con \glspl{sdr} \cite{ahmad_2016}. En nuestro modelo adoptamos un enfoque similar al adoptado en  \cite{hawkins_2016} en el que los patrones de activación actuales producen depolarización parcial de ciertas células por meido de conexiones con ramas dendríticas distales. Un estado de depolarización parcial se sostiene en el tiempo en algunas células dentro de
-cúmulos de neuronas aferentemente exitados en el futuro. Las células parcialmente depolarizadas disparan primero respecto otras células en los cúmulos exitados, de esta forma evitan que otras células disparen utilizando inibición GABAergica lateral próxima, obteniendo de esta forma, \glspl{sdr}.
+Teorías computacionales novedosas han aportado explicaciones posibles acerca del rol de las sinapsis distales relacionadas al
+fenómeno \gls{nmda} \cite{hawkins_2016} combinándolo con con \gls{sdr_pl} \cite{ahmad_2016}. En nuestro modelo adoptamos un enfoque similar al adoptado en  \cite{hawkins_2016} en el que los patrones de activación actuales producen depolarización parcial de ciertas células por medio de conexiones con ramas dendríticas distales. Dicho estado de depolarización parcial se sostiene en el tiempo en algunas células dentro de
+cúmulos de neuronas aferentemente excitados en el futuro. Las células parcialmente depolarizadas disparan primero que otras células en los cúmulos excitados, de esta forma evitan que tales otras células disparen utilizando inhibición GABAérgica lateral próxima, obteniendo así, \gls{sdr_pl}.
 
-Adicionalmente, simulamos el crecimiento de sinápsis en ramas dendríticas distales por medio de macanismos \gls{stdp} junto con
-regulaciones homeostáticas. De esta forma, las sinápsis dsitales se establecerán solo entre células piramidales con patrones de activación secuenciales.
-Los cúmulos aferentemente exitados que no tengan células parcialmente depolarizadas dispararán en conjunto produciendo un \gls{mfe}
-(ausencia de inhibición) como respuesta a una falla de predicción (estímulo secuencial inesperado en el flujo de datos); de otra manera responderán con eventos de disparo normales (inhibición y por lo tanto \glspl{sdr}) cuando el estímulo secuencial sea correctamente predicho.
+Adicionalmente, simulamos el crecimiento de sinapsis en ramas dendríticas distales por medio de mecanismos de \glsfirst{stdp} junto con
+regulaciones homeostáticas. De esta forma, las sinapsis distales se establecerán solo entre células piramidales con patrones de activación secuenciales.
+Los cúmulos aferentemente excitados que no tengan células parcialmente depolarizadas dispararán en conjunto produciendo un \glsfirst{mfe}
+(ausencia de inhibición) como respuesta a una falla de predicción (estímulo secuencial inesperado en el flujo de datos); de lo contrario tales cúmulos responderán con eventos de disparo normales (inhibición y por lo tanto \glspl{sdr}) cuando el estímulo secuencial sea correctamente predicho.
 
-Las \glspl{sdr} exhiben propiedades matemáticas interesantes las cuales les dan alto rechazo al ruido alta tolerancia a fallas \cite{ahmad_2015}.
-Estas son características típicas en el tejido cortical donde las células individuales están lejos de ser 100\% confiables y ellas mueren y se regeneran constantemente. Para simular tal fenómeno, incorporamos características estocásticas por medio de las cuales células neuronales dentro de los cúmulos activados aferentemente se escogen para ser activadas por medio de una distribución discreta cuyas probabilidades están determinadas por la exitabilidad aferente de las células individuales derante el entrenamiento.
+Las \glspl{sdr} exhiben propiedades matemáticas interesantes las cuales les dan alto rechazo al ruido y gran tolerancia a fallas \cite{ahmad_2015}.
+Estas son características típicas en el tejido cortical donde las células individuales están lejos de ser 100\% confiables y mueren y se regeneran constantemente. Para simular tal fenómeno, incorporamos características estocásticas por medio de las cuales las células neuronales dentro de los cúmulos activados aferentemente se escogen para ser activadas por medio de una distribución discreta cuyas probabilidades están determinadas por la excitabilidad aferente de las células individuales durante el entrenamiento.
 
-De esta forma, la evolución de nuestra red no determina una neurona a disparar pero desvía sus probabilidades de hacerlo durante el entrenamiento. Adicionalmente y bajo condiciones específicas, arborizaciones dendríticas aferentes se activas ellas mismas aleatoriamente con niveles cuyos valores limites son establecidos durante el entrenamiento.
+De esta forma, la evolución de nuestra red no determina una neurona a disparar pero afecta sus probabilidades de hacerlo durante el entrenamiento. Adicionalmente y bajo condiciones específicas, las arborizaciones dendríticas aferentes se activan a sí mismas aleatoriamente con niveles cuyos valores limites son establecidos durante el entrenamiento.
 
-Se ha demostrado que el overfitting--un fenómeno en el cual un modelo estadístico describe los ruidos o errores aleatorios en vez de su relación subyacente--s puede reducir considerablemente por medio de propiedades estocásticas en los procedimientos de entrenamiento aplicados a las redes neuronales (dropout)~\cite{JMLR:v15:srivastava14a}.
+Se ha demostrado que el overfitting--un fenómeno en el cual un modelo estadístico describe los ruidos o errores aleatorios en vez de su relación subyacente--se puede reducir considerablemente por medio de propiedades estocásticas en los procedimientos de entrenamiento aplicados a las redes neuronales (dropout)~\cite{JMLR:v15:srivastava14a}.
 
-Para producir las entradas desde los flujos auditivos, nos basamos en \gls{mrstsa}~\cite{chi_2005}. En nuestra implementación de software, seguimos principalmente su sección cortical en vez de su contraparte sub-cortical, incorporando diferentes fenómenos neurofisiológicos hallados en \gls{a1}~\cite{wang_1995} tales como modulación selectiva en simetría \cite{shamma_1993}, ancho de banda \cite{schreiner_1990}, y frecuencia \cite{shamma_1993,heil_1992,mendelson_1985}.
+Para producir las entradas desde los flujos auditivos, nos basamos en el algoritmo \glsfirst{mrstsa}~\cite{chi_2005}. En nuestra implementación de software, seguimos principalmente su sección cortical en vez de su contraparte sub-cortical, incorporando diferentes fenómenos neurofisiológicos hallados en \gls{a1}~\cite{wang_1995} tales como modulación selectiva en simetría \cite{shamma_1993}, ancho de banda \cite{schreiner_1990}, y frecuencia \cite{shamma_1993,heil_1992,mendelson_1985}.
 
 
 
-El \gls{cstm} consiste de dos partes: La capa \glsfirst{mrstsa} y el \glsfirst{el}.
+El \gls{cstm} consiste de dos partes: La capa \gls{mrstsa} y la \glsfirst{el}.
 
-El algoritmo \gls{mrstsa}, que procesa las ondas de sonido para alimentar la entrada a la \gls{el}, es una técnica inspirada en Chi T. et al. \cite{chi_2005}. En su trabajo, hallazgos experimentales acumulativos desde sistema auditivo central se exploraron demostrando sus aplicaciones en la evaluación objetiva de la inteligibilidad del habla. Los autores indicaron que el modelo no fue biofísico en espíritu pero este abstrajo una interpretación desde datos fisiológicos que fueron posiblemente relevantes en el diseño de sistemas de ingeniería de sonido. En nuestra implementación del \gls{mrstsa}, seguimos los lineamientos principales de las representaciones corticales más altas desarrolladas en \cite{chi_2005}.
+El algoritmo \gls{mrstsa}, que procesa las ondas de sonido para alimentar la entrada a la \gls{el}, es una técnica inspirada en Chi T. et al. \cite{chi_2005}. En su trabajo, hallazgos experimentales descubiertos en el sistema auditivo central se exploraron demostrando sus aplicaciones en la evaluación objetiva de la inteligibilidad del habla. Los autores indicaron que el modelo no fue biofísico en espíritu pero pudo proveer una interpretación desde datos fisiológicos posiblemente relevantes en el diseño de sistemas de ingeniería de sonido. En nuestra implementación del \gls{mrstsa}, seguimos los lineamientos principales de las representaciones corticales más altas desarrolladas en \cite{chi_2005}.
 
-La \gls{el} convierte un arreglo multidimensional de números reales en una \gls{sdr} multidimensional. Esta etapa está compuesta por un conjunto de \glspl{som} \cite{kohonen_2082, Kohonen:1989:SAM:69371} e incorpora fenómenos neurofisiológicos como organización columnar, formación micro-columnar espontánea aferente, arborizaciones dendríticas próximas y distantes, interacción intercolumnar lateral por medio de activaciones \gls{nmda} de ramas dendríticas independientes, \glspl{mfe} con adaptación a estímulos contextuales, inhibición intracolumnar lateral próxima, \gls{ltp}, \gls{ltd}, \gls{stdp} y regulaciones homeostáticas en sinápsis distales.
+La \gls{el} convierte un arreglo multidimensional de números reales en una \gls{sdr} multidimensional. Esta etapa está compuesta por un conjunto de \glsfirst{som_pl} \cite{kohonen_2082, Kohonen:1989:SAM:69371} e incorpora fenómenos neurofisiológicos como organización columnar, formación micro-columnar espontánea aferente, arborizaciones dendríticas próximas y distales, interacción intercolumnar lateral por medio de activaciones \gls{nmda} de ramas dendríticas independientes, \gls{mfe_pl} con adaptación a estímulos contextuales, inhibición intracolumnar lateral próxima, \glsfirst{ltp}, \glsfirst{ltd}, \gls{stdp} y regulaciones homeostáticas en sinapsis distales.
 }{
 \subsection{Computational model}
+\label{model-implementation}
 
 We propose a computational approach called \gls{cstm}, which simulates a patch of cortical tissue and incorporates columnar organization, spontaneous micro-columnar formation, partial \gls{nmda} depolarization and adaptation to contextual activations. We simulate pyramidal cells with proximal connections from afferent dendritic branches and distal connections from lateral dendritic branches. Similar afferent stimuli activate clusters of neurons with proximal physical locations in a \gls{cc} in the same way that afferent information activates the mini columns found in cortical tissue.
 
@@ -364,7 +366,7 @@ The \gls{el} converts a multidimensional array of real numbers into a multidimen
 
 
 \iftoggle{DEBUG}{
-\subsubsection{Multiresolution Spectro-Temporal Sound Analysis (MRSTSA)}
+\subsubsection{Análisis Multiresolución Espectro-Temporal de Sonidos (AMRETS)}
 
 Como se mensiona arriba, Chi T. et al. \cite{chi_2005} desarrollaron un modelo computacional de análisis auditivo inspirado en hallazgos psicoacústicos y
 neurofisiológicos en etapas tempranas y centrales del sistema auditivo.
@@ -373,29 +375,29 @@ El algoritmo original tiene una etapa subcortical y una cortical.
 Para la etapa subcortical, primero una transformada affine wavelet de la señal acústica
 representa el análisis espectral realizado por el banco de filtros cocleares.
 Segundo, las salidas del filtro coclear son transducidas en patrones del nervio auditivo
-por medio de una etapa de células pilosas que consisten en un filtro pasa-alto,
+por medio de una etapa de células pilosas que consiste en un filtro pasa-alto,
 una compresión no linear y un filtro pasa-bajo de fuga de membrana.
 Tercero, una derivada de primer orden con respecto al eje tonotópico
-seguido por un rectificador de media onda
-simula la acción de una red inhibitoria lateral que se postula que existe en el núcleo coclear,
+seguida por un rectificador de media onda
+simula la acción de una red inhibitoria lateral que se postula existe en el núcleo coclear,
 el cual efectivamente realza la selectividad de frecuencia
 del banco de filtros cocleares.
 La salida final de la etapa se obtiene integrando
-sobre una ventana chica, con una constante de tiempo de 8 milisegundos, imitando
-la subsecuente pérdida del bloqueo de fase observado en el mesencéfalo. 
+sobre una ventana angosta, con una constante de tiempo de 8 milisegundos, imitando
+la subsecuente pérdida del bloqueo de fase observada en el mesencéfalo. 
 
 La etapa cortical imita aspectos de las respuestas de etapas auditivas centrales más altas, especialmente \gls{a1}.
 Funcionalmente, esta etapa estima el contenido de modulación espectral y temporal del espectrograma auditivo.
 Lo hace computacionalmente por medio de un banco de filtros
 que son selectivos a diferentes parámetros de modulación espectrotemporal
 cuyo rango va de tasas lentas a rápidas temporalmente, y
-de escalas finas a amplias espectralmente. El \glspl{strf}
+de escalas finas a amplias espectralmente. Los \glsfirst{strf_pl}
 de estos filtros también se centran en diferentes frecuencias a lo largo del eje tonotópico. 
 
 En el presente trabajo, debido a que nuestro objetivo es integrar propiedades neurofisiológicas--principalmente centradas en las características corticales--seguimos
 los lineamientos principales en la implementación de la sección cortical de tal modelo.
-Como se muestra en la Fig.~\ref{fig:MRSTSA}, implementamos la etapa inicial en nuestro modelo con la aplicación de una \gls{fft} al vector de audio
-con una ventana de muestreo diferente para cada resolución.
+Como se muestra en la Fig.~\ref{fig:MRSTSA}, implementamos la etapa inicial en nuestro modelo con la aplicación de una \glsfirst{fft} al vector de audio
+con una ventana de muestreo distinta para cada resolución.
 Luego extraemos la densidad espectral de potencia de cada resolución.
 De esta manera obtenemos un análisis espectral multiresolución de la señal de audio,
 con una resolución espectral alta y temporal baja para ventanas de muestreo grandes y
@@ -403,32 +405,32 @@ viceversa.
 Tales ventanas de tiempo diferentes en la \gls{fft},
 incorporaron--al mismo tiempo--filtros pasa-bajo de fuga con una constante de tiempo para cada
 resolución tomando en cuenta así la disminución del bloqueo de fase en el nervio auditivo. 
-Luego aplicamos un \gls{mfb} con 128 elementos para cada espectro
+Luego aplicamos un \glsfirst{mfb} con 128 elementos para cada espectro
 a los fines de representar el análisis espectral realizado por el banco de filtros de la cóclea.
-Luego convolucionamos cada resolución obtenida en el último paso a lo largo de su eja tonotópico
+Luego convolucionamos cada resolución obtenida en el último paso a lo largo de su eje tonotópico
 con una función compleja de múltiple resolución cuya parte real
-fue la función simétrica del Sombrero Mexicano y su parte imaginaria fue su transformada de Hilbert la cual es antisimétrica.
-Con esta estratégia simulamos los fenómenos de modulación selectiva a simetría \cite{shamma_1993}, ancho de banda \cite{schreiner_1990}
-y frecuencia \cite{shamma_1993,heil_1992,mendelson_1985}
+fue la función simétrica del Sombrero Mexicano y su parte imaginaria fue su transformada de Hilbert, la cual es antisimétrica.
+Con esta estrategia simulamos los fenómenos de modulación selectiva a la simetría \cite{shamma_1993}, el ancho de banda \cite{schreiner_1990}
+y la frecuencia \cite{shamma_1993,heil_1992,mendelson_1985}
 hallados en \gls{a1} e incorporados en los algoritmos originales \cite{wang_1995}.
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.8\textwidth]{MRSTSA.png}
-    \caption{Algoritmo \glsfirst{mrstsa}. Las ondas de sonido son procesadas por \glspl{fft} con ventanas de tiempo diferentes, luego, cada espectro es procesado por
+    \caption{Algoritmo de \glsfirst{mrstsa}. Las ondas de sonido son procesadas por \glspl{fft} con ventanas de tiempo diferentes, luego, cada espectro es procesado por
 	    un \glsfirst{mfb} y cada resolución es convolucionada con una señal compleja con un coeficiente diferente. Finalmente, cada coeficiente de filtro
-	    se obtiene computando el módulo de la convolución y luego aplicando un control de ganancia automático.}
+	    se obtiene computando el módulo de la convolución y luego aplicando un control automático de ganancia.}
     \label{fig:MRSTSA}
 \end{figure}
 
-obtuvimos la amplitud de cada convolución y aplicamos normalización a cada ventana temporal
+Finalmente, obtuvimos la amplitud de cada convolución y aplicamos normalización a cada ventana temporal
 como un control automático de ganancia a los fines de priorizar la información entregada por la
 configuración espectral y no los valores absolutos entregados por los filtros.
 
 Por medio de estas restricciones tomamos en cuenta propiedades mecánicas y químicas de las células pilosas en el oido interno de los mamíferos
 las cuales constituyen un mecanismo de transducción que parece adaptarse a la historia de estímulos recientes afectando su ganancia
 \cite{eatock_2000,holt_2000,le_goff_2005}. 
-Decidimos ser conservativos no incluyendo la dimensión de la intensidad de sonido pero solo la silueta de las respuestas de los filtros.
+Decidimos ser conservativos no incluyendo la dimensión de la intensidad de sonido solo incorporando la silueta de las respuestas de los filtros.
 }{
 \subsubsection{Multiresolution Spectro-Temporal Sound Analysis (MRSTSA)}
 
@@ -518,52 +520,52 @@ sound intensity dimension but just the shape of the filter responses.
 
 
 \iftoggle{DEBUG}{
-\subsubsection{Encoder Layer (EL)}
+\subsubsection{Capa Encoder (CE)}
 
-La \gls{el} es el reponsable de generar \glspl{sdr} desde las entradas entregadas por la etapa \gls{mrstsa}
-descripta en la secció previa y desde la historia de activaciones en sus propias \glspl{cc}.
+La \gls{el} es la responsable de generar \glspl{sdr} desde las entradas entregadas por la etapa \gls{mrstsa}
+descripta en la sección previa y desde la historia de activaciones en sus propias \glspl{cc}.
 
-La \gls{el} simula un parche de tejido cortical llamado \gls{cl} usando un arreglo n-dimensional de estructuras complejas llamadas \glspl{csom} que simulan \glspl{cc} en el cerebro.
+La \gls{el} simula un parche de tejido cortical llamado capa cortical utilizando un arreglo n-dimensional de estructuras complejas llamadas \glsfirst{csom_pl} que simulan \glspl{cc} en el cerebro.
 
-Cada \gls{cc} en la \gls{el} se conecta al \gls{mrstsa} abajo por medio de conexiones aferentes. Este también se
+Cada \gls{cc} en la \gls{el} se conecta al \gls{mrstsa} abajo por medio de conexiones aferentes. Cada \gls{cc} también se
 conecta a \glspl{cc} vecinas--incluyendo posiblemente ella misma--en la \gls{el} por medio de conexiones laterales y
-a \glspl{cc} desde otras \glspl{cl} arriba por medio de conexiones apicales. Tal esquema de conexión se muestra en la Fig \ref{fig:EncoderColumnConnections}.
+a \glspl{cc} desde otras capas corticales arriba por medio de conexiones apicales. Tal esquema de conexión se muestra en la Fig \ref{fig:EncoderColumnConnections}.
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.6\textwidth]{EncoderColumnConnections.png}
-    \caption{Esquema de conexión para una columna cortical en el Encoder Layer.
-	    Cada cilindro en la \gls{el} y en el \gls{cl} representa una \gls{cc} en el tejido neuronal.
+    \caption{Esquema de conexión para una columna cortical en la Capa Encoder.
+	    Cada cilindro en la \gls{el} y en el capa cortical superior representa una \gls{cc} en el tejido neuronal.
 	    Cada prisma en el \gls{mrstsa} representa una variable de valor real.
-	    Esta es la visualización de una \gls{cc} (en rojo) y sus tres campos receptivos (en amarillo).
+	    Esta es la visualización de una \gls{cc} (en rojo) y sus de tres campos receptivos (en amarillo).
 	    El campo receptivo de una \gls{cc} es un arreglo que define un conjunto de \glspl{cc}
 	    con las cuales tal columna se podría conectar.
 	    El campo receptivo de una \gls{cc} sobre el \gls{mrstsa} determina un arreglo de variables de valor real
 	    con las cuales tal columna se podría conectar.
 	    Un subconjunto de \glspl{cc} dentro de un campo receptivo (en verde) representa las \glspl{cc} que están realmente conectadas
 	    con la \gls{cc} en rojo. Un escenario similar se podría describir para los prismas verdes sobre el \gls{mrstsa}.
-	    El tamaño, propiedades de envoltura y el porcentaje de vínculos establecidos (en verde) dentro de un campo receptivo, son parámetros ajustables por el modelo.
-	    En este trabajo, solo las conexiones laterales han sido implementadas ya que en la implementación actual no existen capas corticales superiores de la cuales traer conexiones apicales.}
+	    El tamaño, propiedades de envoltura y el porcentaje de vínculos establecidos (en verde) dentro de un campo receptivo, son parámetros ajustables para el modelo.
+	    En este trabajo, solo las conexiones laterales han sido implementadas ya que en la implementación actual no existen capas corticales superiores de las cuales traer conexiones apicales.}
     \label{fig:EncoderColumnConnections}
 \end{figure}
 
 Ambas conexiones laterales y apicales son conexiones de retroalimentación que constituyen canales de información contextual.
-Estos canales ponen la exitación aferente actual bajo el contexto de las activaciones previas.
+Estos canales ponen a la excitación aferente actual bajo el contexto de las activaciones previas.
 Tales conexiones atenúan la actividad de algunas unidades permitiendo solo activaciones precisas
-de unidades neuronales específicas en una \gls{cc} aferentemente exitada.
-Tales activaciones precisas emcuadran con los paradigmas secuenciales aprendidos por la red.
+de unidades neuronales específicas en una \gls{cc} aferentemente excitada.
+Tales activaciones precisas encuadran en los paradigmas secuenciales aprendidos por la red.
 
 Hallazgos recientes en neurociencia \cite{Marques2018} sostienen la idea
-de que la retroalimentación podría potencialmente acentuar representaciones visuales en tiempo y espacio
-atenuando la actividad de ciertas células mientras que permitiendo las activaciones de otras
-las cuales coinciden con sus representaciones.
+de que la retroalimentación cerebral tiene la facultad potencial de acentuar representaciones visuales en tiempo y espacio
+atenuando la actividad de ciertas células y permitiendo las activaciones de otras
+que coinciden con sus representaciones.
 
-En el trabajo presente solo implementamos conexiones laterales ya que
+En este trabajo solo implementamos conexiones laterales ya que
 no hay capas superiores
-de donde traer información apical in la presente implementación.
+de donde traer información apical en la presente implementación.
 
-Cada unidad celular in una \gls{cc} tiene dos tipos de ramas dendríticas; próximas y distales.
-Las ramas dendríticas próximas y distales conducena conexiones próximas y distales en una célula respectivamente.
+Cada unidad celular en una \gls{cc} tiene dos tipos de ramas dendríticas; próximas y distales.
+Las ramas dendríticas próximas y distales conducen a conexiones próximas y distales en una célula respectivamente.
 Las conexiones próximas y distales producen diferentes efectos en la plasticidad y activación de una unidad neuronal.
 Las unidades neuronales en la \gls{el} simulan células piramidales en el tejido cortical en el cerebro.
 La Fig \ref{fig:PyramidalCell} muestra el perfil de conectividad de tales unidades.
@@ -653,7 +655,7 @@ Fig \ref{fig:PyramidalCell} shows the connectivity profile in such units.
 
 
 \iftoggle{DEBUG}{
-En referancia a las conexiones dendríticas próximas en la \gls{el}, cada unidad neuronal en una \gls{cc} tiene el mismo conjunto de
+En referencia a las conexiones dendríticas próximas en la \gls{el}, cada unidad neuronal en una \gls{cc} tiene el mismo conjunto de
 conexiones próximas al \gls{mrstsa} (Fig \ref{fig:EncoderProximalConnections}).
 Tales conexiones constituyen un espacio multidimensional de números reales.
 Para adquirir la distribución estadística de tal espacio real multidimensional utilizamos
@@ -662,9 +664,9 @@ un \gls{som} multidimensional en cada columna cortical (Alg.~\ref{csom_proximal_
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.8\textwidth]{EncoderProximalConnections.png}
-    \caption{\glsfirst{el} proximal connections. Each \gls{cc} in the \gls{el}--exemplified here in red--has its receptive field over the \gls{mrstsa}--in yellow.
-    (A) A set of \gls{mrstsa} components--in green inside the receptive field--is randomly chosen to be connected with such \gls{cc}.
-    (B) Each neural unit in such \gls{cc} is connected with the same set of \gls{mrstsa} components.}
+    \caption{Conexiones próximas de la \glsfirst{el}. Cada \gls{cc} en la \gls{el}--ejemplificada aquí en color rojo--tiene su campo receptivo sobre el \gls{mrstsa}--en amarillo.
+	    (A) Un conjunto de componentes del \gls{mrstsa}--en color verde dentro del campo receptivo--se ecoje aleatoriamente para ser conectado con tal \gls{cc}.
+	    (B) Cada unidad neuronal en tal \gls{cc} se conecta con el mismo conjunto de componentes en el \gls{mrstsa}.}
     \label{fig:EncoderProximalConnections}
 \end{figure}
 
@@ -679,19 +681,19 @@ un \gls{som} multidimensional en cada columna cortical (Alg.~\ref{csom_proximal_
 \end{algorithmic}
 \end{algorithm}
 
-Un \gls{som} es un algoritmo de clusterizado no supervisado el cual distribuye una distribución multidimensional continua
-en una distribución multidimensional discreta de unidades \cite{Kohonen:1989:SAM:69371, kohonen_2082}.
-De esta forma terminamos con un arreglo de unidades de $m$ dimensiones en la cual cada unidad
-representa un conjunto de vectores desde una distribución contiínua en un espacio de entrada de $n$ dimensiones.
-Generalmente, $m < n$ para reducir la dimensionalidad en la representación discrreta.
+Un \gls{som} es un algoritmo de clusterizado no supervisado que representa una distribución multidimensional continua
+en una distribución multidimensional discreta de unidades neuronales \cite{Kohonen:1989:SAM:69371, kohonen_2082}.
+De esta forma se termina con un arreglo de unidades de $m$ dimensiones en el cual cada unidad
+representa un conjunto de vectores desde una distribución continua en un espacio de entrada de $n$ dimensiones.
+Generalmente, $m < n$ para reducir la dimensionalidad en la representación discreta.
 Agregamos tal restricción en nuestro algoritmo columnar.
 
 En el algoritmo \gls{som}, cada vector de entrada debe estar completamente determinado.
 En nuestro caso, varios elementos en las entradas desde el \gls{mrstsa} podrían ser nulos,
 y considerar tales entradas nulas podría perjudicar el aprendizaje.
 Por lo tando, cada vector de entrada podría no tener la información de cada componente disponible.
-Incorporamos un mecanismo estocástico en la \gls{el} para lidiar con tal situación.
-Hicimos que cada conexión arefente aprenda límites estadísticos desde sus entradas correspondientes.
+A tales efectos, incorporamos un mecanismo estocástico en la \gls{el} para lidiar con tal situación.
+Hicimos que cada conexión aferente aprenda límites estadísticos desde sus entradas correspondientes.
 Establecimos márgenes mínimos y máximos en cada conexión próxima en la \gls{el}.
 Tal margen es consistente con la distribución estadística en la historia de su entrada correspondiente.
 Cuando una entrada aferente está indeterminada, en un contexto en el que algunas entradas tienen información disponible,
@@ -699,15 +701,15 @@ la \gls{el} escoje el valor de la entrada indeterminada aleatoriamente
 entre los límites aprendidos desde tal entrada.
 
 Llamamos a nuestra implementación del algoritmo \gls{som}, \gls{ssom}.
-El algoritmo \gls{ssom} representa interacción intra-columnar lateral, \gls{ltp} y \gls{ltd}.
-Este también disocia las entradas dendríticas próximas de las dendritas distales, ya que
+El algoritmo \gls{ssom} simula interacción intra-columnar lateral, \gls{ltp} y \gls{ltd}.
+También disocia las entradas dendríticas próximas de las dendritas distales, ya que
 modifica  las conexiones próximas siguiendo la distribución estadística desde el \gls{mrstsa}
-independientemente de las unidades que disparan en tal \gls{cc}.
-Esta independencia en la plasticidad de las entradas dendríticas próximas es apoyada por la propiedad
-hallada en el tejido cortical por medio de la cual existe plsticidad dendrítica
-en el contexto de la depolarización parcial del soma \cite{reiter_1998}--es decir, sin un \gls{ap}.
+independientemente de las unidades que disparan en la \gls{cc}.
+Esta independencia en la plasticidad de las entradas dendríticas próximas se apoya en la propiedad
+hallada en el tejido cortical por medio de la cual existe plasticidad dendrítica
+en el contexto de la depolarización parcial del soma \cite{reiter_1998}--es decir, sin un \glsfirst{ap}.
 
-El termino \textit{static} viene del hecho de que los patrones aprendidos desde las dendritas aferentes próximas
+El termino \textit{Estático} viene del hecho de que los patrones aprendidos desde las dendritas aferentes próximas
 no toman en cuenta la historia contextual en la evolución dinámica del algoritmo.
 }{
 In reference to proximal connections in the \gls{el}, each neural unit in a \gls{cc} has the same set of
@@ -809,8 +811,8 @@ of the algorithm.
 
 
 \iftoggle{DEBUG}{
-En términos de las ramas dendríticas distales, cada \gls{cc} en la \gls{el} está conectada a otras \glspl{cc}--en verde en la Fig \ref{fig:EncoderColumnConnections}--por medio de tales ramas dentro de los campos receptivos--en amarillo en la Fig. \ref{fig:EncoderColumnConnections}--desde el mismo \gls{el} y desde otra \gls{cl} arriba.
-Cada vínculo emtre la \gls{cc} roja y la \gls{cc} verde--Fig. \ref{fig:DistalDendrites} A--
+En términos de las ramas dendríticas distales, cada \gls{cc} en la \gls{el} se conecta con otras \glspl{cc}--en verde en la Fig \ref{fig:EncoderColumnConnections}--por medio de tales ramas dentro de los campos receptivos--en amarillo en la Fig. \ref{fig:EncoderColumnConnections}--desde la misma \gls{el} y desde otra capa cortical arriba.
+Cada vínculo entre la \gls{cc} roja y la \gls{cc} verde--Fig. \ref{fig:DistalDendrites} A--
 simboliza el hecho de que cada unidad celular en
 la \gls{cc} roja está vinculada con un subconjunto diferente de unidades celulares en la \gls{cc} verde--Fig. \ref{fig:DistalDendrites} B.
 
@@ -821,29 +823,29 @@ la \gls{cc} roja está vinculada con un subconjunto diferente de unidades celula
 	    de una \gls{cc} en la \gls{el}. Una rama dendrítica distal entre la \gls{cc} roja y una
 	    \gls{cc} verde significa que cada unidad neuronal en la \gls{cc} roja está vinculada con un subconjunto diferente
 	    de unidades neuronales en la \gls{cc} verde por medio de conexiones potenciales.
-	    (B) Conexiones potenciales en una rama dendrítica que vincula una unidad neuronal in la \gls{cc} roja
+	    (B) Conexiones potenciales en una rama dendrítica que vincula una unidad neuronal en la \gls{cc} roja
 	    con un subconjunto de unidades neuronales en una \gls{cc} verde. El subconjunto de conexiones potenciales viene de un porcentaje de unidades neuronales
 	    dentro de una \gls{cc} verde. Tal porcentaje es un parámetro ajustable para la \gls{cc}.
 	    (C) Una rama dendrítica distal entre una célula piramidal en una \gls{cc} y un
 	    subconjunto de células piramidales en una \gls{cc} vecina dentro de su campo receptivo en la \gls{el}.
 	    (D) Proximidad física de una rama dendrítica desde la célula roja a las ramas axonales desde las células amarillas constituyen conexiones potenciales
-	    que pueden prosperar convirtiéndose en sinápsis establecidas dependiendo de la actividad secuencial entre las células.}
+	    que pueden prosperar convirtiéndose en sinapsis establecidas dependiendo de la actividad secuencial entre las células.}
     \label{fig:DistalDendrites}
 \end{figure}
 
-Tales vínculos en la Fig \ref{fig:DistalDendrites} A, representan ramas dendríticas en el tejido enuronal y
-llamamos a cada conexión en la Fig. \ref{fig:DistalDendrites} B, conexión potencial.
-Las conexiones potenciales representan sinápsis en la rama dendrítica.
+Tales vínculos en la Fig \ref{fig:DistalDendrites} A, representan ramas dendríticas en el tejido neuronal.
+Llamamos a cada conexión en la Fig. \ref{fig:DistalDendrites} B, conexión potencial.
+Las conexiones potenciales representan sinapsis en la rama dendrítica.
 Una unidad celular dentro de la \gls{cc} roja termina con tantas ramas dendríticas como \glspl{cc} verdes dentro de su campo receptivo (Fig \ref{fig:DistalDendrites} A.)
 
-El término \emph{conexión potencial} es usado, porque describe un par de unidades neuronales vinculadas por sus ubicaciones físicas y disposición dendrítica y axonal en el tejido cortical (Fig. \ref{fig:DistalDendrites} C). Sin embargo, una conectividad efectiva entre tales neuronas dependerá de su patrón secuencial de activación el cual establecerá sinápsis desarrolladas entre ellas. 
-Si dos unidades neuronales--una roja y una amarilla en la Fig. \ref{fig:DistalDendrites} D--se vinculan por medio de una conexión potencial distal--producida por una sinápsis entre una rama dendrítica distal desde la roja y una rama axonal desde la amarilla--tal conexión crecerá solo si existe una activación secuencial de la célula rojo después de una activación de la célula amarilla, en dos pasos temporales consecutivos.
-Si tal fenómeno no se repite en el tiempo, tal sinásis decrementará su fuerza con respecto a otras sinápsis en la rama dendrítica en la célula roja en la Fig. \ref{fig:DistalDendrites} D.
-Una activación simultánea en ambas unidades neuronales--la roja y la amarilla en la Fig. \ref{fig:DistalDendrites} D--decrementará la sinápsis en tal conexión potencial.
+El término \emph{conexión potencial} es usado, porque describe un par de unidades neuronales vinculadas por sus ubicaciones físicas y disposición dendrítica y axonal en el tejido cortical (Fig. \ref{fig:DistalDendrites} C). Sin embargo, la conectividad efectiva entre tales neuronas dependerá de su patrón secuencial de activación el cual establecerá sinapsis desarrolladas entre ellas. 
+Si dos unidades neuronales--una roja y una amarilla en la Fig. \ref{fig:DistalDendrites} D--se vinculan por medio de una conexión potencial distal--producida por una sinapsis entre una rama dendrítica distal desde la roja y una rama axonal desde la amarilla--tal conexión crecerá solo si existe una activación secuencial de la célula roja después de una activación de la célula amarilla, en dos pasos temporales consecutivos.
+Si tal fenómeno no se repite en el tiempo, tal sinapsis decrementará su fuerza con respecto a otras sinapsis en la rama dendrítica en la célula roja en la Fig. \ref{fig:DistalDendrites} D.
+Una activación simultánea en ambas unidades neuronales--la roja y la amarilla en la Fig. \ref{fig:DistalDendrites} D--decrementará la sinapsis en tal conexión potencial.
 
-Implementamos mecanismos de plsticidad sináptica en dendrítas distales por medio de un algoritmo llamado \gls{dsom} (Alg. \ref{csom_distal_synapses}).
+Implementamos mecanismos de plasticidad sinaptica en dendritas distales por medio de un algoritmo llamado \gls{dsom} (Alg. \ref{csom_distal_synapses}).
 Los mecanismos de aprendizaje implementados en tal algoritmo simulan fenómenos neurofisiológicos
-tales como \gls{stdp}, y plasticidad de regulación homeostática la regulación del peso sináptico en las ramas dendríticas distales.
+tales como \gls{stdp}, y plasticidad de regulación homeostática en la determinación del peso sinaptico en las ramas dendríticas distales.
 
 \begin{algorithm}
 	\caption{\texttt{Plasticity in Distal Synapses}. This algorithm accounts for \glsfirst{stdp} and homeostatic regulation phenomenon in distal dendritic synapses.}
@@ -873,7 +875,7 @@ tales como \gls{stdp}, y plasticidad de regulación homeostática la regulación
 \end{algorithmic}
 \end{algorithm}
 
-Basicamente, el Alg.~\ref{csom_distal_synapses} actualiza todas las sinápsis axo-dendríticas distales, incrementándolas siempre que unidades neuronales pre y post-sinápticas se activan en pasos temporales consecutivos, y se decrementan cuando se activan en el mismo paso temporal. Ocasionalmente, todos los pesos sinápticos pertenecientes a la misma dendrita se normalizan cada cierto número de pasos temporales. Esta normalización se repite para todas las unidades neuronales y para todas las ramas dendríticas en cada unidad neuronal cuya suma de sus pesos sinápticos excede la unidad.
+Básicamente, el Alg.~\ref{csom_distal_synapses} actualiza todas las sinapsis axo-dendríticas distales, incrementándolas siempre que unidades neuronales pre y post-sinapticas se activan en pasos temporales consecutivos, y las decrementa cuando se activan en el mismo paso temporal. Ocasionalmente, todos los pesos sinapticos pertenecientes a la misma dendrita se normalizan cada cierto número de pasos temporales. Esta normalización se repite para todas las unidades neuronales y para todas las ramas dendríticas en cada unidad neuronal cuya suma de sus pesos sinapticos excede la unidad.
 }{
 In terms of distal dendritic branches, each \gls{cc} in the \gls{el} is connected to other \glspl{cc}--in green in Fig \ref{fig:EncoderColumnConnections}--by means of such
 branches inside the receptive fields--in yellow in Fig. \ref{fig:EncoderColumnConnections}--from the same \gls{el} and from another \gls{cl}
@@ -977,20 +979,20 @@ primero un grupo de unidades celulares en una \gls{cc} es depolarizada parcialme
 por las conexiones distales entre tales unidades neuronales y unidades celulares activadas en el
 paso temporal previo en la \gls{el}--Fig. \ref{fig:Activation} A.
 Es decir, las unidades neuronales activadas en el paso temporal $t=0$ en la \gls{el}, depolarizarán parcialmente
-un conjunto de unidades neuronales en el paso temporal $t=1$ en tal \gls{cc}, por medio de sinápsis en ramas dendríticas distales--laterales y apicales--
-establecidas por medio del algoritmo \gls{dsom}.
+un conjunto de unidades neuronales en el paso temporal $t=1$ en tal \gls{cc}, por medio de sinapsis en ramas dendríticas distales--laterales y apicales--
+establecidas por el algoritmo \gls{dsom}.
 
 Segundo, las conexiones próximas aferentes desde el \gls{mrstsa} tenderán a depolarizar
 ciertos cúmulos de unidades en tal \gls{cc} en el paso temporal $t=1$--Fig. \ref{fig:Activation} B.
 La depolarización tentativa es producida por las entradas desde el \gls{mrstsa} con
-las sinápsis próximas establecidas por medio del algoritmo \gls{ssom}.
+las sinapsis próximas establecidas por el algoritmo \gls{ssom}.
 Tal grupo de unidades neuronales son escojidas aleatoriamente desde una distribución discreta
-cuyas probabilidades se establecen por el estado de exitación en las entradas aferentes.
+cuyas probabilidades se establecen por el estado de excitación en las entradas aferentes.
 
-Si un número suficiente de unidades parcialmente depolarizadas se encuentra en el conjunto de
+Si un número suficientemente grande de unidades parcialmente depolarizadas se encuentra en el conjunto de
 unidades exitadas aferentemente, tales unidades parcialmente depolarizadas
 dispararán antes en el grupo--Fig. \ref{fig:Activation} B izquierda.
-Esas unidades--las cuales disparan antes--evitan que unidades vecinas en los cúmulos exitados disparen,
+Esas unidades--las cuales disparan antes--evitan que unidades vecinas en los cúmulos excitados disparen,
 sobrepolarizandolas por medio de conexiones inhibitorias laterales en la columna.
 
 \begin{figure}[h!]
@@ -1001,29 +1003,31 @@ sobrepolarizandolas por medio de conexiones inhibitorias laterales en la columna
 	    (A) Activación celular en las \glspl{cc} verdes--resaltadas en las células amarillas--ponen las unidades neuronales
 	    en la \gls{cc} roja en un estado de depolarización parcial--predictivo resaltado en azul.
 	    (B) Cúmulo de células neuronales activadas por entrads aferentes.
-	    Izquierda: Una cantidad sustancial de células depolarizadas parcialmente están dentro de los cúmulos celulares activados aferentemente.
-	    Derecha: No hay una cantidad sustancial de células depolarizadas parcialmente dentro de los cúmulos celulares exitados aferentemente.
+	    Izquierda: Una cantidad sustancial de células depolarizadas parcialmente está dentro de los cúmulos celulares activados aferentemente.
+	    Derecha: No hay una cantidad sustancial de células depolarizadas parcialmente dentro de los cúmulos celulares excitados aferentemente.
 	    (C) \gls{cc} con unidades celulares activas resaltadas en amarillo.
-	    Izquierda: Activación celular de ptrón disperso.
+	    Izquierda: Activación celular de patrón disperso.
 	    Derecha: Activación de patrón masivo.}
     \label{fig:Activation}
 \end{figure}
 
-Los estados de depolarización parcial ponen las unidades celulares en un estado predictivo por
+Los estados de depolarización parcial ponen a las unidades celulares en un estado predictivo por
 la activación producida en la \gls{el} en pasos temporales previos.
 Es decir, la cativación lateral y apical en pasos temporales previos constituye un contexto en el cual
 las entradas aferentes actuales son recibidas.
 
 Del grupo de unidades que tienden a ser depolarizadas por las entradas aferentes desde el \gls{mrstsa},
-solo un subconjunto reducido de esas unidades es posible que disparen dada la historia de activaciones contextuales previas
-en el  \gls{el}--Fig. \ref{fig:Activation} C izquierda.
+solo un subconjunto reducido pueden disparar dada la historia de activaciones contextuales previas
+en la  \gls{el}--Fig. \ref{fig:Activation} C izquierda.
 
-En caso de no haber contexto, es decir, si no hay suficientes unidades que están normalmente depolarizadas por entradas aferentes
-parcialmente depolarizadas por activaciones--laterales y apicales--previas--Fig. \ref{fig:Activation} B derecha--,
-todas las unidades en los cúmulos exitados aferentemente se activarán, cubriendo más hipótesis para las siguientes entradas--Fig. \ref{fig:Activation} C derecha.
+En caso de no haber contexto, es decir, si no hay suficientes unidades que están parcialmente depolarizadas 
+por activaciones--laterales y apicales--previas--Fig. \ref{fig:Activation} B derecha--,
+dentro del conjunto de unidades
+normalmente depolarizadas por entradas aferentes,
+todas las unidades en los cúmulos excitados aferentemente se activarán, cubriendo más hipótesis para las siguientes entradas--Fig. \ref{fig:Activation} C derecha.
 
-Tal mecanismo de activación es delineado en el Alg. \ref{csom_activation}. En el Alg. \ref{csom_activation} (Parte 1) se establece un ranking entre unidades neuronales--dentro de una \gls{cc}--en términos de su exitabilidad aferente, dadas las entradas aferentes (líneas 1 y 2).
-El \emph{number of afferently excited units} se refienre al máximo número de unidades que pueden ser activadas por la entrada aferente en una \gls{cc} y \emph{minimum number of active units} se refiere al número de unidades que serán activadas en una \gls{cc} si una \gls{sdr} se alcanza como resultado de una predicción óptima (líneas 3 y 4 respectivamente).
+Tal mecanismo de activación es delineado en el Alg. \ref{csom_activation}. En el Alg. \ref{csom_activation} (Parte 1) se establece un ranking entre unidades neuronales--dentro de una \gls{cc}--en términos de su excitabilidad aferente, dadas las entradas aferentes (líneas 1 y 2).
+El parámetro \emph{number of afferently excited units} se refienre al máximo número de unidades que pueden ser activadas por la entrada aferente en una \gls{cc} y \emph{minimum number of active units} se refiere al número de unidades que serán activadas en una \gls{cc} si una \gls{sdr} se alcanza como resultado de una predicción óptima (líneas 3 y 4 respectivamente).
 
 \begin{algorithm}
 	\caption{\texttt{Units activation (Part 1)}. This algorithm establishes the activation rules in a \gls{csom} object.}
@@ -1065,17 +1069,17 @@ El \emph{number of afferently excited units} se refienre al máximo número de u
 \end{algorithmic}
 \end{algorithm}
 
-Si la aleatoriedad está abilitada, \emph{number of afferently excited units} unidades se escojen aleatoriamente por medio de una distribución discreta cuyas probabilidades son la exitación aferente de cada unidad. Si la aleatoriedad está desabilitada, \emph{number of afferently excited units} primeras unidades son escojidas desde un ranking de unidades exitadas aferentemente (líneas 5 a 9).
+Si la aleatoriedad está habilitada, se escogen \emph{number of afferently excited units} unidades aleatoriamente por medio de una distribución discreta cuyas probabilidades son la excitación aferente de cada unidad. Si la aleatoriedad está deshabilitada, las \emph{number of afferently excited units} primeras unidades son escogidas desde un ranking de unidades excitadas aferentemente (líneas 5 a 9).
 
-Desde la línea 10 a la 25 cada unidad neuronal acumula exitación--lateral y apical--sital para determinar su depolarización parcial desde las unidades que estuvieron activas en el paso temporal previo. Para cada unidad neuronal en una \gls{cc}, para cada dendrita distante en tal unidad y para cada unidad activa en tal dendrita distante el algoritmo busca coincidencias entre algunas conexiones potenciales en tal dendrita distal en la unidad neuronal y la unidad activa en tal dendrita distal.
+Desde la línea 10 a la 25 cada unidad neuronal acumula excitación--lateral y apical--distal para determinar su depolarización parcial desde las unidades que estuvieron activas en el paso temporal previo. Para cada unidad neuronal en una \gls{cc}, para cada dendrita distante en tal unidad y para cada unidad activa en tal dendrita distante el algoritmo busca coincidencias entre algunas conexiones potenciales en tal dendrita distal en la unidad neuronal y la unidad activa en tal dendrita distal.
 Es decir, en la línea 15, el algoritmo pregunta se hay coincidencia entre algunas conexiones potenciales en esta dendrita distante dentro de la unidad y las unidades neuronales activadas en el paso temporal previo en la \gls{cc} vinculada por tal dendrita.
-Si hay coincidencia, el valor del peso sináptico en tal conexión potencial es acumulado en un acumulador de la dendrita.
-Despues de que todas las unidades activas son examinadas por esta dendrita, si el acumulador de la dendrita es mayor que cierto umbral, tal dendrita es considerada activa y la respuesta total de la unidad se incrementa en uno.
+Si hay coincidencia, el valor del peso sinaptico en tal conexión potencial es acumulado en un acumulador de la dendrita.
+Después de que todas las unidades activas son examinadas por esta dendrita, si el acumulador de la dendrita es mayor que cierto umbral, tal dendrita es considerada activa y la respuesta total de la unidad se incrementa en uno.
 
-Cada unidad neuronal termina con un valor de exitación devido a sus dendritas distales. El vector de distancias de la unidad es dividido componente por compoenente por el vector de exitaciones dendríticas para obtener distancias actualizadas y un ranking actualizado de las unidades (lines 26 and 27). De esta manera, las unidades con más exitación distal decrementarán sus distancias más serán puestas en un lugar más favorable en el ranking para ser activadas.
+Cada unidad neuronal termina con un valor de excitación debido a sus dendritas distales. El vector de distancias de la unidad es dividido componente por componente por el vector de excitaciones dendríticas para obtener distancias actualizadas y un ranking actualizado de las unidades (líneas 26 y 27). De esta manera, las unidades con más excitación distal decrementarán sus distancias más, y serán puestas en un lugar más favorable en el ranking para ser activadas.
 
-En el Alg. \ref{csom_activation} (Parte 2) la distancia actualizada mínima es hallada en el grupo de unidades exitadas aferentemente. Luego, un conjunto de unidades--dentro del grupo de unidades exitadas aferentemente--es identificada teniendo tal distancia actualizada mínima. Mientras el número de unidades identificadas es menor que \emph{minimum number of active units}, la distancia actualizada mínima siguiente es hallada en el grupo de unidades exitadas aferentemente y un nuevo conjunto de unidades--dentro del grupo de unidades exitadas aferentemente--es identificado las cuales tienen tal distancia actualizada mínima siguiente.
-Este nuevo conjunto es sumado al conjunto previo hasta que el número en su conjunto acumulativo es mayor o igual que el minimo número de unidades activas.
+En el Alg. \ref{csom_activation} (Parte 2) la distancia actualizada mínima es hallada en el grupo de unidades excitadas aferentemente. Luego, un conjunto de unidades con tal distancia mínima--dentro de dicho grupo--es identificado. Mientras el número de unidades identificadas sea menor que \emph{minimum number of active units}, se halla la siguiente distancia actualizada mínima en el grupo de unidades excitadas aferentemente y un nuevo conjunto de unidades--dentro de dicho grupo--es identificado. Dichas unidades tienen tal distancia actualizada mínima siguiente.
+Este nuevo conjunto es sumado al conjunto previo hasta que el número de unidades en el conjunto acumulativo es mayor o igual que el mínimo número de unidades activas.
 
 \begin{algorithm}
 \ContinuedFloat
@@ -1108,18 +1112,18 @@ Este nuevo conjunto es sumado al conjunto previo hasta que el número en su conj
 \end{algorithmic}
 \end{algorithm}
 
-El resultado funcional del Alg. \ref{csom_activation} es que debe haber una cantidad suficiente de unidades neuronales--parcialmente y previamente depolarizadas--dentro de el cúmulo de unidades aferentemente activadas para conseguir un patrón de activación \gls{sdr}. De otra forma, la \gls{cc} terminará con unpatrón de activación masiva, un \glsfirst{mfe} en el cual más que \emph{minimum number of active units} unidades serán activadas.
-En el caso de la ocurrencia de un \gls{mfe}, la plasticidad sináptica es modulada para formar sinápsis más fuertes de las unidades neuronales activadas durante tal evento.
+El resultado funcional del Alg. \ref{csom_activation} es que debe haber una cantidad suficiente de unidades neuronales--parcialmente y previamente depolarizadas--dentro del cúmulo de unidades aferentemente activadas para conseguir un patrón de activación \gls{sdr}. De otra forma, la \gls{cc} terminará con un patrón de activación masiva, un \glsfirst{mfe} en el cual más que \emph{minimum number of active units} unidades serán activadas.
+En el caso de la ocurrencia de un \gls{mfe}, la plasticidad sinaptica es modulada para formar sinapsis más fuertes de las unidades neuronales activadas durante tal evento.
 
 Cada unidad neuronal en una \gls{cc} establece su estado de depolarización parcial basado en la contribución desde
 las ramas dendríticas distales desde conexiones laterales y apicales.
-Una rama dendrítica contribuirá a la depolarización parcial del soma in tal célula solo si tal
-rama dendrítica excede un umbral deactivación por medio de la contribución de sus sinápsis individuales
+Una rama dendrítica contribuirá a la depolarización parcial del soma en tal célula solo si tal
+rama dendrítica excede un umbral deactivación por medio de la contribución de sus sinapsis individuales
 en el contexto de los patrones de activación en el paso temporal previo.
 
 Este mecanismo posee propiedades secuenciales convincentes \cite{hawkins_2016},
-que ya han sido aplicadas en la clasificación de datos secuenciales generados artificialmente \cite{cui_2016}.
-Aplicamos tales mecanismos en el algoritmo \gls{dsom} por medio de la adición de la contribución de sinápsis--en una rama dendrítica--cuyas conexiones
+que ya han sido aplicadas a la clasificación de datos secuenciales generados artificialmente \cite{cui_2016}.
+Aplicamos tales mecanismos en el algoritmo \gls{dsom} por medio de la adición de la contribución de sinapsis--en una rama dendrítica--cuyas conexiones
 son vinculadas con células que fueron activadas en los pasos temporales previos en la \gls{el}.
 }{
 Finally, in reference to the activation rules of neural units inside a \gls{cc} in the \gls{el},
@@ -1294,15 +1298,15 @@ are linked with cells that were active in the previous time step in the \gls{el}
 
 
 \iftoggle{DEBUG}{
-\subsubsection{Multiresolution Spectro-Temporal Sound Analysis (MRSTSA)}
+\subsubsection{Análisis Multiresolución Espectro-Temporal de Sonidos (AMRETS)}
 
 Aplicamos la \gls{fft} a los archivos de audio con un período de muestreo de 8 milisegundos.
-A tales efectos utilizamos le paquete FFTW \cite{FFTW05, fftw} con ventanas de tiempo de 8, 16, 32, 64 y 128 milisegundos a los fines de obtener un análisis espectral de potensia de miltiple resolución de la señal.
-Adicionalmente, aplicamos la técnica de Banco de Filtros Mel con 128 filtros para cada resolución espectral y convolucionamos tales filtros a lo largo de su ejes tonotópicos. Para la convolución utilizamos una función compleja de resolución múltiple cuya parte real is una función de Sombrero Mexicano y su parte imaginaria es su transformación de Hilbert.
+A tales efectos utilizamos el paquete FFTW \cite{FFTW05, fftw} con ventanas de tiempo de 8, 16, 32, 64 y 128 milisegundos a los fines de obtener un análisis espectral de potencia de múltiple resolución de la señal.
+Adicionalmente, aplicamos la técnica de Banco de Filtros Mel con 128 filtros para cada resolución espectral y convolucionamos tales filtros a lo largo de su ejes tonotópicos. Para la convolución utilizamos una función compleja de resolución múltiple cuya parte real es una función de Sombrero Mexicano y su parte imaginaria es su transformación de Hilbert.
 
-Los valores de los coeficientes de la función son 10 para un tiempo de ventana de 8 milisegundos, 8 para un tiempo de ventana de 16 ms, 6 para un tiempo de ventana de 32 milisegundos, 4 para un tiempo de ventana de 64 milisegundos y 2 para un tiempo de ventana de 128 milisegundos.
+Los valores de los coeficientes de la función son: 10 para un tiempo de ventana de 8 milisegundos, 8 para un tiempo de ventana de 16 milisegundos, 6 para un tiempo de ventana de 32 milisegundos, 4 para un tiempo de ventana de 64 milisegundos y 2 para un tiempo de ventana de 128 milisegundos.
 Luego computamos la magnitud de la convolución y normalizamos en cada paso temporal.
-Por medio de este procedimiento obtenemos desde el archivo de audio una respuesta espectro-temporal de multiple resolución compuesta por un arreglo de 128 columnas--una columna por filtro--y 5 filas--una fila por resolución--de npumeros reales con un rango de 0 a 1 fara cada paso temporal.
+Por medio de este procedimiento obtenemos--desde el archivo de audio--una respuesta espectro-temporal de resolución múltiple compuesta por un arreglo de 128 columnas--una columna por filtro--y 5 filas--una fila por resolución--de números reales con un rango de 0 a 1 para cada paso temporal.
 }{
 \subsubsection{Multiresolution Spectro-Temporal Sound Analysis (MRSTSA)}
 
@@ -1326,36 +1330,36 @@ an array of 128 columns--one column per filter--and 5 rows--one row per resoluti
 
 
 \iftoggle{DEBUG}{
-\subsubsection{Encoder Layer (EL)}
+\subsubsection{Capa Encoder (CE)}
 
-Implementamos un \gls{el} con 225 \glspl{csom} organizados en un arraglo de dos dimensiones de 15 por 15 \glspl{cc}.
+Implementamos una \gls{el} con 225 \glspl{csom} organizados en un arraglo de dos dimensiones de 15 por 15 \glspl{cc}.
 Cada \gls{cc} es automáticamente distribuida utilizando ubicaciones individuales a lo largo de sus entradas aferentes de manera uniforme.
 Cada \gls{cc} recibe información aferente a través de campos receptivos aferentes bi-dimensionales de 5 por 227 filtros centrados en posiciones individuales sobre el \gls{mrstsa}.
-Abilitamos la propiedad de envoltura (wraparound) para lograr que cada campo receptivo ocupe el arreglo del \gls{mrstsa} por completo.
+Habilitamos la propiedad de envoltura (wraparound) para lograr que cada campo receptivo ocupe el arreglo del \gls{mrstsa} por completo.
 También instruimos a cada columna para que reciba solo 31 entradas, lo cual constituye un porcentaje menor del campo receptivo.
-Las entradas aferentes individuales para cada \gls{cc} son escojidas aleatoriamente durante el proceso de inicialización de la \gls{el}.
+Las entradas aferentes individuales para cada \gls{cc} son escogidas aleatoriamente durante el proceso de inicialización de la \gls{el}.
 
-Para esta instancia del modelo, implementamos solo ramificaciones dendríticas laterales ya que no existe más \glspl{cl} de donde traer información por medio de ramificaciones dendríticas apicales.
+Para esta instancia del modelo implementamos solo ramificaciones dendríticas laterales ya que no existen más capas corticales de donde traer información por medio de ramificaciones dendríticas apicales.
 Configuramos cada \gls{cc} para que tenga un campo receptivo lateral de 9 por 9 \glspl{cc} vecinas y para recibir información de 72 de las 81 \glspl{cc} in el campo receptivo--un 90\% del campo receptivo.
 
 Cada \gls{cc} está compuesta de un arreglo bi-dimensional con 15 por 15 (225) unidades neuronales y cada unidad en una columna podría ser conectada potencialmente con solo 6 unidades neuronales en cada columna vecina vinculada.
 De esta manera, cada unidad neuronal en una \gls{cc} termina teniendo 72 ramificaciones dendríticas con 6 conecciones potenciales cada una (432 sinapsis potenciales distantes por unidad celular).
-Tales conecciones potenciales se seleccionan de manera aleatoria para cada unidad celulary para cada rama dendrítica en la célula durante el proceso de inicialización del Encoder. La \gls{el} consiste de 50625 unidades celulares con 1569375 sinapsis potenciales y 21870000 sinapsis distantes.
-Tales especificaciones determinan el npumero de parámetros libres del modelo, sin embargo, es importante resaltar que las sinapsis distantes representan conecxiones potenciales desde las que solo un pequeño porcentaje tiene un peso sináptico significativo como para ser consideradas conexiones establecidas.
-Las sinapsis débiles son periódicamente descartadas por medio de procesos homeostáticos in la red dejando las dendritas distantes con una conectividad dispersa en los campos receptivos. Dispersiones típicas in tales conectividades podrían exeder el 90\%.
+Tales conecciones potenciales se seleccionan de manera aleatoria para cada unidad celular y para cada rama dendrítica en la célula durante el proceso de inicialización del Encoder. La \gls{el} consiste de 50625 unidades celulares con 1569375 sinapsis próximas y 21870000 sinapsis distales.
+Tales especificaciones determinan el número de parámetros libres del modelo, sin embargo, es importante resaltar que las sinapsis distales representan conexiones potenciales desde las que solo un pequeño porcentaje tiene un peso sinaptico significativo como para ser consideradas conexiones establecidas.
+Las sinapsis débiles son periódicamente descartadas por medio de procesos homeostáticos en la red dejando las dendritas distales con una conectividad dispersa en los campos receptivos. Dispersiones típicas en tales conectividades podrían exceder el 90\%.
 
 Entrenamos la \gls{el} utilizando corpus de 500 palabras generados por el procedimiento descripto en la sección \nameref{CorpGen}.
 El procedimiento de entrenamiento consiste de 4 stapas y para cada etapa la \gls{el} recibe el mismo corpus 4 veces.
 
-Durante cada etapa de aprendizaje, ciertos parámetros--como las tasas de aprendizaje en sinapsis próximas y distantes y la iteracción intracolumnar lateral--son decrementadas progresivamente exponencialmente desde un valor inicial, el cual también es decrementado en cada etapa sucesiva.
+Durante cada etapa de aprendizaje, ciertos parámetros--como las tasas de aprendizaje en sinapsis próximas y distantes y la interacción intracolumnar lateral--son decrementados progresivamente exponencialmente desde un valor inicial, el cual también es decrementado en cada etapa sucesiva.
 Una etapa adicional es ejecutada con los parámetros de aprendizaje fijos.
 
-La dispersión en la activación para cada \gls{cc} es 99\% (solo 2 unidades neuronales de las 225 podrían ser activadas por medio de eventos normales de activación).
-Por otro lado, la exitación aferente afecta el 10\% de las unidades dentro de los cúmulos en cada \gls{cc}
+La dispersión en la activación para cada \gls{cc} es del 99\% (solo 2 unidades neuronales de las 225 podrían ser activadas por medio de eventos normales de activación).
+Por otro lado, la excitación aferente afecta al 10\% de las unidades dentro de los cúmulos en cada \gls{cc}
 (22 unidades neuronales, las cuales podrían ser activadas en caso de un \gls{mfe}; Fig. \ref{fig:Activation}).
 
-Cada \gls{cc} esta compuesta de un arreglo bi-dimensional con 15 por 15 (225) unidades neuronales y
-cada unidad en una columna podría ser connectada potencialmente con sólo 6 unidades neuronales desde cada columna vecina vinculada.
+Cada \gls{cc} está compuesta de un arreglo bi-dimensional con 15 por 15 (225) unidades neuronales y
+cada unidad en una columna podría ser connectada potencialmente con sólo 6 unidades neuronales desde cada columna vecina vinculada
 (432 sinapsis distales por unidad celular).
 }{
 \subsubsection{Encoder Layer (EL)}
@@ -1408,15 +1412,15 @@ On the other hand, the afferent excitation affects 10\% of the units inside the 
 
 
 \iftoggle{DEBUG}{
-\subsubsection{Clasificación por medio de Support Vector Machine (SVM)}
+\subsubsection{Clasificación por medio de Máquinas de Vectores Soporte (MVS)}
 
-Utilizamos supervisión con clasificación por medio del método \gls{svm}, recibiendo las salidas de cada algoritmo \cite{CC01a, libsvm}. Hacemos eso para probar las propiedades de invarianza en las características fonéticas abstraidas por la \gls{el} en comparación con las propiedades fonéticas abstraidas por el \gls{mrstsa}, 
+Utilizamos supervisión con clasificación por medio del método \gls{svm}, recibiendo las salidas de cada algoritmo \cite{CC01a, libsvm}. Hacemos eso para probar las propiedades de invarianza en las características fonéticas abstraídas por la \gls{el} en comparación con las propiedades fonéticas abstraídas por el \gls{mrstsa}, 
 (Fig. \ref{fig:Experiment}).
 
 Utilizamos las brechas temporales de silencio entre palabras consecutivas en las salidas del \gls{mrstsa} para introducir marcas y así detectar el pricipio y el final de cada palabra.
 
 Luego, producimos un vector por palabra en el corpus sumando la actividad en el \gls{mrstsa} así como en la \gls{el} entre marcas consecutivas
-y utilizamos tales vectoresjpara entrenar ambos clasificadores (el que recibe las salidas provenientes desde el \gls{mrstsa} y el que las recibe desde la \gls{el}).
+y utilizamos tales vectores para entrenar ambos clasificadores (el que recibe las salidas provenientes desde el \gls{mrstsa} y el que las recibe desde la \gls{el}).
 
 Luego, escalamos los vectores--como la documentación del \gls{libsvm} sugiere--para mejorar el desempeño en la clasificación.
 Entrenamos y probamos los clasificadores \gls{svm} utilizando validación cruzada sobre 5 secciones y los configuramos para utilizar un kernel linear con un parámetro $C$ el cual barremos para encontrar el mejor modelo entrenado para cada clasificador.
@@ -1451,7 +1455,7 @@ we swept to find the best trained model for each classifier.
 \iftoggle{DEBUG}{
 \subsection{Experimentos}
 
-En el trabajo presentado en este capítulo, estudiamos el nivel de invarianza en las características fonéticas abstraidas por la \gls{el} a través de la comparación de tales representaciones con las características auditivas espectro-temporales devueltas por el algoritmo \gls{mrstsa}. A tal fin, evaluamos los rasgoz devueltos por cada algoritmo frente a diferentes tareas de clasificación de palbras. A los fines de probar el desempeño de clasificación en cada algoritmo, utilizamos la técnica \gls{svm}--sección \nameref{model-implementation}--con el perfil experimental descripto en la Fig. \ref{fig:Experiment}.
+En el trabajo presentado en este capítulo, estudiamos el nivel de invarianza en las características fonéticas abstraídas por la \gls{el} por medio de la comparación de tales representaciones con las características auditivas espectro-temporales devueltas por el algoritmo \gls{mrstsa}. A tal fin, evaluamos los rasgos devueltos por cada algoritmo frente a diferentes tareas de clasificación de palabras. A los fines de probar el desempeño de clasificación en cada algoritmo, utilizamos la técnica \gls{svm}--sección \nameref{model-implementation}--con el perfil experimental descripto en la Fig. \ref{fig:Experiment}.
 
 \begin{figure}[h!]
     \centering
@@ -1464,11 +1468,11 @@ En el trabajo presentado en este capítulo, estudiamos el nivel de invarianza en
     \label{fig:Experiment}
 \end{figure}
 
-En el procedimiento experimental, primero entrenamos los \glspl{el} diferentes--sección \nameref{model-implementation}--para cada condición silábica. Los \glspl{el}  fueron entrenados utilizando las voces en el primer set y los corpus generados por medio de los métodos descriptos en la sección \nameref{CorpGen}. Luego, procesamos los mismos corpus con los \glspl{el} correspondientes en modo de inferencia. In tal modo, los \glspl{el} procesaron la información con sus propiedades de aprendizaje desabilitadas. De esta forma, durante la inferencia, los \glspl{el} no modificaron sus sinapsis y sólo retornaron patrones de activación en respuesta a los estímulos recibidos. Luego, utilizamos las salidas desde el \gls{mrstsa} y los \glspl{el} en modo de inferencia para entrenar los clasificadores \gls{svm} con el procedimiento explicado en la sección \nameref{model-implementation}. Los desempeños de entrenamiento promedio de validación cruzada se muestran en la Tabla~\ref{SVM_Training}.
+En el procedimiento experimental, primero entrenamos las diferentes \glspl{el}--sección \nameref{model-implementation}--para cada condición silábica. Las \glspl{el}  fueron entrenadas utilizando las voces en el primer conjunto y los corpus generados por medio de los métodos descriptos en la sección \nameref{CorpGen}. Luego, procesamos los mismos corpus con las \glspl{el} correspondientes en modo de inferencia. In tal modo, las \glspl{el} procesaron la información con sus propiedades de aprendizaje deshabilitadas. De esta forma, durante la inferencia, las \glspl{el} no modificaron sus sinapsis y sólo retornaron patrones de activación en respuesta a los estímulos recibidos. Luego, utilizamos las salidas desde el \gls{mrstsa} y desde las \glspl{el} en modo de inferencia para entrenar los clasificadores \gls{svm} con el procedimiento explicado en la sección \nameref{model-implementation}. Los desempeños de entrenamiento promedio de validación cruzada se muestran en Cuadro~\ref{SVM_Training}.
 
 \begin{table}[h!]
 \centering
-\caption{\gls{svm} 5-fold cross validation training results}
+\caption{Resultados para las \glspl{svm} con 5-desdobles y validación cruzada}
 \begin{tabular}{|l|l|l|}
 \hline
 		   & MRSTSA & Encoder Layer \\ \hline
@@ -1479,7 +1483,7 @@ Trisyllabic Words  & 99.5\% & 99.58\%          \\ \hline
 \label{SVM_Training}
 \end{table}
 
-En una segunda etapa, corrimos los \glspl{el} en modo de inferencia, pero esta vez utilizamos corpus diferentes generados utilizando las mismas voces y manipulados con varios tipos de variantes acústicas (ruido balnco, reverberación y variaciones de tono), generadas utilizando el software Audacity. También corrimos los \glspl{el} en modo de inferencia utilizando corpus generados con voces diferentes (el segundo conjunto de voces en sección \nameref{CorpGen}). Testeamos los desempeños de los clasificadores--ya entrenados--frente a las características devueltas por los algoritmos en respuesta a los corpus afectados por las variantes acústicas que introducimos en los nuevos corpus utilizando Audacity \cite{audacity}. Las variantes acústicas introducidas en los nuevos corpus incluyeron ruido blanco, reverberación y variaciones de tono. También probamos los desempeños de clasificación frente a las características devueltas por los algoritmos en respuesta a los nuevos corpus generados con un conjunto diferente de voces.
+En una segunda etapa, corrimos las \glspl{el} en modo de inferencia, pero esta vez utilizamos corpus diferentes generados utilizando las mismas voces y manipulados con varios tipos de variantes acústicas (ruido blanco, reverberación y variaciones de tono), inyectadas utilizando el software Audacity. También corrimos las \glspl{el} en modo de inferencia utilizando corpus generados con otras voces (del segundo conjunto de voces en la sección \nameref{CorpGen}). Testeamos los desempeños de los clasificadores--ya entrenados--frente a las características devueltas por los algoritmos en respuesta a los corpus afectados por las variantes acústicas que introdujimos en los nuevos corpus utilizando Audacity \cite{audacity}. Las variantes acústicas introducidas en los nuevos corpus incluyeron ruido blanco, reverberación y variaciones de tono. También probamos los desempeños de clasificación frente a las características devueltas por los algoritmos en respuesta a los nuevos corpus generados con un conjunto de voces diferentes.
 }{
 \subsection{Experiments}
 
@@ -1547,23 +1551,23 @@ Los desempeños de clasificación se muestran en la Fig. \ref{fig:PLOT}.
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.8\textwidth]{PLOT.png}
-    \caption{Exactitud promedio de clasificación en el \gls{mrstsa} y la \gls{el} frente a differentes variantes acústicas introducidas en las señales para palabras monosilábicas, bisilábicas y trisilábicas.
-	    Ruido Blanco 1 determina una \gls{snr} tasa de potencia \gls{rms} promedio de 19.8 dB mientras que Ruido Blanco 2 es de 13.8 dB.
+    \caption{Exactitud promedio de clasificación en el \gls{mrstsa} y la \gls{el} frente a diferentes variantes acústicas introducidas en las señales para palabras monosilábicas, bisilábicas y tri-silábicas.
+	    Ruido Blanco 1 determina una \glsfirst{snr} de tasa de potencia \gls{rms} promedio de 19.8 dB mientras que Ruido Blanco 2 es de 13.8 dB.
 	    Reverberación 30\% determina un valor de \gls{rt} de 0.61 segundos mientras que Reverberación 60\% determina un valor de \gls{rt} de 1.78 segundos.
-	    Tono Hacia Arriba determina una corrida de tono desde E hasta G, mientras que Tono Hacia Abajo determina una corrida de tono desde E hasta C. Voces Cambiadas corresponden a los corpus generados utilizando voces diferentes a las voces usadas para entrenar la \gls{el} y los clasificadores. Las barras de error muestran Intervalos de Confianza del 95\%. Los valores de \emph{p} corresponden a t-tests pareados de doble cola y NS intica Estadísticamente no Significativo.}
+	    Tono Hacia Arriba determina una corrida de tono desde E hasta G, mientras que Tono Hacia Abajo determina una corrida de tono desde E hasta C. Voces Cambiadas corresponden a los corpus generados utilizando voces diferentes a las voces usadas para entrenar la \gls{el} y los clasificadores. Las barras de error muestran Intervalos de Confianza del 95\%. Los valores de \emph{p} corresponden a t-tests pareados de doble cola y NS indica Estadísticamente no Significativo.}
     \label{fig:PLOT}
 \end{figure}
 
-En cuanto al ruido balnco, introducimos ruido blanco aditivo en las señales de los corpus con con una relación de señal a ruido \gls{rms} promedio de tasa de potencia de 19.9 dB (Ruido Blanco 1) y 13.8 dB (Ruido Blanco 2). En cuanto a reverberación, modificamos las señales de los corpus por medio de valores de \gls{rt} de 0.61 segundos (Reverberación 30\%) y 1.78 segundos (Reverberación 60\%). \gls{rt} hace referencia al tiempo que toma una señal para disminuir su amplitud en 60 dBs por debajo de su valor inicial. En cuanto a las variaciones de tono, modificamos los tonos de las señales en los corpus en +20\% (de E a G) (Tono Hacia Arriba) y en -20\% (de E a C) (Tono Hacia Abajo). También utilizamos corpus generados con voces diferentes a las utilizadas para entrenar los \glspl{el} y los \glspl{svm}.
+En cuanto al ruido blanco, introducimos ruido blanco aditivo en las señales de los corpus con con una relación de señal a ruido \gls{rms} promedio de tasa de potencia de 19.9 dB (Ruido Blanco 1) y 13.8 dB (Ruido Blanco 2). En cuanto a la reverberación, modificamos las señales de los corpus por medio de valores de \gls{rt} de 0.61 segundos (Reverberación 30\%) y 1.78 segundos (Reverberación 60\%). \gls{rt} hace referencia al tiempo que toma una señal en disminuir su amplitud en 60 dBs por debajo de su valor inicial. En cuanto a las variaciones de tono, modificamos los tonos de las señales en los corpus en +20\% (de E a G) (Tono Hacia Arriba) y en -20\% (de E a C) (Tono Hacia Abajo). También utilizamos corpus generados con voces diferentes a las utilizadas para entrenar las \glspl{el} y las \glspl{svm}.
 
-La Fig. \ref{fig:PLOT} muestra la exactitud en clasificación de 5 vías para corpus de palabras monosilábicas, bisilábicas y trisilábicas afectadas por ruido blanco, reverberación y variaciones de tono y voz. Como se puede apreciar en las figuras, la \gls{el} supera al \gls{mrstsa} en todos los casos. Tal comportamiento persiste aún en palabras multisilábicas.
+La Fig. \ref{fig:PLOT} muestra la exactitud en clasificación de 5 vías para corpus de palabras monosilábicas, bisilábicas y tri-silábicas afectadas por ruido blanco, reverberación y variaciones de tono y voz. Como se puede apreciar en las figuras, la \gls{el} supera al \gls{mrstsa} en todos los casos. Tal comportamiento persiste aún en palabras multisilábicas.
 
-Aplicamos t-tests pareados de doble cola para los 10 diferentes corpus generados con los 10 vocabularios diferentes--sección \nameref{CorpGen}. Como se puede ver en la Fig. \ref{fig:PLOT}--exepto para palabras monosilábicas con Ruido Blanco 1 $(p < 0.22)$--obtuvimos significación estadística para todas las condiciones considerando $(p<0.05)$. 
-Dado que se llevaron a cabo 7 t-tests para cada tarea de clasificación de palabras independiente (por ejemplo, palabras monosilábicas, bisilábicas y trisilábicas), aplicamos correcciónes de Holm-Bonferroni con un factor de corrección de 7 a los fines de reducir la probabilidad de errores de tipo I y de tipo II en el contexto de las diferentes condiciones experimentales \cite{10.1093/biomet/75.2.383}. Por medio de tales correcciones confirmamos la significación estadística para todos los casos mostrados en la Fig. \ref{fig:PLOT}.
+Aplicamos t-tests pareados de doble cola para los 10 corpus diferentes generados con los 10 vocabularios diferentes--sección \nameref{CorpGen}. Como se puede ver en la Fig. \ref{fig:PLOT}--exepto para palabras monosilábicas con Ruido Blanco 1 $(p < 0.22)$--obtuvimos significación estadística para todas las condiciones considerando $(p<0.05)$. 
+Dado que se llevaron a cabo 7 t-tests para cada tarea de clasificación de palabras independiente (por ejemplo, palabras monosilábicas, bisilábicas y tri-silábicas), aplicamos la corrección de Holm-Bonferroni con un factor de 7 a los fines de reducir la probabilidad de errores de tipo I y de tipo II en el contexto de las diferentes condiciones experimentales \cite{10.1093/biomet/75.2.383}. Por medio de tales correcciones confirmamos la significación estadística para todos los casos mostrados en la Fig. \ref{fig:PLOT}.
 
-La Fig. \ref{fig:PLOT1} muestra la exactitud de clasificación promedio para todas las variantes acusticas para palabras mono, bi y trisilábicas.
-En este caso, también realizamos t-tests pareados de doble cola, pero esta vez para 7 condiciones de variantes acústicas difernetes.
-Como se puede apreciar en la figura, todas la pruebas realizadas fueron estadísticamente significativas  y la capa del encoder muestra una clara y sostenida superioridad para palabras con un número diferente de sílabas.
+La Fig. \ref{fig:PLOT1} muestra la exactitud de clasificación promedio para todas las variantes acusticas para palabras mono, bi y tri-silábicas.
+En este caso, también realizamos t-tests pareados de doble cola, pero esta vez para las 7 condiciones de variantes acústicas diferentes.
+Como se puede apreciar en la figura, todas la pruebas realizadas fueron estadísticamente significativas  y la capa del Encoder muestra una clara superioridad que se sostiene para palabras diferente número de sílabas.
 
 \begin{figure}[h!]
     \centering
@@ -1631,42 +1635,42 @@ a sustained superiority across words with different number of syllables.
 \iftoggle{DEBUG}{
 \section{Discusión}
 
-Los resultados obtenidos en este trabajo sostienen las hipótesis computacionales propuestas en nuestro enfoque de modelaje para imitar invarianza y generalización fonética incidental.
-ALgunas de las hipótesis ya han sido explicadas en términos de sus propiedades  \cite{hawkins_2016}, pero más específicamente, en términos de sus capacidad de aprendizaje de secuencias \cite{cui_2016}.
-Des todas maneras, no existen precedentes de tales características neurofisiológicas probadas en tareas de clasificación como las que se llevan acabo en el presente trabajo, en las que reglas fonotácticas se adquieren sin la aplicación de procedimientos de obtimización como tal como la propagando arrores acia atrás por medio de descenso de gradiente. Adicionalmente, nuestro enfoque presenta diferencias sustanciales en términos de sus características de implementación algorítmica. En este trabajo, las sinápsis distantes proveen contribuciones individuales y nuestra organización anatómica micro-columnar adquiere su comportamiento fisiológico espontaneamente con el aprendizaje. También probamos tales características en una realización con cientos de columnas corticales cada una combinando varias micro-columnas con activaciones aferentes estocásticas cuyas futuras implementaciones estás destinadas a explorar simulaciones a gran escala en sistemas computacionales de desempeño lideres a nivel mundial.
+Los resultados obtenidos en este trabajo sostienen las hipótesis computacionales propuestas en nuestro enfoque de modelaje para imitar la invarianza y la generalización fonética incidental.
+Algunas de las hipótesis ya han sido explicadas en términos de sus propiedades  \cite{hawkins_2016}, pero más específicamente en términos de sus capacidad de aprendizaje de secuencias \cite{cui_2016}.
+De todas maneras, no existen precedentes de tales características neurofisiológicas probadas en tareas de clasificación como las que se llevan acabo en el presente trabajo, en las que las reglas fonotácticas se adquieren sin la aplicación de procedimientos de obtimización como retro-propagando errores por medio de \emph{descenso de gradiente}. Adicionalmente, nuestro enfoque presenta diferencias sustanciales en términos de sus características de implementación algorítmica. En este trabajo, las sinapsis distales proveen contribuciones individuales de valores continuos y nuestra organización anatómica micro-columnar adquiere su comportamiento fisiológico espontaneamente con el aprendizaje. También probamos tales características en una realización con cientos de columnas corticales cada una combinando varias micro-columnas con activaciones aferentes estocásticas cuyas implementaciones futuras estás destinadas a explorar simulaciones a gran escala en sistemas computacionales de alto desempeño.
 
-Algunos modelos computacionales han sido desarrollados previamente para entender como categorías fonéticas son adquisidas~\cite{rasanen_2012}. El objetivo en dichos trabajos ha sido principalmente explicar aspectos relevantes de la adquisición fonética, sin dar detalles en cuanto a cómo el cerebro podría proveer tales computaciones.
-Lee et al. (2009), empleó aprendizaje no supervisado para clasificación de audio con \glspl{cdbn}~\cite{Lee:2009:UFL:2984093.2984217}. 
-Los autores probaron el desempeño en clasificación de un modelo con dos capas en la exactitud de una tarea de clasificación de phonemas en 39 vías sobre el dataset \gls{timit} para varios números de oraciones de entrenamiento. 
-La primera capa nunca superó el algoritmo \gls{mfcc} que fue utilizado como entrada a la red.
+Algunos modelos computacionales han sido desarrollados previamente para entender como las categorías fonéticas son adquisidas~\cite{rasanen_2012}. El objetivo en dichos trabajos ha sido principalmente explicar aspectos relevantes de la adquisición fonética, sin dar detalles en cuanto a cómo el cerebro podría proveer tales computaciones.
+Lee et al. (2009), empleó aprendizaje no supervisado para clasificación de audio con \gls{cdbn_pl}~\cite{Lee:2009:UFL:2984093.2984217}. 
+Los autores probaron el desempeño en clasificación de un modelo con dos capas en la exactitud de una tarea de clasificación de fonemas en 39 vías sobre el conjunto de datos \gls{timit} para varios números de oraciones de entrenamiento. 
+La primera capa nunca superó el algoritmo de \gls{mfcc} que fue utilizado como entrada a la red.
 Es más, en tal trabajo no se reportó el desempeño de la segunda capa ya que esta no pudo superar a la primera.
-El máximo desempeño reportado para la primer capa fue 64.4\% contra un desempeño del 79.6\% para el \gls{mfcc}.
+El máximo desempeño reportado para la primer capa fue del 64.4\% contra un desempeño del 79.6\% para el \gls{mfcc}.
 Sólo fue posible reportar un desempeño del 80.3\% combinando ambos, el \gls{mfcc} y la primer capa en la \gls{cdbn}.
 
-En un trabajo más reciente, la capacidad de \glspl{dmn}--una modificación de arquitectura \glspl{dnn} alimentada en directo que utiliza la función de activación max-out--para manejar ruido ambiental fue investigada frente a diferentes clases fonéticas y para diferentes condiciones de ruido \cite{silos_2016}. En tales experimentos--con la excepción de fonemas fricativos para 15 dB \gls{snr} de Ruido Callejero--el desempeño nunca superó el 70\%. Es más, el desempeño se vio seriamente deteriorado en presencia de ruido blanco de 15 dB \gls{snr}, resultando en una exactitud de clasificación bien por debajo del 60\% in todos los casos.
+En un trabajo más reciente, la capacidad de \glspl{dmn}--una modificación de arquitectura de \glspl{dnn} alimentada en directo que utiliza la función de activación max-out--para manejar ruido ambiental fue investigada frente a diferentes clases fonéticas y para diferentes condiciones de ruido \cite{silos_2016}. En tales experimentos--con la excepción de fonemas fricativos para 15 dB \gls{snr} de Ruido Callejero--el desempeño nunca superó el 70\%. De hecho, el desempeño se vio seriamente deteriorado en presencia de ruido blanco de 15 dB \gls{snr}, resultando en una exactitud de clasificación bien por debajo del 60\% en todos los casos.
 
-En el trabajo aquí presentado, reportamos desempeños en clasificación de--por ejemplo--90.8\% para la \gls{el} contra 78.58\% para el \gls{mrstsa} para palabras trisilábicas frente a voces cambiadas (es decir, voces que nunca fueron "oidas" por la \gls{el} durante el entrenamiento; Fig. \ref{fig:PLOT}), también reportamos desempeños por encima del 70\% en la \gls{el} contra un desempeño por debajo del 35\% en el \gls{mrstsa} para palabras trisilábicas frente a ruido blanco de 19.8dB \gls{snr} y desempeños bien arribade 40\% para palabras mono y bisilábicas frente a ruido blanco de 13.8 dB \gls{snr} (Fig. \ref{fig:PLOT}). También reportamos que la \gls{el} superó al \gls{mrstsa} para todas las condiciones de prueba y que tal comportamiento se sostuvo para diferentes números de sílabas en las palabras utilizando pruebas de significación estadística (Fig. \ref{fig:PLOT1}).
+En el trabajo aquí presentado, reportamos desempeños en clasificación de--por ejemplo--90.8\% para la \gls{el} contra 78.58\% para el \gls{mrstsa} para palabras trisilábicas frente a voces cambiadas (es decir, voces que nunca fueron \emph{oidas} por la \gls{el} durante el entrenamiento; Fig. \ref{fig:PLOT}), también reportamos desempeños por encima del 70\% en la \gls{el} contra un desempeño por debajo del 35\% en el \gls{mrstsa} para palabras trisilábicas frente a ruido blanco de 19.8dB \gls{snr} y desempeños bien arribade 40\% para palabras mono y bisilábicas frente a ruido blanco de 13.8 dB \gls{snr} (Fig. \ref{fig:PLOT}). También reportamos que la \gls{el} superó al \gls{mrstsa} para todas las condiciones de prueba y que tal comportamiento se sostuvo para diferentes números de sílabas en las palabras utilizando pruebas de significación estadística (Fig. \ref{fig:PLOT1}).
 
-Aunque este es un buen escenario, debemos de ser cuidadosos ya que no podemos ignorar diferencias experimentales imporatantes con respecto a los resultados arrojados por los trabjos previos. Primero, nuestro material de entrenamiento es muy diferente  al utilizado en trabajos previos. Nosotros utilizamos corpus generados por sintetizadores de vos en lugar de corpus estandarizados como \gls{timit}.
+Aunque este es un buen escenario, debemos de ser cuidadosos ya que no podemos ignorar diferencias experimentales importantes con respecto a los resultados arrojados por los trabajos previos. Primero, nuestro material de entrenamiento es muy diferente  al utilizado en dichos trabajos. Nosotros utilizamos corpus generados por sintetizadores de vos en lugar de corpus estandarizados como \gls{timit}.
 Nuestro principal objetivo fue el de replicar adquisición fonética temprana en humanos, lo cual es logrado incidentalmente por infantes \cite{Saffran1996StatisticalLB}.
-Dada la buena calidad de las voces sintetizadas por \gls{festival}  \cite{festival2014} y su flexibilidad para componer diferentes tipos de corpus--aún con palabras que no existen en ningún lenguaje--consideramos apropiada su utilización como procedimiento experimental inicial para probar nustro enfoque en un contexto de reglas fonotácticas adquiridas incidentalmente.
-Segundo, en este trabajo abordamos tareas de clasificación de palabras multililábicas en contraste con los experimentos de clasificación de fonemas llevados a cabo por las investigaciones previas, ya que estamos principalmente motivados a probar las capacidades de la dinámica secuencial de nuestro modelo para adquirir las reglas fonotácticas detras de los vocabularios de entrenamiento.
-Finalmente, reportamos resultados de tareas de clasificación de 5 vías en contraste con tareas de clsificación de 39 vías en \cite{Lee:2009:UFL:2984093.2984217}.
+Dada la buena calidad de las voces sintetizadas por \gls{festival}  \cite{festival2014} y su flexibilidad para componer diferentes tipos de corpus--aún con palabras que no existen en ningún lenguaje--consideramos apropiada su utilización como procedimiento experimental inicial para probar nuestro enfoque en un contexto de reglas fonotácticas adquiridas incidentalmente.
+Segundo, en este trabajo abordamos tareas de clasificación de palabras multililábicas en contraste con los experimentos de clasificación de fonemas llevados a cabo por las investigaciones previas, ya que estamos principalmente motivados por probar las capacidades de la dinámica secuencial de nuestro modelo para adquirir las reglas fonotácticas que subyacen los vocabularios de entrenamiento.
+Finalmente, reportamos resultados de tareas de clasificación de 5 vías en contraste con tareas de clasificación de 39 vías en \cite{Lee:2009:UFL:2984093.2984217}.
 Por un lado, esta última diferencia podría haber actuado en favor de nuestro enfoque considerando que es más facil clasificar una categoría entre 5 que una entre 39.
 Por otro lado, es importante resaltar que los trabajos previos han estado provistos de más material de entrenamiento con más vocabularios, más hablantes, etc.
-En nuestro caso, presentamos condiciones de entrenamiento más duras, ya que nuestro modelo fuen entrenado con 500 palabras desde un vacabulario de solo 5 palabras pronunciadas por 10 voces.
-Más allá del tamaño pequeño de la muestra, el desempeño demostrado por nuestro modelo computacional exhibe niveles significativos de generalización fonética con la capacidad de adquirir reglas fonotácticas y de generalizar a contextos ambientales novedosos. El nuestro e un escenario mucho más biológicammente preciso que aquellos establecidos por otros enfoques in los cuqles sus modelos son entrenados utilizando millones de ejemplos. Nuestro modelo, por lo tanto, imita resultados experimentales que muestran como infantes de 8 meses de edad adquieren las reglas fonotácticas inmersas el el flujo auditivo de entrada con sólo 2 minutos de exposición (180 palabras en total, de un vacabulario de 4 palabras de tres sílabas) \cite{Saffran1996StatisticalLB}.
+En nuestro caso, presentamos condiciones de entrenamiento más duras, ya que nuestro modelo fue entrenado con 500 palabras desde un vocabulario de solo 5 palabras pronunciadas por 10 voces.
+Más allá del tamaño pequeño de la muestra, el desempeño demostrado por nuestro modelo computacional exhibe niveles significativos de generalización fonética con la capacidad de adquirir reglas fonotácticas y de generalizar a contextos ambientales novedosos. El nuestro es un escenario mucho más biológicammente preciso que aquellos establecidos por otros enfoques en los cuales sus modelos son entrenados utilizando millones de ejemplos. Nuestro modelo, por lo tanto, imita resultados experimentales que muestran como infantes de 8 meses de edad adquieren las reglas fonotácticas inmersas el el flujo auditivo de entrada con sólo 2 minutos de exposición (180 palabras en total, de un vocabulario de 4 palabras de tres sílabas) \cite{Saffran1996StatisticalLB}.
 
 Somos conscientes que se necesitarán mas pruebas--en diferentes escenarios--con corpus diferentes y estandardizados (como \gls{timit}) para analizar más profundamente las capacidades de nuestro enfoque.
-Sin embargo, nuestro objetivo principal en el presente trabajo fue el de probar la invarianza fonética secuencial exhibida por la \gls{el} bajo condiciones experimentales estrictamente controladas en las que se conocieron los niveles de ruio, reverberación y variaciones de tono con los que el estímulo se afectó de manera precisa. El material de entrenamiento para la \gls{el} solo involucró los corpus originales de 500 palabras, pero lo más importante es que la \gls{el} nunca fue espuesto--durante su entrenamiento--a los disturbios utilizados para probar el desempeño de su clsificación. El perfil experimental aplicado en este trabajo (Fig. \ref{fig:Experiment}) deja en claro que la \gls{el} es integramente no supervisado y que toda la supervisión se limita a los algoritmos de \gls{svm}. Es más, la \gls{el} no optimiza la actualización de sus pesos sinápticos utilizando descenso del gradiente propagando errores producidos por funciones de costo arbitrariamente insertadas. Este es un punto fundamental para demostrar la plausibilidad biológica de nuestra implementación ya que las restricciones fonotácticas en los  lenguajes humanos son adquiridas incidentalmente \cite{BRENT199693,saffran_1997} y por lo taanto, supervisión alguna se podría tolerar bajo tales circunstancias comportamentales.
+Sin embargo, nuestro objetivo principal en el presente trabajo fue el de probar la invarianza fonética secuencial exhibida por la \gls{el} bajo condiciones experimentales estrictamente controladas en las que se conocieron los niveles de ruido, reverberación y variaciones de tono con los que el estímulo se afectó de manera precisa. El material de entrenamiento para la \gls{el} solo involucró los corpus originales de 500 palabras, pero lo más importante es que la \gls{el} nunca fue expuesto--durante su entrenamiento--a los disturbios utilizados para probar el desempeño de su clasificación. El perfil experimental aplicado en este trabajo (Fig. \ref{fig:Experiment}) deja en claro que la \gls{el} es íntegramente no supervisado y que toda la supervisión se limita a los algoritmos de \gls{svm}. Más aún, la \gls{el} no optimiza la actualización de sus pesos sinápticos utilizando descenso del gradiente retro-propagando errores producidos por funciones de costo arbitrariamente insertadas. Este es un punto fundamental para demostrar la plausibilidad biológica de nuestra implementación ya que las restricciones fonotácticas en los  lenguajes humanos son adquiridas incidentalmente \cite{BRENT199693,saffran_1997} y por lo tanto, supervisión alguna podría ser tolerada bajo tales circunstancias comportamentales.
 
-En futuras investigaciones propiedades dinámicas emergentes podrían surgir de la incorpoaración de capas corticales subsecuentes--más allá del \glsfirst{el}--en los pasos de procesamiento del modelo. De esta forma podremos implementar dendritas apicales distantes hacia atrás las cuales traerán contexto por medio de una implementación jerárquica no supervisada.
-Aunque tal retroalimentación podría ser útil en el contexto de la adquisición fonética insidental, el modelado de la competencia fonética adulta podría posiblemente requerir la implementación de hipótesis más complejas para nuestro modelo. La incorporación de funciones de costo con más precisión biológica para poder retroalimentar cualquier tipo de error de activación requerirá hipótesis biológicamente precisas. ¿Deberían esos errores ser señales escalares (mecanismos de refuerzo) o deberían ser vectores (mecanismos supervisados)? ¿Deberían de venir desde la misma modalidad o deberían ser traidas desde una modalidade diferente? ¿Deberían variar a través de parches corticales diferentes o deberían variar durante el desarrollo temporal? \cite{10.3389/fncom.2016.00094}.
-Un mecanismo supervisado asistido por diferentes areas corticales de forma multimodal podría ser una hipótesis biológicamente precisa ya que se ha mostrado como gestos icónicos impulsan la comprensión del habla bajo condiciones auditivas adversas \cite{HOLLE2010875}.
-Es más, la conectividad funcional a través de diferentes areas corticales facilita la comprensión del habla cuando la inteligibilidad de la señal del habla es reducida~\cite{Obleser2283}. Sin embargo, más allá de hipótesis en relación a funciones de costo, también es importante determinar los algoritmos utilizados para retroalimentar errores de activación. Independientemente del hecho de que el método de descenso de gradiente es--a primera vista--demasiado complejo para ser implementado por el tejido cortical, varios estudios sostienen la idea de que la asignación de crédito--el objetivo último en backpropagation--podría ser un fenómeno presente en el cerebro \cite{Guerguiev2017TowardsDL}. De hecho, en \cite{Lillicrap_2016} los autores presentan un mecanismo que realiza backpropagation relajando la arquitectura de conectividad en reverso y asignando culpa multiplicando errores por pesos sinápticos aleatorios.
-Más allá de todo lo arriba mensionado, no existe prueba de que el cerebro implemente descenso de gradiente de la manera en que se implementa de redes \glspl{dnn} actuales, por lo tanto, nuevas estrategias--con más plausibilidad biológica--podrían surgir desde la comunidad científica en el futuro.
+En futuras investigaciones ciertas propiedades dinámicas emergentes podrían surgir de la incorpoaración de capas corticales subsecuentes--más allá de la \glsfirst{el}--en los pasos de procesamiento del modelo. De esta forma podremos implementar dendritas apicales distales hacia atrás las cuales traerán contexto por medio de una implementación jerárquica no supervisada.
+Aunque tal retroalimentación podría ser útil en el contexto de la adquisición fonética incidental, el modelado de la competencia fonética adulta podría requerir la implementación de hipótesis más complejas para nuestro modelo. La incorporación de funciones de costo con más precisión biológica para poder retroalimentar cualquier tipo de error de activación requerirá hipótesis biológicamente precisas. ¿Deberían esos errores ser señales escalares (mecanismos de refuerzo) o deberían ser vectores (mecanismos supervisados)? ¿Deberían de venir desde la misma modalidad o deberían ser traídas desde una modalidad diferente? ¿Deberían variar a través de parches corticales diferentes o deberían variar durante el desarrollo temporal? \cite{10.3389/fncom.2016.00094}.
+Un mecanismo supervisado asistido por diferentes áreas corticales de forma multimodal podría ser una hipótesis biológicamente precisa ya que se ha mostrado como gestos icónicos impulsan la comprensión del habla bajo condiciones auditivas adversas \cite{HOLLE2010875}.
+Incluso, la conectividad funcional a través de diferentes áreas corticales facilita la comprensión del habla cuando la inteligibilidad de la señal es reducida~\cite{Obleser2283}. Sin embargo, más allá de hipótesis en relación a funciones de costo, también es importante determinar los algoritmos utilizados para retroalimentar errores de activación. Independientemente del hecho de que el método de descenso de gradiente es--a primera vista--demasiado complejo para ser implementado por el tejido cortical, varios estudios sostienen la idea de que la asignación de crédito--el objetivo último en backpropagation--podría ser un fenómeno presente en el cerebro \cite{Guerguiev2017TowardsDL}. De hecho, en \cite{Lillicrap_2016} los autores presentan un mecanismo que realiza backpropagation relajando la arquitectura de conectividad en reverso y asignando culpa multiplicando errores por pesos sinapticos aleatorios.
+Más allá de todo lo arriba mensionado, no existe prueba de que el cerebro implemente descenso de gradiente de la manera en que se implementa en redes \glspl{dnn} actuales, por lo tanto, nuevas estrategias--con más plausibilidad biológica--podrían surgir desde la comunidad científica en el futuro.
 
-En versiones futuras del modelo se aumentará su plausibilidad biológica incrementando el número de células por \gls{cc} con simulaciones en sistemas \gls{hpc} de escalado masivo y utilizando un \gls{gsom} por \gls{cc} a los fines de incorporar reclutamiento de recursos neuronales en cada \gls{cc} dependiendo de la dispersión estadística del estímulo \cite{Meyer19113}. Por ejemplo, un arreglo tetradimensional de unidades neuronales se podría emplear para simular columnas corticales de aproximadamente 34.000 células. De esta manera, miles de columnas corticales se podrían organizar en arreglos multidimensionales. A través de la utilización de supercomputadoras de clase lider (por ejemplo, recursos ranqueados en la lista del Top 500 en computación, \url{top500.org}), y asumiendo una columna cortical por nodo computacional con 64 núcleos, correríamos aproximadamente 256.000 hilos. Tales simulaciones nos permitirían elevar la capacidades de adquisición así como generalización fonética considerablemente más allá de los niveles reportados en este trabajo.
+En versiones futuras del modelo se aumentará su plausibilidad biológica incrementando el número de células por \gls{cc} con simulaciones en sistemas \gls{hpc} de escalado masivo y utilizando un \gls{gsom} por \gls{cc} a los fines de incorporar reclutamiento de recursos neuronales en cada \gls{cc} dependiendo de la dispersión estadística del estímulo \cite{Meyer19113}. Por ejemplo, un arreglo tetradimensional de unidades neuronales se podría emplear para simular columnas corticales de aproximadamente 34.000 células. De esta manera, miles de columnas corticales se podrían organizar en arreglos multidimensionales. A través de la utilización de supercomputadoras de clase lider (por ejemplo, recursos posicionados en la lista del Top 500 en computación, \url{top500.org}), y asumiendo una columna cortical por nodo computacional con 64 núcleos, correríamos aproximadamente 256.000 hilos. Tales simulaciones nos permitirían elevar la capacidades de adquisición así como generalización fonética considerablemente más allá de los niveles reportados en este trabajo.
 }{
 \section{Discussion}
 
@@ -1734,11 +1738,11 @@ Future versions of the model will increase biological plausibility by increasing
 \iftoggle{DEBUG}{
 \section{Conclusiones}
 
-En este trabajo, analizamos representaciones invariantes fonotácticas secuenciales para altos niveles en la via auditiva en respuesta a estímulos de sonidos fonéticos complejos. Investigamos tales representaciones en relación a características potencialmente relevantes de la corteza auditiva. Incorporamos tales características en un modelo computacional--dentro de la etapa \gls{el} en un modelo llamado \gls{cstm}--y utilizamos clasificación por medio de \gls{svm} para probar su desempeño para varias tareas de clasificación de palabras. Comparamos el desempeño de nuestro modelo con el desempeño alcanzado por el algoritmo \gls{mrstsa}. La \gls{el} muestra capacidades de adquisición fonotáctica secuencial prominentes, superando al algoritmo \gls{mrstsa} en todas las pruebas realizadas. Debido a que el perfil experimental está diseñado para probar los niveles de generalización fonética en ambos algoritmos, exponiendo el material de entrenamiento a disturbios ambientales y a variaviones de tono, nuestro modelo muestra capacidad de generalización fonética significativa, mejorando el desempeño del \gls{mrstsa}--aún cuando este ha sido comprometido seriamente. 
+En este trabajo, analizamos representaciones invariantes fonotácticas secuenciales para altos niveles en la via auditiva en respuesta a estímulos de sonidos fonéticos complejos. Investigamos tales representaciones en relación a características potencialmente relevantes de la corteza auditiva. Incorporamos tales características en un modelo computacional--dentro de la etapa \gls{el} en un modelo llamado \gls{cstm}--y utilizamos clasificación por medio de \gls{svm} para probar su desempeño para varias tareas de clasificación de palabras. Comparamos el desempeño de nuestro modelo con el desempeño alcanzado por el algoritmo \gls{mrstsa}. La \gls{el} muestra capacidades de adquisición fonotáctica secuencial prominentes, superando al algoritmo \gls{mrstsa} en todas las pruebas realizadas. Debido a que el perfil experimental está diseñado para probar los niveles de generalización fonética en ambos algoritmos, exponiendo el material de entrenamiento a disturbios ambientales y a variaciones de tono, nuestro modelo muestra capacidad de generalización fonética significativa, mejorando el desempeño del \gls{mrstsa}--aún cuando este ha sido comprometido seriamente. 
 
-En futuras investigaciones, propiedades dinámica emergentes codrían surgir de la adición de capas corticales subsecuentes--más allá del \glsfirst{el}--en las etapas de procesamiento de este modelo. De esta forma podremos implementar dendritas apicales distantes hacia atrás, las cuales traerán contexto por medio de una implementación jerárquica no supervisada. También planeamos incorporar más plausibilidad biológica incrementando el número de células por \gls{cc} por medio de escalamiento masivo en simulaciones \gls{hpc} y utilizando un \gls{gsom} por \gls{cc} a los fines de incorporar especialización en el reclutamiento de recursos neuronales en cada \gls{cc} dependiendo de la dispersión estadística en sus estímulos \cite{Meyer19113}.
+En futuras investigaciones, propiedades dinámica emergentes podrían surgir de la adición de capas corticales subsecuentes--más allá del \glsfirst{el}--en las etapas de procesamiento de este modelo. De esta forma podremos implementar dendritas apicales distantes hacia atrás, las cuales traerán contexto por medio de una implementación jerárquica no supervisada. También planeamos incorporar más plausibilidad biológica incrementando el número de células por \gls{cc} por medio de escalamiento masivo en simulaciones de \gls{hpc} y utilizando un \gls{gsom} por \gls{cc} a los fines de incorporar especialización en el reclutamiento de recursos neuronales en cada \gls{cc} dependiendo de la dispersión estadística en sus estímulos \cite{Meyer19113}.
 
-Aunque investigación futura con más material experimental será requerida, los hallazgos presentado aquí serán influyentes delineando caminos nuevos y alternativos a las tecnologías actuales de percepción profinda en general y, más específicamente, en términos de características neurofisiológicas específicas relevantes para adquisición temprana de lenguaje por repglas fonotácticas en infantes.
+Aunque investigación adicional futura--con más material experimental--será requerida, los hallazgos presentados aquí podrían ser influyentes delineando caminos nuevos y alternativos a las tecnologías actuales de percepción profunda en general y, más específicamente, en términos de características neurofisiológicas específicas relevantes para adquisición temprana de lenguaje por reglas fonotácticas en infantes.
 }{
 \section{Conclusion}
 
