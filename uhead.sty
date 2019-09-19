@@ -7,14 +7,27 @@
 % Ted Shapin, Dec. 17, 1986
 
 \makeatletter
+\iftoggle{DEBUG}{
 \def\chapapp2{Cap\'itulo}
+}{
+\def\chapapp2{Chapter}
+}
 
+\iftoggle{DEBUG}{
+\def\appendix{\par
+ \setcounter{chapter}{0}
+ \setcounter{section}{0}
+ \def\chapapp2{Ap\'endice}
+ \def\@chapapp{Ap\'endice}
+ \def\thechapter{\Alph{chapter}}}
+}{
 \def\appendix{\par
  \setcounter{chapter}{0}
  \setcounter{section}{0}
  \def\chapapp2{Appendix}
  \def\@chapapp{Appendix}
  \def\thechapter{\Alph{chapter}}}
+}
 
 \def\ps@uheadings{\let\@mkboth\markboth
 % modifications

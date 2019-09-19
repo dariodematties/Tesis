@@ -18,4 +18,4 @@ all:
 # cleans anything that can be re-generated automatically, plus emacs backups
 clean: 
 				rm -f *synctex.gz *.aux *.log *.bbl *.blg *.brf *.cb *.ind *.idx *.ilg *lbl	\
-				*.dvi *.log *.lof *.lot *.inx *.toc *.out $(DVIFILES) $(PSFILES) $(TITLE).pdf *~
+				*.glo *.ist *.dvi *.log *.lof *.lot *.inx *.toc *.out $(DVIFILES) $(PSFILES) $(TITLE).pdf *~
