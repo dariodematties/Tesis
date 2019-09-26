@@ -1,0 +1,719 @@
+\iftoggle{DEBUG}{
+\chapter{Hacia una Alta Escalabilidad en Modelos Computacionales Biológicamente-Inspirados}
+}{
+\chapter{Towards High-End Scalability on Biologically-Inspired Computational Models}
+}
+
+\label{ch:parallel}
+
+\iftoggle{DEBUG}{
+\section{Introducción}
+}{
+\section{Introduction}
+
+Neuroscience has undoubtedly provided a more in-depth understanding of brain organization in the last decades. Yet, mainstream \gls{ai} research is yet to incorporate these advancements in their models. This fact could be attributed--at least in part--to the success accomplished by some \gls{ai} approaches--such as Deep Convolutional Neural Networks--which have achieved classification accuracy levels without precedent in the last years. Nevertheless, some researchers from the \gls{ai} community recognize that in order to overcome current \gls{ai} limitations and to create intelligent machines it will be necessary to understand and mimic the brain. In such sense, to better understand and explore more deeply how the brain may process information it is essential to use more complex and biophysically accurate neuron and network models than the ones that are prevalent today.
+
+The model of \gls{hh}~\cite{HODGKIN199025}--for example--simulates synaptic receptors and ion channels explicitly. Nevertheless, the more interesting the biological mechanisms, the more limited they are by the size and complexity of the networks. There are some alternative models such as spiking model~\cite{Izhikevich2004SpiketimingDO} and the integrate-and-fire model~\cite{1333071} which have been proposed as a simplification of the \gls{hh} model. Such models demand less computational power, but are not able to directly simulate the biological dynamics present in ion channels. On the other side we find \gls{dl} applications~\cite{lecun_deep_2015} that are partially inspired by the biology of the visual ventral pathway, which have dramatically improved the state-of-the-art in many \gls{ai} domains while ignoring--at the same time--important biological facts and giving priority to computational efficiency and classification accuracy. 
+
+Finding the appropriate level of detail in modeling the brain seems to be the holy grail to disentangle the mysteries of animal behavior. In~\cite{10.1371/journal.pone.0217966} we followed sequence learning mechanisms applied in~\cite{10.3389/fncir.2016.00023} gathering what are--under our point of view--only relevant neuro-anatomical and neuro-physiological facts in order to process information in cortical tissue. In such work we aimed to gather only biologically relevant aspects avoiding loading simulations with excessive computational burden and--at the same time--capturing the essence of the information processing properties in the cortex.
+
+\begin{figure*}[ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{EncoderColumnConnections1.png}
+    \caption{\glsfirst{cstm} general layout. Sparse and random connectivity profile for a \glsfirst{cc} (in red) in the \glsfirst{el}.}
+    \label{fig:EncoderColumnConnections1}
+\end{figure*}
+
+Regarding software for computational modeling implementation, in recent years, extremely fast evolving and powerful \gls{dl} frameworks have established a dynamic application landscape. The first generation of \gls{dl} frameworks--which was widely adoped in the scientific community--was built mainly in the academia, but the most recent generation is shifting towards the industry. It is an interesting shift  that gives an idea about the level of development, refinement and sophistication that such frameworks could offer when starting a brain model or an \gls{ai} implementation~\cite{Bahrampour2015ComparativeSO,7979887}. 
+
+In fact, there are three main reasons that can lead to the use of one of these frameworks, instead of writing the code from scratch. The first reason is that these frameworks enable to easily deal and work with big computational graphs without worrying about bookkeeping details. The second reason is that when working in \gls{dl} it is always necessary to compute gradients, i.e. to compute some loss and then to compute the gradients about weights with respect to the loss. It is better to make these operations as automated as possible, leaving the framework to handle all backpropagation details. Therefore, the common scenario is to write only the forward pass of the network and have the backward pass rather free without significant additions to the code. Finally, it is highly desirable to have the framework running efficiently on \glspl{gpu}, not worrying about low level hardware details such as cuBLAS and cuDNN packages in \gls{cuda}, moving data between the \gls{cpu} and the \gls{gpu}, etc. In this way, details are kept hidden by these tools that handle them appropriately.
+
+With these points in mind, certain aspects were taken into account in order to pursue the implementation of our computational model. Firstly, the biological plausibility of our model freed us from the need to compute gradients. Even though there are important works supporting the idea that \emph{credit assignament}--the ultimate goal of backpropagation--could be a phenomenon happening in cortical tissue~\cite{Guerguiev2017TowardsDL}, we pondered that it is unknown whether \emph{teaching signals} exist in the brain. Furthermore, there is not enough evidence to include such a complex mechanism in our model yet. Instead, we decided to be conservative in this respect. Secondly, \gls{dl} frameworks are mainly biased towards \gls{gpu} parallelization on \gls{cuda} cores. Albeit those frameworks have been extremely optimized to take the maximum advantage especially from NVIDIA cards, too many conditions have to be satisfied in order to obtain the best performance. Although such frameworks have made an outstanding progress in the last years (together with the development of their complementary hardware), there is an acute specialization of such technologies towards the precise development of certain \gls{dl} frameworks with little room for innovative and specifically biologically plausible implementations. In that sense, one of the biggest problems in such approaches arises when trying to implement neural populations with sparse or random connectivity structures. Those implementations--strongly demanded in biologically plausible modelling--compromise coalescence in \gls{gpu} cards and seriously impairs performance~\cite{doi:10.3109/0954898X.2012.739292}.
+
+Following this line, we implemented our model in \CC14 using \gls{oop} paradigm and parallelized it by means of a hybrid strategy using \gls{mpi} and \gls{omp}. The \gls{oop} paradigm gave us a powerful tool to compose modular structures allowing the management of complex computational graphs. \gls{mpi} enabled our model to run in distributed memory systems in a coherent and stable way. Finaly, \gls{omp} provided a fine grained distribution of  workload inside each computing node with the option to schedule the \gls{omp} threads dynamically. This allowed to manage different options of thread affinity and to vary the number of threads in each computing node, among other options.
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\iftoggle{DEBUG}{
+\section{Nuestro Aporte}
+}{
+\section{Our Contributions}
+
+In this paper we introduce a parallelization strategy with great independence on data coalescence and show how it scales efficiently on distributed memory systems while running our biologically-inspired computational model which simulates cortical dynamics with highly sparse and random connectivity profiles~\cite{10.1371/journal.pone.0217966}.
+
+The general layout of our computational setup is shown in Fig.~\ref{fig:EncoderColumnConnections}. First, to generate the corpora audio files, we employed Festival text to speech synthesizer~\cite{festival2014}, implementing a Python code parallelized by means of a \gls{mpi} package for Python called mpi4py. Second, in order to produce the inputs from auditory streams we followed main guidelines from Chi T. et al.~\cite{chi_2005} and implemented an algorithm called \gls{mrstsa}~\cite{10.1371/journal.pone.0217966}. Our implementation follows primarily the cortical section in~\cite{chi_2005} rather than its sub-cortical counterpart. We implemented the algorithm in C and parallelized it by means of \gls{mpi} and \gls{omp} hybrid paradigm using \gls{omp} parallel sections. Finally, in~\cite{10.1371/journal.pone.0217966} our group pursued the implementation of a completely unsupervised and biologically inspired computational model--the \glsfirst{el} in Fig.~\ref{fig:EncoderColumnConnections}--which incorporated key properties from the mammalian cortex and returned phonetic features that improved the classification accuracy levels of the \gls{svm} algorithm in word classification tasks. This happened in the presence of noise, reverberation and pitch variations not present during training. The parallelization of the code is approached by means of a hybrid \gls{mpi} and \gls{omp} paradigm and through the use of \gls{mpi} I/O parallel file system with Checkpoint and Restart capacity in the training stage where there is total flexibility in terms of the number of ranks with which the execution is restarted. While already implemented, the \gls{cl} algorithm in Fig.~\ref{fig:EncoderColumnConnections} has not yet been tested in scaling nor in phonetic classification performance. We decided to sketch it in Fig.~\ref{fig:EncoderColumnConnections} to show the fact that \emph{Distal Apical Connections} from superior layers can be received by the \gls{el} in the same fashion than \emph{Distal Lateral Connections} from neighboring \glspl{cc}. 
+
+We performed all computational experiments on Cooley~\cite{noauthor_cooley_nodate}, a visualization and analysis cluster at Argonne National Laboratory in which we executed the following tasks: i) scaling tests on audio Corpora Generation algorithm in python using up to 6 nodes running 64 \gls{mpi} processes on 64 \glspl{cpu}. Performance of strong and weak scaling tests. Measurement of scaling efficiency. ii) scaling tests on the \gls{mrstsa} algorithm using up to 64 nodes (one \gls{mpi} rank per node) and up to 5 \gls{omp} threads per node/rank. Performance of strong and weak scaling tests. Measurement of scaling efficiency. iii) scaling tests on the \gls{el}--the central algorithm in our model--using up to 64 nodes (one \gls{mpi} rank per node) and up to 8 \gls{omp} threads per node/rank. We performed strong and weak scaling tests and measure scaling efficiency. 
+
+The measurements of scaling efficiency returned by our tests allow us to foresee an efficient use of high-end parallel computing resources. In this paper we have shown a viable parallelization approach for highly flexible implementations of cortical brain models in which data coalescent is not a tight requirement. We have shown the versatility of this parallelization scheme on our brain-inspired computational model of cortical dynamics with a random and a highly sparse connection profile. In this way we can claim that this parallelization strategy is a promising procedure to approach new computational implementations, with more biological plausibility and with more irregular and unstructured data-set in high-end leadership computer resources.
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\iftoggle{DEBUG}{
+\section{Trabajo Relacionado}
+}{
+\section{Related Work}
+
+In spite of the fact that the human brain consumes around 25 Watts~\cite{edited_by_stephen_c._cunnane_human_2010}, it has on average 86 billions neurons~\cite{Azevedo2009EqualNO} and trillions of synapses since each neuron connects to other neurons using thousands of synaptic links. Each synapse can compute one operation on 0.005 seconds giving the human brain the capacity to compute about 20 billion operations per second~\cite{10.2307/j.ctt5vkr1h}. Even though such numbers seems overwhelming, this computing capacity is still enhanced by means of unique properties existent in brain tissue such as impressive fault and noise tolerance, exhaustive flexibility and high level of parallelization.
+
+The computational effort demanded by such specifications force us to consider only those physiological and anatomical features which are key for information processing in the brain avoiding loading computational simulations with unnecessary biological detail. In the same direction, parallelization strategies have to be as highly qualified as to face the challenges presented by the implementation of new--biologically accurate--computational approaches on~\gls{hpc} resources.
+
+}
+
+
+
+
+
+
+
+
+\iftoggle{DEBUG}{
+\subsection{Enfoques Computacionales de \gls{ann_pl} Inspiradas en el Cerebro}
+}{
+\subsection{Brain-Inspired \gls{ann} Computational Approaches}
+
+One of the main motivations of brain-inspired modeling is to develop new and more powerful algorithms whose inspiration in the brain allows us to process the information better in order to forge systems with more intelligent behaviors.
+
+The development of~\glspl{ann} is classified in three generations regarding their computational units~\cite{MAASS19971659,10.1007/978-3-642-03156-4_17}. In 1943, the first generation of~\glspl{ann} came from McCulloch and Pitts~\cite{McCulloch1990ALC}. The authors introduced neurons as computational units which received binary inputs through associated weights and produced threshold dependent binary outputs. Important derivations from such~\glspl{ann} are multilayer perceptrons, Hopfield nets and Boltzman Machines.
+
+In the second generation, neural units are computational elements whose outputs represent a continuous set of possible values obtained by means of activation functions applied to the weighted sum of the inputs. Common activation functions are sigmoid, polynomial or exponential functions. Examples of these networks are feedforward and recurrent sigmoidal neural nets. An extremely important feature of these networks is that they support learning algorithms based on gradient descend--such as the popular backpropagation. Finally, the real-valued outputs of networks of this generation are interpreted as firing rates in real neurons. 
+
+Important behavioral and physiological evidence though made \emph{firing rate interpretation} questionable, and gave rise to the third generation of \glspl{ann} which employ \emph{spiking neurons}--or \emph{integrate and fire neurons}--as computational units~\cite{HODGKIN199025,Izhikevich2004SpiketimingDO,1333071}. These models--unlike the second generation models--use timing of single action potential--or spikes--to encode information. Including the concept of time in their processing model,~\glspl{snn} could capture neural behavior more accurately than traditional neural networks. Unlike traditional \glspl{ann}, the main idea is that neurons in a~\gls{snn} do not fire at each cycle, and rather they fire only if a membrane potential reach its threshold.
+
+In spite of such compelling modeling approach, threshold circuits like the ones introduced by the first generation could be seen as abstract models for digital computation on networks of spiking neurons. In such sense, one bit in active state could be interpreted as a neuron firing within certain short time window and the same bit in inactive state could be interpreted as the same neuron non-firing within such time window~\cite{Valiant:1994:CM:199266}. This coding strategy provides a good model for a network of spiking neurons as long as firing times among pre and postsynaptic neurons are synchronized within a few msec time window. There is evidence supporting the fact that this strongly synchronized activity does really occur in biological tissue~\cite{Abeles1993SpatiotemporalFP,bair1994}.
+
+In such sense, there are new algorithmic developments~\cite{10.3389/fncir.2016.00023,10.1371/journal.pone.0217966} which instead of modeling precise timing activations prioritize the different roles of proximal and distal dendritic configurations incorporating important physiological and anatomical phenomena such as the consideration of dendritic branches as active processing elements, the microcolumnar organization in cortical tissue and the sparse patterns of activation in the neocortex--among others. Almost all \glspl{ann}, such as those used in deep learning~\cite{lecun_deep_2015} and spiking neural networks~\cite{MAASS19971659}, use artificial neurons without considering active dendrites and with an unrealistic low number of synapses. These facts suggest that those \glspl{ann} are missing fundamental functional properties present in brain tissue. 
+}
+
+
+
+
+
+
+
+
+
+
+\iftoggle{DEBUG}{
+\subsection{\glspl{cpu} y \glspl{gpu} para Simulaciones Grandes de \gls{ann_pl}}
+}{
+\subsection{\glspl{cpu} and \glspl{gpu} for \gls{ann} Large Simulations}
+
+Original design goals on \glspl{cpu} were mainly directed towards making single threads very fast by means of reducing latency through large cache systems and speculative execution including branch and memory dependence prediction in pipelined processors. In contrast, for \glspl{gpu} throughput matters more than single threads, hiding memory latency through massive parallelism and avoiding in this way the high frequency clock speeds present in \glspl{cpu}.
+
+Essentially, every operation on a \gls{gpu} is parallel. On a \gls{cpu} instead, the compiler has to actually be persuaded that an operation can be vectorized. In order to do that, the operation on the \gls{cpu} has to satisfy some criteria, for example, the data used for the operation has to be aligned in memory in a certain way. This is an important restriction. At the core level every operation on a \gls{gpu} is vectorized (without alternative). There is no need of persuading the compiler in order to make vector operations on a \gls{gpu}. Then each \gls{cpu} core executes scalar or vector operations while each \gls{gpu} core only executes vector instructions. Nevertheless, the easily accessed vectorization is not for free, since coalescence is a strong requirement to get high parallel efficiency measurements on \glspl{gpu}.
+
+In reference to \gls{gpu} market and its relationship to \gls{dl} applications, NVIDIA--unlike AMD--has been pushing a lot in the last years for \gls{dl}. A lot of engineering effort has been invested by NVIDIA to make their hardware better suited for \gls{dl}. As an example of that we can cite the last Volta tensor cores which can do an $A*B+C$ 4 by 4 matrix operation completely in parallel. As a result NVIDIA is pretty dominant in \gls{dl} currently.
+
+In the realm of biologically plausible computational models the \gls{cpu}/\gls{gpu} dichotomy is not as clearly defined as in \gls{dl}. In~\cite{doi:10.3109/0954898X.2012.739292} for example, the authors analyzed the advantages and drawbacks of the \gls{cpu} and \gls{gpu} parallelization in different shared memory parallel paradigms, such as \gls{omp}, \gls{cuda} and \gls{opencl} of mean-firing rate neurons. The authors inspected different speed limiters such as floating point precision, thread configuration, data organization and connectivity structure of the networks. Parallel \gls{cpu} implementations greatly benefited smaller networks, mostly because of cache effects. Large networks--on the other hand--benefited from the \gls{gpu} only if they demanded memory beyond the available on \gls{cpu} caches, otherwise an \gls{omp} implementation was highly preferred. The authors compared several structure representations on the different parallel frameworks showing that on \glspl{cpu}, these representations reached almost the same computation time, on \glspl{gpu} instead, the performance was significantly affected by violations of coalescence induced by heterogeneous data structures. Finally, the most serious problem appeared when the network had a sparse or random connectivity structure, i.e. neurons received connections randomly from other neurons, and not in an organized or ascending order. As the authors pointed out, this totally broke down the performance of \gls{gpu} implementations, while \gls{cpu} were slightly affected. This was maybe the strongest argument against \gls{gpu} implementations of mean-firing rate neural networks, since this sparse connectivity is a repeated pattern in biological networks as well as it is in the computational model presented in this paper.
+
+In~\cite{10.3389/fninf.2015.00019} the authors described a neural simulator that provides a high-level interface to generate rate-coded, spike-coded or hybrid neural networks. The definitions of the networks generate a \CC~library highly optimized for an underlying parallel framework such as \gls{omp} for shared memory systems or \gls{cuda} for \glspl{gpu}. For the \gls{omp} implementation, the number of threads was varied between 2 and 12. For the \gls{cuda} implementation, the default configuration of the simulator (32 threads for the neural variables updates, 192 threads for the weighted sums) was used. With \gls{omp}, the scaling for 1000 neurons was slightly sub-optimal, while the one for 4000 neurons saturated quickly. The situation was reversed with \gls{cuda}. In such case the network with 1000 neurons only achieved a limited speedup ratio, while the network with 4000 neurons achieved a high ratio.
+
+In~\cite{HUQQANI2013349} the authors developed and analyzed two parallel training strategies for backpropagation neural networks for face recognition. This work concentrated on two parallelization environments. On the one hand, \gls{omp} was used on a conventional multithreaded \gls{cpu} and on the other hand \gls{cuda} was used on a \gls{gpu}. The authors concluded that \gls{gpu} based parallelization should be preferred generally to \gls{cpu} based multithreaded program. However, for some simulations with small input and few hidden neurons \gls{cpu} based execution was better.
+
+In this scenario we find a recurrent pattern in which larger networks are benefited from \gls{cuda} while smaller ones are benefited from \gls{omp}. Nevertheless, it is very important to consider key factors such as irregularity, sparseness and randomness of data structures and network connectivity in the context of its relationship with data coalescence in parallel efficiency.
+}
+
+
+
+
+
+
+
+
+
+\iftoggle{DEBUG}{
+\subsection{Multi-Hilo y Multi-Proceso para Implementaciones Paralelas de \gls{ann_pl} en Sistemas de Memoria Compartida}
+}{
+\subsection{Multi-Thread and Multi-Process for Parallel \gls{ann} Implementations on Shared Memory Systems}
+
+From a theoretical point of view, on a single node of shared memory system there is no need to generate redundancy of the \emph{heap} or \emph{code} since they are available there to be freely accessed. On the other side \emph{registers}, \emph{counter} and \emph{stack} has to be replicated to establish a coherent context for each thread of execution. In this way, multi-thread should be preferred over multi-process parallelization in a shared memory system. In \gls{omp} implementations--for example--the threads compute in parallel different parts of the networks. Since memory is shared between threads, each one can freely access another thread data. Hence, both internal network computations and data traffic are carried out locally. Nevertheless, cache-coherence produces additional overheads which are more pronounced when running small networks and creating an excessive number of threads. The implementations that use \gls{mpi} enable data-exchanging between cores over shared memory in a single-node system. In each core, a single unit of execution--a \gls{mpi} rank--handles a subset of a neuronal network and communicates with other ranks using special \gls{mpi} methods. In some cases the heavier \gls{ipc} workload is compensated by the absence of false-shearing phenomenon among \gls{omp} threads. In a hybrid implementation, cores are frequently organized into groups--as \gls{mpi} ranks. Within each group, all cores communicate over shared memory, running \gls{omp} threads for task acceleration. In each group, one “master” thread could perform single-threaded \gls{mpi} calls for inter-group data-exchange, whereas packing and unpacking of the data could be performed by the \gls{omp} threads spawned by the entire group. This kind of implementation is a middle point solution gathering advantages and drawbacks from both strategies which is logically extensible to multi-node platforms.
+
+Olena Schuessler and Diego Loyola~\cite{Schuessler:2011:PTA:1997052.1997062} delineated different methods for the parallelization of artificial neural networks based on the backpropagation algorithm using multithreaded and multicore \glspl{cpu} in a shared memory system. In this work, the authors used \gls{posix} Threads (Pthreads) and \gls{omp} obtaining an increase in computation speed very close to the expected ideal (743\% when using 8 cores). Parallel training implemented in \gls{omp} returned slightly better results compared to Pthreads.
+
+In~\cite{Strey2003ACO}, a thread-based implementation on \gls{omp} and a process-based implementations on \gls{mpi} were compared on a fast shared-memory architecture. Different data and work partitioning strategies as well as the performance of all implementations were explored. It was shown that the \gls{mpi}-based implementations were slightly faster than the \gls{omp}-based ones. The authors pointed out that the lower speedup of \gls{omp}-based implementation seemed to be originated by false cache sharing of data arrays which can be modified by several thread number configurations in the different runs.
+
+In~\cite{6232827} the authors proposed to use \gls{mpi} and \gls{omp} in an \gls{eann} approach for \gls{tsf} based on \gls{eda} that evolved fully connected \glspl{eann}. The experiments used several time series and the number of cores ranged from 1 to 6. In this way authors showed that \gls{mpi} with 5 cores was the best parallelization strategy, the one which took the lowest execution time and made a reasonable use of the computational resources.
+
+In~\cite{6511739} the authors reported an \gls{omp}-based parallelization for the implementation of an asynchronous \gls{snn} simulator with the goal of showing basic core and hyperthreaded parallelization efficiency. The first results showed a parallel efficiency in the ranges of 0.94-0.98 with 4 physical cores and 0.86-0.89 with 8 hyperthreads for 1000 neurons. For 4000 neurons parallel efficiency was in the ranges of 0.86-0.87 with 4 physical cores and 0.56-0.57 with 8 hyperthreads.
+
+In~\cite{Chatzikonstantis:2016:FID:2903150.2903477} the authors presented an inferior-olivary simulation based on extended \glsfirst{hh} models on the Intel Xeon-Xeon Phi host-and-coprocessor single-node system. \gls{mpi} implementation underperformed for the Xeon Phi accelerator since it did not utilize the coprocessor multithreading resources, but performed well on the host. A hybrid implementation improved on \gls{mpi} limitations on the accelerator. \gls{omp}--on the other hand--was the best choice on both computing platforms for smaller networks, in spite of the fact that its performance did not scale linearly in all cases. The accelerator hybrid implementation and the host pure-\gls{mpi} programming method rivalled \gls{omp} for large networks due to their extensibility to multi-node systems.
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\iftoggle{DEBUG}{
+\subsection{Implementaciones Paralelas de \gls{ann_pl} Sistemas de Memoria Distribuída}
+}{
+\subsection{Parallel \gls{ann} Implementations on Distributed Memory Systems}
+
+In~\cite{6821186} the authors proposed a \gls{mpi}-based parallelization scheme for an asynchronous spiking neural network with more than 50.000 neurons and 300 millions synapses. The proposed solution was evaluated on production \gls{hpc} systems, employing up to 512 parallel processes. The first results showed situations with very good speedup (super-linear relative processes to a reference case with 36 \gls{mpi} processes). Nevertheless, the parallelization strategy chosen had the limitation that one of the parallel processes (the master) only dealt with coordination of worker processes and it was barely involved in computations. It was expected that with the increase of the number of worker processes, a hierarchical organization of the master processes could be needed.
+
+In~\cite{Pastorelli2015ScalingT1} the authors presented speed-up measurements and strong and weak scaling analysis of a \gls{lif} network running on a range from 1 to 1024 software processes and hardware cores. The authors demonstrated the ability to simulate a grid of 96x96 neural columns, containing a total of 11.4M \gls{lif} neurons with spike-frequency adaptation, and representing 20.4G equivalent synapses. The neural network was distributed over a set of \gls{mpi} processes and the simulations were run on a server platform composed of up to 64 dual-socket nodes. In reference to strong scaling the actual speed-up for a 24x24 grid was 67.3, loosing ~30\% compared to the ideal speed-up (96). The speed-up for the 48x48 grid was 54.2 while the hardware resources increase by a factor 96. For the 96x96 grid the speed-up is 10.8 (16 would be the ideal).
+
+In~\cite{hu2012biophysically} the author proposed a parallel implementation of biophysically realistic neural models using three parallelization strategies: \gls{mpi} parallelization, \gls{mpi} parallelization with dynamic load balancing schemes and Hybrid \gls{mpi}/\gls{omp} parallelization. The author ran the experiments in a distributed memory cluster and the results showed that when the number of processors was small, the \gls{mpi} implementation achieved good performance without load balancing problems. However, with the increasing size of the neural network and the number of processors, the imbalance ratio grew considerably. By exploiting dynamic load balancing techniques, the author successfully balanced the workload among processors. Nevertheless, more computation time was consumed as a result of the large number of message passings between \gls{mpi} processes. Finally, a hybrid \gls{mpi}/\gls{omp} parallelization simulation method showed better speedup than the \gls{mpi} implementation.
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\iftoggle{DEBUG}{
+\subsection{\gls{cstm}}
+}{
+\subsection{\gls{cstm}}
+
+The \gls{cstm} introduced in this paper constitutes a set of algorithms for the simulation of early phonetic acquisition in cortical dynamics~\cite{10.1371/journal.pone.0217966}. Fig.~\ref{fig:EncoderColumnConnections} shows a representation of the \gls{cstm} centered in a connection scheme for a cortical column in the \glsfirst{el}--the central algorithm in the~\gls{cstm}. Each cylinder in the \gls{el} and in the \glsfirst{cl} represents a \glsfirst{cc} in neural tissue. Each prism in the \glsfirst{mrstsa} represents a \gls{a1} activation, (implemented as a real valued variable in the~\gls{mrstsa}). The figure is a visualization of a \gls{cc} (in red) and its three receptive fields (in yellow). The receptive field of a \gls{cc}--on the \gls{el} or the \gls{cl}--is an array that defines a set of \glspl{cc} with which such column could be connected. The receptive field of a \gls{cc} on the \gls{mrstsa} determines an array of real valued variables with which such column could be connected. A subset of \glspl{cc} in a receptive field (in green) represents a sparse and random set of \glspl{cc} that are really connected with the \gls{cc} in red. A similar scenario could be described for the green prisms on the \gls{mrstsa}. The size, wrap-around property and percentage of established links (in green) inside a receptive field are tunable parameters for the \gls{el}. In this work, only lateral connections have been implemented. There is no apical dendritic branches in the \gls{el} since, in the current implementation, there are no upper \glspl{cl} from which to bring such connections. We have already implemented \glspl{cl} which can receive afferent inputs from the \gls{el} outputs, but we have not been able to test those algorithms properly yet. Regardless of it, we decided to include the \gls{cl} in Fig.~\ref{fig:EncoderColumnConnections} in order to show that lateral connections from neighboring \glspl{cc} have the same algorithmic nature than apical connections from the \glspl{cl} above the \gls{el}.
+
+In this way, Fig. \ref{fig:EncoderColumnConnections} shows the data flow of the information converging to a \gls{cc} inside the \gls{el}. First of all, our Corpora Generation algorithm is used to produce audio files containing the uttered corpora generated by means of speech synthesis tools. The algorithm generates cross synthesizer standard mark up language files with SABLE \cite{sable} format. In such files, \gls{festival} synthesizer is instructed to generate corpora from several number of words from different vocabularies uttered by different voices available from the synthesizer. The organization of the corpora has certain rules and restrictions in order to avoid biases in the training processes. The voices are sequentially chosen (pseudo-randomly) with the restriction that no voice could utter a second time until all the voices had uttered in their turns. Every voice utters certain number of words per turn--in pseudo-random order--and no word is repeated until all the words are used by such voice. Every word in the audio file is followed by a silence gap whose time is equivalent to the uttering time of certain monosyllabic word. We use the \texttt{text2wave} program provided by Festival in order to generate a \texttt{wav} file from the SABLE file.
+
+Second, sound waves from the audio files are processed by the \gls{mrstsa} algorithm. In this paper we show an implementation that prompts the parsimonious incorporation of neurophysiological properties--mainly centered in cortical features. In such sense, we followed the main guidelines in the implementation of the cortical section of Chi T. et al. \cite{chi_2005} model in order to implement the \gls{mrstsa} algorithm. We implemented the initial stage in the \gls{mrstsa} with the application of \gls{fft} to the audio vector with a different sample window for each resolution. We then extracted the power spectral density from each resolution. In this way we obtained a multiresolution spectral analysis of the audio signal, with high spectral and low temporal resolution for wider sample windows and vice versa. Such different time windows in the \gls{fft}, incorporated--at the same time--leakage low-pass filters with a time constant for each resolution accounting for decrease of phase-locking in the auditory nerve~\cite{chi_2005}. We then applied a \gls{mfb} with 128 elements to each spectrum in order to represent the spectral analysis performed by the cochlear filter bank. Then, we convolved each resolution obtained in the last step along its tonotopic axis with a complex multiresolution function whose real part was a symmetric Mexican hat function and its imaginary part was its antisymmetric Hilbert transform. With this strategy we incorporated additional neuro-physiological phenomena such as symmetry \cite{shamma_1993}, bandwidth \cite{schreiner_1990} and frequency modulation selectivity \cite{shamma_1993,heil_1992,mendelson_1985} found in \gls{a1} and incorporated in the original algorithms \cite{wang_1995}.
+
+Finally, the \gls{el} simulates a patch of cortical tissue using an n-dimensional array of complex structures called \glspl{csom} that simulate \glspl{cc} in the brain. The \gls{el} generates \glspl{sdr} \cite{ahmad_2016} from the inputs delivered by the \gls{mrstsa} stage and from the activation history in its own \glspl{cc}. \glspl{sdr} exhibit interesting mathematical properties which give them high noise rejection and fault tolerance \cite{DBLP:journals/corr/AhmadH15}. These are typical characteristics in cortical tissue where individual cells are far from 100\% reliable and the cells die and regenerate continuously. This algorithm incorporates neurophysiological phenomena such as columnar organization, afferent spontaneous micro-columnar formation, proximal and distal dendritic arborization, lateral intercolumn interaction by means of independent dendritic \gls{nmda} branch activations, \glspl{mfe} with contextual stimulus adaptation, proximal lateral intracolumn inhibition, \gls{ltp}, \gls{ltd}, \gls{stdp} and distal synaptic homeostatic regulations.
+
+Each cell unit in a \gls{cc} has two types of dendritic branches; proximal and distal. Proximal and distal dendritic branches lead to proximal and distal connections in a cell unit respectively~\cite{10.1371/journal.pone.0217966}. Neural units in the \gls{el} simulates pyramidal cells in cortical tissue in the brain (Fig \ref{fig:Pyramidal_Cell}). 
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.3\textwidth]{Pyramidal_Cell.png}
+    \caption{Connectivity profile of a pyramidal neural unit in the \gls{el}. Adapted from (Fabuio - Own work, CC BY 4.0, \protect\url{https://commons.wikimedia.org/w/index.php?curid=60707501)}}
+    \label{fig:Pyramidal_Cell}
+\end{figure}
+
+In Fig.~\ref{fig:EncoderColumnConnections} proximal connections are composed only by afferent connections from the \gls{mrstsa} algorithm while distal connections are composed by lateral and apical connections from neighboring columns and from columns in another cortical layer above respectively. Afferent information activates different clusters of units in a \gls{cc} establishing a first and raw approximation of the phonetic features abstracted from the input auditory stream. The \gls{el} fine-tunes such raw features by means of previous contextual activations produced in the same and/or in neighboring \glspl{cc}. Such contextual information is sent to each \gls{cc} by means of lateral distal dendritic branches which work as independent processing elements in a cell (Fig.~\ref{fig:Lateral_Distal_Connections}). Current activation in such dendritic elements will affect the way in which cells receives future afferent information.
+
+\begin{figure*}[tb] 
+    \centering
+    \subfloat[Lateral distal dendritic branches in a receptive field in the \gls{el}.\label{sub:Distal_Lateral_Dendrites}]{%
+       \includegraphics[width=0.482\linewidth]{Distal_Lateral_Dendrites.png}}
+    \hfill
+  \subfloat[Potential synapses in a distal dendritic branch.\label{sub:Distal_Lateral_Potential_Connections}]{%
+        \includegraphics[width=0.482\linewidth]{Distal_Lateral_Potential_Connections.png}}
+\\
+  \subfloat[Biological counterpart for the potential synapses in a distal dendritic branch.\label{sub:Biological_Dendrite}]{%
+       \includegraphics[width=0.482\linewidth]{Biological_Dendrite.png}}
+    \hfill
+    \subfloat[Biological synaptic grow in distal dendrites.\label{sub:Biological_Synapse}]{%
+        \includegraphics[width=0.482\linewidth]{Biological_Synapse.png}}
+	\caption{Distal dendritic connectivity in the \gls{el}.}
+  \label{fig:Lateral_Distal_Connections} 
+\end{figure*}
+
+Distal dendrite connections are shown in Fig.~\ref{fig:Lateral_Distal_Connections}. In Fig.~\ref{sub:Distal_Lateral_Dendrites} distal dendritic branches converge from neighboring \glspl{cc} inside the receptive field of a \gls{cc} in the \gls{el}. A distal dendritic branch between the red \gls{cc} and a green \gls{cc} implies that every neural unit in the red \gls{cc} is linked with a different subset of neural units in the green \gls{cc} by means of potential connections. In Fig.~\ref{sub:Distal_Lateral_Potential_Connections} such potential connections in a dendritic branch link a neural unit in the red \gls{cc} with a subset of neural units in a green \gls{cc}. The subset of potential connections constitutes a percentage of neural units inside the green \gls{cc}. Such percentage is a tunable parameter for the \gls{cc}. Fig.~\ref{sub:Biological_Dendrite} shows a biological distal dendritic branch between a pyramidal cell in a \gls{cc} and a sub-set of pyramidal cells in a neighboring \gls{cc} inside its receptive field in the \gls{el}. This is the biological counterpart of Fig.~\ref{sub:Distal_Lateral_Potential_Connections}. Fig.~\ref{sub:Biological_Synapse} shows how the physical proximity of a dendritic branch from the red cell to axonal branches from yellow cells constitutes potential connections which could prosper becoming in established synapses depending on the sequential activity among cells.
+
+From Fig.~\ref{fig:Lateral_Distal_Connections} it can be seen that the sparseness and randomness in the connectivity profile of our computational model manifest at different scales. Such phenomena have not only a macro imprint as can be seen in Fig.~\ref{sub:Distal_Lateral_Dendrites} but also a micro imprint as can be seen in Fig.~\ref{sub:Distal_Lateral_Potential_Connections}. Furthermore, the complexity of our implementation derives in different synaptic algorithms for proximal and distal dendrites. While proximal dendrites implements a \gls{som} connectivity from afferent information, distal dendrites results in a much more precise synaptic mechanism to get~\glspl{sdr} from a sequential predictive structure in which individual dendritic branches act as independent and active computing elements.
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\iftoggle{DEBUG}{
+\subsection{Implementación Paralela de la Generación de Corpus}
+}{
+\subsection{Corpora Generation Parallel Implementation}
+\label{CorpGenImp}
+
+We generated corpora with randomly chosen English mono and multisyllabic words~\cite{10.1371/journal.pone.0217966} using \gls{festival} Synthesis \cite{festival2014}. To that end, we generated cross synthesizer standard mark up language SABLE \cite{sable} files. In those files, we instructed \gls{festival} to generate audio \texttt{wav} files with the corpora uttered by different voices available from the synthesizer.
+
+All the code that generates the corpora is implemented in Python and parallelized by means of an \gls{mpi} package for Python called \texttt{mpi4py}. The algorithmic implementation of this parallelization is shown in Fig.~\ref{fig:CorporaGenerationParallelization}. In such figure, there is a distribution of corpora generation among Python \gls{mpi} ranks. The corpora generation tasks are distributed among ranks as a deck of cards is distributed among players.
+
+In Fig.~\ref{sub:Corpora_Generation_ALG} the parallelization scheme distributes vocabularies among \gls{mpi} processes. In this algorithm we run one \gls{mpi} process per \gls{cpu}. Each rank iterates from 0 to the number of vocabularies minus one with a step size of one. Yet, each rank processes a vocabulary only if the residue of the iteration divided by the number of ranks in the \gls{mpi} environment is equal to the rank identification. In this way, having 10 vocabularies and 3 \gls{mpi} ranks, the rank number 0 will process the vocabularies 0, 3, 6 and 9. All the corpora that corresponds to certain vocabulary are processed serially for the rank which takes charge of such vocabulary.
+
+Fig.~\ref{sub:CorporaGenerationParallelization} shows how each \gls{mpi} rank ends up with a set of vocabularies to generate the corpora corresponding to such vocabularies. If we had 10 corpora per vocabulary, rank 0 would end up generating 40 corpora serially while ranks 1 and 2 would generate 30 corpora each serially.
+
+\begin{figure*}[tb] 
+    \centering
+  \subfloat[Parallelization algorithm.\label{sub:Corpora_Generation_ALG}]{%
+       \includegraphics[width=0.482\linewidth]{Corpora_Generation_ALG.png}}
+    \hfill
+    \subfloat[Vocabularies distributed among \gls{mpi} ranks.\label{sub:CorporaGenerationParallelization}]{%
+        \includegraphics[width=0.482\linewidth]{CorporaGenerationParallelization.png}}
+	\caption{Parallelization scheme for the Corpora Generation Process.}
+  \label{fig:CorporaGenerationParallelization} 
+\end{figure*}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\iftoggle{DEBUG}{
+\subsection{Implementación Paralela del \glsfirst{mrstsa}}
+}{
+\subsection{\glsfirst{mrstsa} Parallel Implementation}
+
+We implemented the \gls{mrstsa} algorithm in C using the package FFTW~\cite{fftw} which is an implementation of the \gls{fft} available on Cooley. We used \gls{mpi}+\gls{omp} hybrid parallelization approach. We parallelized the \gls{mrstsa} algorithm developed in \cite{10.1371/journal.pone.0217966} by means of \gls{omp} sections using one \gls{omp} section per spectral resolution and running until 5 \gls{omp} threads per node.
+
+The complete parallelization scheme is depicted in Fig.~\ref{fig:MRSTSA_Parallelization}. Tasks are distributed among \gls{mpi} ranks as a deck of cards is distributed among players. Each \gls{mpi} rank ends up with a set of tasks which it processes one at a time--sequentially. Each task is a corpus processing which runs 5 \gls{omp} threads concurrently in order to process the spectral resolutions. In this algorithm we run one \gls{mpi} process per Cooley node.% The \gls{mrstsa} algorithm distributes the different spectral resolutions--processing a corpus--among \gls{omp} threads running until 5 \gls{omp} threads concurrently in order to generate such corpus processing.
+
+In terms of \gls{mpi} we processed a set of corpora per \gls{mpi} rank. Supposing that we have $n$ vocabularies and $m$ corpora per vocabulary, we end up with $n m$ corpora. Unlike the Corpora Generation parallelization algorithm exposed in Fig.~\ref{sub:Corpora_Generation_ALG} and explained in section~\ref{CorpGenImp}, in this case we unroll the nested loop that iterates through corpora and vocabularies. The \gls{mpi}+\gls{omp} parallelization algorithm is exposed in Fig.~\ref{sub:MRSTSA_ALG}. In this algorithm, each rank iterates from the rank identification to the number of tasks minus one ($n m - 1$) in incremental steps of size equal to the number of ranks in the \gls{mpi} environment. For each iteration (task) each rank obtains a \emph{corpus} and a \emph{vocabulary} identification, where the corpus equals the division between the task and the number of vocabularies while the vocabulary is the residue from the same division. For example, having three \gls{mpi} ranks and 10 vocabularies with 1 corpus per vocabulary we end up having 10 corpora. In such conditions the \gls{mpi} rank 0 would iterate through tasks 0, 3, 6 and 9. For task 0 corpus is 0 and vocabulary is 0, for task 3 corpus is 0, and vocabulary is 3, for task 6 corpus is 0 and vocabulary is 6, and for task 9 corpus is 0 and vocabulary is 9. On the other hand \gls{mpi} rank 1 iterates through tasks 1, 4 and 7. For task 1 corpus is 0 and vocabulary is 1, for task 4 corpus is 0 and vocabulary is 4 and for task 7 corpus is 0 and vocabulary is 7. As can be seen the strategy distributes all the corpora among \gls{mpi} processes and each \gls{mpi} process runs until 5 \gls{omp} threads concurrently in order to generate each audio corpus. The distribution of tasks among \gls{mpi} ranks in the context of 10 vocabularies and 1 corpus per vocabulary is shown in Table~\ref{MRSTSA_Tasks_Dist}. 
+
+\begin{table*}[tb]
+\centering
+\caption{Distribution of tasks among 3 \gls{mpi} ranks in the context of 10 vocabularies and 1 corpus per vocabulary.}
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|}
+\hline
+Vocabulary & 0                                                       & 1                                                       & 2                                                       & 3                                                       & 4                                                       & 5                                                       & 6                                                       & 7                                                       & 8                                                       & 9                                                       \\ \hline
+Corpus 0  & \begin{tabular}[c]{@{}l@{}}rank 0\\ task 0\end{tabular} & \begin{tabular}[c]{@{}l@{}}rank 1\\ task 1\end{tabular} & \begin{tabular}[c]{@{}l@{}}rank 2\\ task 2\end{tabular} & \begin{tabular}[c]{@{}l@{}}rank 0\\ task 3\end{tabular} & \begin{tabular}[c]{@{}l@{}}rank 1\\ task 4\end{tabular} & \begin{tabular}[c]{@{}l@{}}rank 2\\ task 5\end{tabular} & \begin{tabular}[c]{@{}l@{}}rank 0\\ task 6\end{tabular} & \begin{tabular}[c]{@{}l@{}}rank 1\\ task 7\end{tabular} & \begin{tabular}[c]{@{}l@{}}rank 2\\ task 8\end{tabular} & \begin{tabular}[c]{@{}l@{}}rank 0\\ task 9\end{tabular} \\ \hline
+\end{tabular}
+\label{MRSTSA_Tasks_Dist}
+\end{table*}
+
+In Fig.~\ref{sub:MRSTSA_Parallelization} ten tasks are distributed among \gls{mpi} ranks. Each rank processes one task at a time sequentially but each corpus spectral resolution is processed concurrently by means of \gls{omp} threads.
+
+Finally, Table~\ref{MRSTSA_Tasks_Dist1} depicts how the parallelization scheme shown in Fig.~\ref{fig:MRSTSA_Parallelization} would distribute tasks among 3 \gls{mpi} ranks in the hypothetic conditions of having 4 vocabularies and 5 corpora per vocabulary.
+
+\begin{table}[]
+\centering
+\caption{Distribution of tasks among 3 \gls{mpi} ranks in the context of 4 vocabularies and 5 corpora per vocabulary.}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+Vocabulary & 0                                                        & 1                                                        & 2                                                        & 3                                                        \\ \hline
+Corpus 0   & \begin{tabular}[c]{@{}l@{}}rank 0\\ task 0\end{tabular}  & \begin{tabular}[c]{@{}l@{}}rank 1\\ task 1\end{tabular}  & \begin{tabular}[c]{@{}l@{}}rank 2\\ task 2\end{tabular}  & \begin{tabular}[c]{@{}l@{}}rank 0\\ task 3\end{tabular}  \\ \hline
+Corpus 1   & \begin{tabular}[c]{@{}l@{}}rank 1\\ task 4\end{tabular}  & \begin{tabular}[c]{@{}l@{}}rank 2\\ task 5\end{tabular}  & \begin{tabular}[c]{@{}l@{}}rank 0\\ task 6\end{tabular}  & \begin{tabular}[c]{@{}l@{}}rank 1\\ task 7\end{tabular}  \\ \hline
+Corpus 2   & \begin{tabular}[c]{@{}l@{}}rank 2\\ task 8\end{tabular}  & \begin{tabular}[c]{@{}l@{}}rank 0\\ task 9\end{tabular}  & \begin{tabular}[c]{@{}l@{}}rank 1\\ task 10\end{tabular} & \begin{tabular}[c]{@{}l@{}}rank 2\\ task 11\end{tabular} \\ \hline
+Corpus 3   & \begin{tabular}[c]{@{}l@{}}rank 0\\ task 12\end{tabular} & \begin{tabular}[c]{@{}l@{}}rank 1\\ task 13\end{tabular} & \begin{tabular}[c]{@{}l@{}}rank 2\\ task 14\end{tabular} & \begin{tabular}[c]{@{}l@{}}rank 0\\ task 15\end{tabular} \\ \hline
+Corpus 4   & \begin{tabular}[c]{@{}l@{}}rank 1\\ task 16\end{tabular} & \begin{tabular}[c]{@{}l@{}}rank 2\\ task 17\end{tabular} & \begin{tabular}[c]{@{}l@{}}rank 0\\ task 18\end{tabular} & \begin{tabular}[c]{@{}l@{}}rank 1\\ task 19\end{tabular} \\ \hline
+\end{tabular}
+\label{MRSTSA_Tasks_Dist1}
+\end{table}
+
+\begin{figure*}[tb] 
+    \centering
+  \subfloat[Parallelization algorithm.\label{sub:MRSTSA_ALG}]{%
+       \includegraphics[width=0.482\linewidth]{MRSTSA_ALG.png}}
+    \hfill
+    \subfloat[Tasks distributed among \gls{mpi} ranks.\label{sub:MRSTSA_Parallelization}]{%
+        \includegraphics[width=0.482\linewidth]{MRSTSA_Parallelization.png}}
+	\caption{Parallelization scheme for the \gls{mrstsa}.}
+  \label{fig:MRSTSA_Parallelization} 
+\end{figure*}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\iftoggle{DEBUG}{
+\subsection{Implementación Paralela de la \glsfirst{el}}
+}{
+\subsection{\glsfirst{el} Parallel Implementation}
+\label{EL_Parallelization}
+
+The~\gls{el} simulates a patch of cortical tissue and incorporates columnar organization, spontaneous micro-columnar formation, partial \gls{nmda} depolarization and adaptation to contextual activations. We simulate pyramidal cells completely segregating proximal connections--from afferent dendritic branches--from distal connections--from lateral dendritic branches. This algorithm produces \glspl{sdr} that the brain uses to process information in all mammals, from mice to humans~\cite{barth_2012}.
+
+We parallelized the \gls{el} by means of a hybrid \gls{mpi}+\gls{omp} paradigm distributing \glspl{csom} among \gls{mpi} ranks as a deck of cards is distributed among different players. Each \gls{mpi} rank ends up with one or more \glspl{csom} and the \glspl{csom} in each rank are distributed among different \gls{omp} threads.% (Fig. \ref{fig:Encoder_Parallelization}).% and Alg.~\ref{ccs_distribution}).
+
+Fig.~\ref{fig:Encoder_Parallelization} shows the distribution of \gls{csom} objects in an \gls{el} with 3 by 8 (24) \glspl{cc} among three \gls{mpi} ranks with three \gls{omp} threads per rank. Certain ranks could take care of a different number of \glspl{csom} depending on the number of \gls{mpi} ranks as well as the number of \glspl{cc} in the \gls{el}. Each \gls{mpi} rank distributes its \glspl{csom} among different threads in the same fashion.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Encoder_Parallelization.png}
+    \caption{\glsfirst{el} \gls{mpi}+\gls{omp} parallelization.}
+    \label{fig:Encoder_Parallelization}
+\end{figure}
+
+Information among \gls{mpi} ranks must be transferred in each time step. Basically all the information needed by each process is the identity of the active neural units in each \gls{cc} of the \gls{el}. We gather all the information corresponding to the \glspl{csom} in each rank and then use \gls{mpi} Bcast function to transmit such information using a special communication protocol by means of which we specify the boundaries in the information corresponding to each \gls{csom}. By means of this strategy each \gls{mpi} rank has to call \gls{mpi} Bcast just once in order to transmit its data.
+
+Fig. \ref{fig:BCast} shows that \gls{ipc} is carried out at each time step since each \gls{mpi} rank requires the complete \gls{el} output at each time step. Each \gls{mpi} rank broadcasts the information corresponding to its \glspl{cc} to the other ranks in the \gls{mpi} environment. In the communication protocol to transmit information among \gls{mpi} ranks in the \gls{el} all the information is transmitted in two \gls{stl} vectors--\texttt{activeUnits} and \texttt{boundaries}. The vector \texttt{activeUnits} identifies the active neural units in the \glspl{cc} inside a \gls{mpi} rank and \texttt{boundaries} identifies the number of active units that belong to the different \glspl{cc}. The figure shows $n+1$ active units in the \glspl{cc} managed by certain \gls{mpi} rank and $m+1$ \glspl{cc} managed by such \gls{mpi} rank.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.9\textwidth]{BCast.png}
+    \caption{\gls{mpi} \gls{ipc} among different ranks.}
+    \label{fig:BCast}
+\end{figure}
+
+The \gls{el} uses \gls{mpi} I/O parallel file system to save its status in Matlab/Octave format. Each \gls{mpi} rank gathers all the data corresponding to its \glspl{csom} in the \gls{el} and puts such data--formatted in Matlab/Octave--in a \texttt{std::stringstream} class. Then such \gls{mpi} rank communicates the part of the file it will use to the other \gls{mpi} ranks in order to store the data without interfering with the other ranks in the \gls{mpi} environment. Finally, each \gls{mpi} rank saves all its data with a unique call to \gls{mpi} Write using the complete \texttt{std::stringstream}.
+
+Fig.~\ref{fig:MPI_IO} shows how each \gls{mpi} rank puts the formated data corresponding to its \glspl{csom} in a \gls{stl} \texttt{stringstream} class template. Rank 0 also takes care of the \gls{el} structure, connectivity and parameters. Once each rank has its \texttt{stringstream} with the formated data, it communicates its file view to the other ranks. Then each rank writes its stream of bytes in parallel without interfering with other ranks in the \gls{mpi} environment. An \gls{el} with a different number of ranks can load the same file without affecting the final results. Each rank in the new \gls{el} loads the complete file in a \gls{stl} \texttt{stringstream} class template and then takes the informations that concern it from such structure.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.9\textwidth]{MPI_IO.png}
+    \caption{\gls{el} information distribution in a file to save its status.}
+    \label{fig:MPI_IO}
+\end{figure}
+
+In this work, each \gls{mpi} rank runs in a different node and keeps all the data that corresponds to the \gls{el} object, such as \gls{el} dimensionality, receptive fields for each \gls{cc}, percentages of real connections in each receptive field for each \gls{cc}, population dimensionalities for the \glspl{cc} as well as the complete connectivity of each \gls{cc} and all the general parameters of the model such as learning rates, learning neighborhoods, etc~\cite{10.1371/journal.pone.0217966}. Although this general \gls{el} data is replicated in each \gls{mpi} rank, this is not significant compared to the data corresponding to the \glspl{csom} objects. Each \gls{mpi} rank keeps only the data for those \glspl{csom} which are under its charge. Fig. \ref{fig:EL_ALG} depicts the general layout that follows the \gls{el} algorithm.
+
+\begin{figure*}[ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{EL_ALG.png}
+    \caption{General layout of the \gls{el} algorithm.} 
+    \label{fig:EL_ALG}
+\end{figure*}
+
+In such figure each \gls{mpi} rank keeps a private copy of the entire \gls{el} structure but only keeps the data of the \glspl{csom} which corresponds to it. Each \gls{mpi} rank loads a private copy of the inputs that come from the \gls{mrstsa} algorithm. Then each \gls{mpi} rank processes the input information by means of only the \glspl{cc} which are under its charge, first entering to an \gls{omp} region in order to distribute \glspl{cc} in the rank among different \gls{omp} threads and then leaving the \gls{omp} region and communicating the outputs of all \glspl{cc} in the \gls{el} using \gls{mpi} \gls{ipc} tools. Finally each \gls{mpi} rank saves the status of its \glspl{cc} using \gls{mpi} parallel I/O sentences. \gls{mpi} rank 0 also saves the general structure of the \gls{el}.
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\iftoggle{DEBUG}{
+\section{Resultados}
+}{
+\section{Results}
+
+In this paper we tested the scalability efficiency of the parallelization strategies used in the~\gls{cstm} by means of \emph{strong} and \emph{weak} scaling tests. We conducted our tests on Cooley, a cluster to analyze and visualize data produced on high-end supercomputers at Argonne National Laboratory. Cooley has 126 compute nodes; each node has 12 CPU cores and one NVIDIA Tesla K80 dual-GPU card. Aggregate GPU peak performance is over 293 teraflops double precision (using base GPU clocks), and the entire system has a total of 47 terabytes of system RAM and 3 terabytes of GPU RAM. Access to Cooley is provided by two login nodes, which provide compilation and job submission capabilities. Job scheduling is provided by the Cobalt job scheduler.
+
+The Cooley node configuration has an Intel Haswell architecture with two 2.4 GHz Intel Haswell E5-2620 v3 processors (6 cores per CPU, 12 cores total), one NVIDIA Tesla K80 (with two GPUs), 384GB RAM, 24 GB GPU RAM (12 GB per GPU), FDR Infiniband interconnect and 345GB local scratch space.
+
+\gls{alcf} uses SoftEnv for managing the environment. A file called .soft.cooley in the home directory is created for that purpose. GNU compiler version 7.1.0 is installed and available adding \texttt{+gcc-7.1.0} to .soft.cooley. Multiple \gls{mpi} versions are available, controlled by the .soft.cooley file. The allocation provides MPICH2 for use with the GNU compiler. We added the \texttt{+mvapich2-2.2} line to the .soft.cooley file to that end.
+
+We also added \texttt{+matlab} to use matlab version 8.6.0.267246 (R2015b), \texttt{+anaconda3-4.0.0} to use Anaconda 4.0.0 for Python 3 - with updates of NumPy, SciPy, etc and \texttt{+ddt} to use Allinea DDT Debugger version 18.2.1. We used matlab to pre-process the outputs from the model in order to prepare the data for \gls{svm} classification using \gls{libsvm} on matlab. Finally we used Anaconda package for the Corpora Generation algorithm with Numpy and \texttt{mpi4py} packages.
+
+In order to compile our code we used GCC 7.1.0 with the following flags: \texttt{-O3 -mcmodel=large -fopenmp -Wall -pedantic -std=c++14}.
+
+The use of \texttt{qsub} command allows the user to submit jobs; the submission should be a script which will be executed on the rank0 node allocated for the user by the scheduler. This script will have access to an environment variable named \texttt{COBALT\_NODEFILE}, which is the name of a file suitable for use with \texttt{mpiexec -f} option. The number of \gls{mpi} processes run by a job is entirely dependent on the arguments supplied to \texttt{mpiexec} in the script.
+
+At a minimum, \texttt{qsub} must be supplied with the number of nodes desired (\texttt{-n}), the walltime of the job (\texttt{-t}), and the path to the job script.  If the user is associated with more than one project, a project name need to be supplied using the \texttt{-A} option. As an example of job submission we used \texttt{qsub -n 9 -t 240 -A neurophon ./test\_ERRLayer9.sh} where we asked for 9 nodes during 4 hours to make inference with our model.
+
+We ran the model using mpiexec version 3.1.4 with the following options: \texttt{mpiexec -n} the number of \gls{mpi} ranks to be used \texttt{-f \$COBALT\_NODEFILE -env MV2\_ENABLE\_AFFINITY=0 -ppn 1 ./Test} the program arguments. With such options we ran one \gls{mpi} rank per node and spread a bunch of \gls{omp} threads in order to use the \glspl{cpu} in each node. We defined the number of threads inside the code in the pragma statements: \texttt{\#pragma omp parallel for default(none) shared(...) num\_threads(9)}.
+}
+
+
+
+
+
+
+
+
+
+\iftoggle{DEBUG}{
+\subsection{Pruebas de Escalado para Generación de Corpus}
+\label{CG_Scaling_test}
+}{
+\subsection{Corpora Generation Scaling Tests}
+\label{CG_Scaling_test}
+
+In terms of Strong and Weak scaling (Fig.~\ref{fig:Corpora_Scaling}), we ran the algorithm in order to create 64 corpora from 64 vocabularies--one corpus per vocabulary. The code generated 64 cross synthesizer SABLE text files and then called to Festival using \texttt{text2wav} script in order to generate the audio \texttt{wav} files which uttered the text in the SABLE files.
+
+\begin{figure*}[tb] 
+    \centering
+  \subfloat[Run time vs. the number of \glspl{cpu}.\label{sub:Corpora_Strong_Scaling}]{%
+       \includegraphics[width=0.49\linewidth]{Corpora_Strong_Scaling.png}}
+    \hfill
+  \subfloat[Run time vs. the number of \glspl{cpu}.\label{sub:Corpora_Weak_Scaling}]{%
+	\includegraphics[width=0.49\linewidth]{Corpora_Weak_Scaling.png}}
+\\
+  \subfloat[Efficiency vs. the number of \glspl{cpu}.\label{sub:Corpora_Strong_Scaling_Efficiency}]{%
+       \includegraphics[width=0.49\linewidth]{Corpora_Strong_Scaling_Efficiency.png}}
+    \hfill
+  \subfloat[Efficiency vs. the number of \glspl{cpu}.\label{sub:Corpora_Weak_Scaling_Efficiency}]{%
+	\includegraphics[width=0.49\linewidth]{Corpora_Weak_Scaling_Efficiency.png}}
+	\caption{Strong and Weak scaling tests on Corpora Generation algorithm.}
+  \label{fig:Corpora_Scaling} 
+\end{figure*}
+
+The straight line in Fig.~\ref{sub:Corpora_Strong_Scaling} shows a good strong scaling capacity of our code. For strong scaling performance tests the problem size stays fixed, that is, the run has to generate 64 corpora. On the other hand the number of processing elements is increased from 1 to 64 \glspl{cpu} in powers of two. In this case we ran one \gls{mpi} rank per \gls{cpu}. Since one Cooley Node has 12 \glspl{cpu} we just needed 1 node in order to run 1, 2, 4 or 8 processes, 2 nodes (24 \glspl{cpu}) in order to run 16 processes, 3 nodes (36 \glspl{cpu}) in order to run 32 processes and finally 6 nodes (72 \glspl{cpu}) in order to run 64 processes.
+
+Something to take into account is that to make this code scale in the way shown by the chart, all the corpora must have the same size, otherwise--and since the code distributes corpora on different processes in static way--some processes which took over smaller corpora would have finished before other processes that took over larger corpora and would have wasted processing power waiting idly for other processes to finish. It is therefore necessary to make the distribution of vocabularies on processes, dynamic--such as \gls{omp} dynamic schedule. Nevertheless, trying to balance the load among the different \gls{mpi} ranks could produce a severe degradation of Efficiency originated in the increased \gls{ipc} load that such techniques require~\cite{hu2012biophysically}.
+
+Let $t_1$ be the amount of time to complete a work unit with $1$ processing element, and $t_N$ the amount of time to complete the same unit of work with $N$ processing elements, the Strong Scaling Efficiency is: $t_1 / (N * t_N) * 100$. In Fig.~\ref{sub:Corpora_Strong_Scaling_Efficiency} we can see that the minimum Strong Scaling Efficiency is well above the 75\%.
+
+In reference to Weak scaling (Fig.~\ref{sub:Corpora_Weak_Scaling}) the problem workload assigned to each processing element stays constant and additional elements are used to solve a larger total problem (i.e. as we add more \glspl{cpu} we add more corpora in a way that one corpus is generated per \gls{cpu}). We generated one corpus per process using one corpus for one \gls{mpi} rank, two corpora for two \gls{mpi} ranks and so on. Let $t_1$ be the amount of time to complete a work unit with $1$ processing element, and $t_N$ the amount of time to complete $N$ times the same unit of work with $N$ processing elements, the Weak Scaling Efficiency is: $t_1 / t_N * 100$. The almost horizontal line shown in Fig.~\ref{sub:Corpora_Weak_Scaling} depicts that this code scales well in terms of weak scaling too and--as Fig.~\ref{sub:Corpora_Weak_Scaling_Efficiency} shows--the Weak Scaling Efficiency of the code was never below the 70\%.
+}
+
+
+
+
+
+
+
+
+
+
+\iftoggle{DEBUG}{
+\subsection{Pruebas de Escalado para \glsfirst{mrstsa}}
+\label{MRSTSA_Scaling_Tests}
+}{
+\subsection{\glsfirst{mrstsa} Scaling Tests}
+\label{MRSTSA_Scaling_Tests}
+
+In terms of Strong scaling, we ran the algorithm in order to process 64 corpora--one corpus per vocabulary. Straight lines in Fig.~\ref{sub:MRSTSA_Strong_Scaling} show a really good scaling of this code. The problem size stayed fixed in 64 corpora processed by means of \gls{mrstsa} algorithm, while the number of processing elements was increased.
+
+\begin{figure*}[tb] 
+    \centering
+  \subfloat[Run time vs. the number of nodes for different number of threads per node.\label{sub:MRSTSA_Strong_Scaling}]{%
+       \includegraphics[width=0.49\linewidth]{MRSTSA_Strong_Scaling.png}}
+    \hfill
+  \subfloat[Run time vs. the number of nodes for 5 threads per node.\label{sub:MRSTSA_Weak_Scaling}]{%
+        \includegraphics[width=0.49\linewidth]{MRSTSA_Weak_Scaling.png}}
+\\
+  \subfloat[Efficiency vs. the number of nodes for different number of threads per node.\label{sub:MRSTSA_Strong_Scaling_Efficiency}]{%
+       \includegraphics[width=0.49\linewidth]{MRSTSA_Strong_Scaling_Efficiency.png}}
+    \hfill
+  \subfloat[Efficiency vs. the number of nodes for 5 threads per node.\label{sub:MRSTSA_Weak_Scaling_Efficiency}]{%
+        \includegraphics[width=0.49\linewidth]{MRSTSA_Weak_Scaling_Efficiency.png}}
+	\caption{Strong and Weak scaling tests of the \gls{mrstsa} algorithm on Cooley nodes. Each \gls{mpi} rank runs in a different node with 1, 2, 4 and 5 \gls{omp} threads running in each rank.}
+  \label{fig:MRSTSA_Scaling} 
+\end{figure*}
+
+Each process ran in a different node. We used a number of \gls{omp} threads which ranged from 1 to 5. Five is the number of spectral components in the \gls{mrstsa} algorithm~\cite{10.1371/journal.pone.0217966}. As in section \ref{CG_Scaling_test}, one aspect to take into account is that in order to make this code scale in the way shown by the chart, all the corpora must have the same size, otherwise--and since the code distributes corpora on different processes in a static way--some processes which took over smaller corpora would have finished before than other processes that took over larger corpora, thus producing considerable load imbalance in the \gls{mpi} environment. Therefore, it is necessary to make the distribution of corpora on processes, dynamic--such as \gls{omp} dynamic schedule. Nevertheless, as was pointed out in section \ref{CG_Scaling_test}, trying to balance the load among the different \gls{mpi} ranks could produce a severe degradation of Efficiency originated in the increased load of \gls{ipc} that such techniques require~\cite{hu2012biophysically}.
+
+In reference to Weak scaling, we processed one corpus per \gls{mpi} rank by means of processing one corpus for one \gls{mpi} rank, two corpora for two \gls{mpi} ranks, four corpora for four \gls{mpi} ranks and so on. In Fig.~\ref{sub:MRSTSA_Weak_Scaling} the problem workload assigned to each processing element stayed constant and additional elements were used to solve a larger total problem. We added more corpora per run as the number of nodes increases in such a way that each node has to process only one corpus. The horizontal line in Fig.~\ref{sub:MRSTSA_Weak_Scaling} shows that this code scales very well in terms of weak scaling too.
+
+Finally, Figs.~\ref{sub:MRSTSA_Strong_Scaling_Efficiency} and~\ref{sub:MRSTSA_Weak_Scaling_Efficiency} sustain the behavior of the charts with Strong Scaling Efficiencies well above 96\% and Weak Scaling Efficiencies above 93\%.
+}
+
+
+
+
+\iftoggle{DEBUG}{
+\subsection{Pruebas de Escalado de la \glsfirst{el}}
+}{
+\subsection{\glsfirst{el} Scaling Tests}
+
+Fig. \ref{fig:EL_Strong_Scaling} shows the strong scaling capacity of our code in terms of run time vs. number of processing elements used for the task. In these tests we constrained the code to run one \gls{mpi} rank per node. Each \gls{mpi} rank spread a specific number of threads through the different \glspl{cpu} in its corresponding node as shown in Fig. \ref{fig:Encoder_Parallelization}. As before, the problem size stayed fixed and the number of processing elements was increased. Straight lines in Figs.~\ref{sub:EL_Strong_Scaling_Left} and~\ref{sub:EL_Strong_Scaling1_Left} show--at first--a good scaling capacity. Such fact is supported by Figs.~\ref{sub:EL_Strong_Scaling_Right} and~\ref{sub:EL_Strong_Scaling1_Right} by means of the strong scaling efficiency: $t_1 / (N * t_N) * 100$.
+
+\begin{figure*}[tb] 
+    \centering
+  \subfloat[Run time vs. the number of nodes for different number of threads per node.\label{sub:EL_Strong_Scaling_Left}]{%
+       \includegraphics[width=0.49\linewidth]{EL_Strong_Scaling_Left.png}}
+    \hfill
+  \subfloat[Efficiency vs. the number of nodes for different numbers of threads per node.\label{sub:EL_Strong_Scaling_Right}]{%
+        \includegraphics[width=0.49\linewidth]{EL_Strong_Scaling_Right.png}}
+\\
+  \subfloat[Run time vs. the number of nodes for different number of threads per node.\label{sub:EL_Strong_Scaling1_Left}]{%
+       \includegraphics[width=0.49\linewidth]{EL_Strong_Scaling1_Left.png}}
+    \hfill
+    \subfloat[Efficiency vs. the number of nodes for different numbers of threads per node. Race line (reference) is taken at 8 computing nodes.\label{sub:EL_Strong_Scaling1_Right}]{%
+        \includegraphics[width=0.49\linewidth]{EL_Strong_Scaling1_Right.png}}
+	\caption{Strong scaling tests of the \gls{el} algorithm. Each \gls{mpi} rank runs in a different node with 1, 2, 4 and 8 \gls{omp} threads running in each rank.}
+  \label{fig:EL_Strong_Scaling} 
+\end{figure*}
+
+For the tests shown in Figs.~\ref{sub:EL_Strong_Scaling_Left} and~\ref{sub:EL_Strong_Scaling_Right} we generated an \gls{el} whose specifications are shown in Table~\ref{Medium_Model}, while for the tests shown in Figs.~\ref{sub:EL_Strong_Scaling1_Left} and~\ref{sub:EL_Strong_Scaling1_Right} we generated an \gls{el} whose specifications are shown in Table~\ref{Big_Model}.
+
+\begin{table*}[tb]
+\centering
+\caption{\gls{el} of normal size to test strong scaling on 1, 2, 4 and 8 computing nodes. The different \glspl{rf}, percentages and dimensionalities are explained in~\cite{10.1371/journal.pone.0217966}.}
+\begin{tabular}{|c|l|l|l|l|l|l|l|}
+\hline
+Model  & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Number\\ of CCs\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Afferent\\  RF\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Afferent\\ \%\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Lateral\\ RF\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Lateral\\ \%\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Population\\ Dimensionality\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Potential\\ \%\end{tabular}} \\ \hline
+Normal & 23 x 23                                                                      & 5 x 127                                                                      & 5\%                                                                        & 9 x 9                                                                     & 90\%                                                                      & 15 x 15                                                                                  & 3\%                                                                         \\ \hline
+\end{tabular}%}
+\label{Medium_Model}
+\end{table*}
+
+Firstly, the \gls{el} tested in Figs.~\ref{sub:EL_Strong_Scaling_Left} and~\ref{sub:EL_Strong_Scaling_Right} has 529 \glspl{cc}. In order to avoid scaling efficiency degradation, the \gls{el} has to keep certain number of \glspl{cc} per \gls{omp} thread. In general, the lower the rate of \glspl{cc} per \gls{omp} thread, the lower the scaling efficiency measured. The worst case in Fig.~\ref{sub:EL_Strong_Scaling_Left} is for 8 nodes running 8 threads each (i.e. 64 threads). In such case we ended up having approximately 8.2 \glspl{cc} per \gls{omp} thread. As can be seen in Fig.~\ref{sub:EL_Strong_Scaling_Right} the strong scaling efficiency was never below 80\%. 
+
+Since our computational model is intended to run on leadership supercomputers--such as Theta at \gls{alcf}--in the future, it was necessary to test the Strong Scaling Efficiency of this on more computing nodes. Specifically, we wanted to test the behaviour of the scaling running on up to 64 nodes with 8 \gls{omp} threads each since the more nodes you incorporate, the more \gls{ipc} load you have. In order to keep a considerable number of computing nodes per \gls{omp} thread we generated an \gls{el} with the specifications shown in Table~\ref{Big_Model}. 
+
+\begin{table*}[tb]
+\centering
+\caption{\gls{el} of large size to test strong scaling on 8, 16, 32 and 64 computing nodes. The different \glspl{rf}, percentages and dimensionalities are explained in~\cite{10.1371/journal.pone.0217966}.}
+\begin{tabular}{|c|l|l|l|l|l|l|l|}
+\hline
+Model  & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Number\\ of CCs\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Afferent\\  RF\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Afferent\\ \%\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Lateral\\ RF\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Lateral\\ \%\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Population\\ Dimensionality\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Potential\\ \%\end{tabular}} \\ \hline
+Big & 128 x 128                                                                      & 5 x 127                                                                      & 5\%                                                                        & 9 x 9                                                                     & 90\%                                                                      & 15 x 15                                                                                  & 3\%                                                                         \\ \hline
+\end{tabular}%}
+\label{Big_Model}
+\end{table*}
+
+This model had 16384 \glspl{cc} and for the worst case in which there were 64 computing nodes with 8 \gls{omp} threads each (512 threads), the model ended up distributing 32 \glspl{cc} per \gls{omp} thread, a much better rate than the one given in the previous case. Each \gls{cc} in this model had 225 neural units to reach a total of 3686400 neural units. Each neural unit had 31 proximal (afferent) synapses and 432 distal (lateral) synapses to reach a total of 1706803200 synapses in the \gls{el}. Given the size of this model we could not run experiments from 1, 2 nor 4 computing nodes since the amount of time a simulation of such characteristics could take, far exceeded the time provided by \texttt{qsub} command on Cooley. Therefore, we started the tests from 8 computing nodes for 1, 2, 4 and 8 \gls{omp} threads as shown in Fig.~\ref{sub:EL_Strong_Scaling1_Left}.
+
+As can be seen in Fig.~\ref{sub:EL_Strong_Scaling1_Right}, the larger amount of computing nodes (\gls{mpi} ranks) with the consequent growth of \gls{mpi} \gls{ipc} load did not affect the strong scaling efficiency of the model which was well above 87\% when running 8 threads per node, but was even well above 97\% when running two threads per node for 64 nodes.
+
+In reference to Weak Scaling, in order to keep the number of \glspl{cc} per \gls{omp} thread ratio constant we used the \glspl{el} detailed in the Table~\ref{Weak_Scaling_Models}. For all the cases detailed in the table, the ratio of \glspl{cc} per \gls{omp} thread was 32.
+
+\begin{table*}[tb]
+\centering
+\caption{\glspl{el} of different sizes to test weak scaling on 1, 2, 4, 8, 16, 32 and 64 computing nodes. The different \glspl{rf}, percentages and dimensionalities are explained in~\cite{10.1371/journal.pone.0217966}.}
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+\begin{tabular}[c]{@{}c@{}}Number of\\ Nodes\end{tabular} & \begin{tabular}[c]{@{}c@{}}Number\\ of CCs\end{tabular} & \begin{tabular}[c]{@{}c@{}}Afferent\\  RF\end{tabular} & \begin{tabular}[c]{@{}c@{}}Afferent\\ \%\end{tabular} & \begin{tabular}[c]{@{}c@{}}Lateral\\ RF\end{tabular} & \begin{tabular}[c]{@{}c@{}}Lateral\\ \%\end{tabular} & \begin{tabular}[c]{@{}c@{}}Population\\ Dimensionality\end{tabular} & \begin{tabular}[c]{@{}c@{}}Potential\\ \%\end{tabular} \\ \hline
+1 Node                                                    & 16 x 16                                                 & 5 x 127                                                 & 5\%                                                   & 9 x 9                                                & 90\%                                                 & 15 x 15                                                             & 3\%                                                    \\ \hline
+2 Nodes                                                   & 16 x 32                                                 & 5 x 127                                                 & 5\%                                                   & 9 x 9                                                & 90\%                                                 & 15 x 15                                                             & 3\%                                                    \\ \hline
+4 Nodes                                                   & 32 x 32                                                 & 5 x 127                                                 & 5\%                                                   & 9 x 9                                                & 90\%                                                 & 15 x 15                                                             & 3\%                                                    \\ \hline
+8 Nodes                                                   & 32 x 64                                                 & 5 x 127                                                 & 5\%                                                   & 9 x 9                                                & 90\%                                                 & 15 x 15                                                             & 3\%                                                    \\ \hline
+16 Nodes                                                  & 64 x 64                                                 & 5 x 127                                                 & 5\%                                                   & 9 x 9                                                & 90\%                                                 & 15 x 15                                                             & 3\%                                                    \\ \hline
+32 Nodes                                                  & 64 x 128                                                & 5 x 127                                                 & 5\%                                                   & 9 x 9                                                & 90\%                                                 & 15 x 15                                                             & 3\%                                                    \\ \hline
+64 Nodes                                                  & 128 x 128                                               & 5 x 127                                                 & 5\%                                                   & 9 x 9                                                & 90\%                                                 & 15 x 15                                                             & 3\%                                                    \\ \hline
+\end{tabular}%}
+\label{Weak_Scaling_Models}
+\end{table*}
+
+Fig.~\ref{fig:EL_Weak_Scaling} shows the weak scaling performance of the model. In this case the problem workload assigned to each processing element stayed constant and additional elements were used to solve a larger total problem. The horizontal lines in Fig.~\ref{sub:EL_Weak_Scaling_Left} show--at first--a good scenario. As can be seen in Fig.~\ref{sub:EL_Weak_Scaling_Right}, the scaling efficiency was always above the 75\%, where the Weak Scaling Efficiency is: $t_1 / t_N * 100$. These measures show that the model parallel execution was not affected by \gls{mpi} \gls{ipc} load as the number of computing nodes increased. This scenario is specially evident for the case of one \gls{omp} thread in whose case the worst efficiency is above 95\%.
+
+\begin{figure*}[tb] 
+    \centering
+  \subfloat[Run time vs. the number of nodes for different number of threads per node.\label{sub:EL_Weak_Scaling_Left}]{%
+       \includegraphics[width=0.49\linewidth]{EL_Weak_Scaling_Left.png}}
+    \hfill
+  \subfloat[Efficiency vs. the number of nodes for different numbers of threads per node.\label{sub:EL_Weak_Scaling_Right}]{%
+        \includegraphics[width=0.49\linewidth]{EL_Weak_Scaling_Right.png}}
+
+	\caption{Weak scaling tests of the \gls{el} algorithm on Cooley nodes. Each \gls{mpi} rank runs in a different node with 1, 2, 4 and 8 \gls{omp} threads running in each rank.}
+  \label{fig:EL_Weak_Scaling} 
+\end{figure*}
+
+Figs.~\ref{sub:EL_Strong_Scaling_Left} and~\ref{sub:EL_Strong_Scaling1_Left} show an initially good strong scalability of our code while Fig. \ref{sub:EL_Weak_Scaling_Left} allows us to foresee a good weak scaling performance in high end leadership supercomputers too. All those visual results are supported by good measures of efficiency.
+}
+
+
+
+
+
+
+
+
+
+
+
+\iftoggle{DEBUG}{
+\section{Discusión}
+}{
+\section{Discussion}
+
+In this paper we show how parallelization strategies with great independence on data coalescence scale efficiently on distributed memory systems while running biologically inspired computational models with highly sparse and random connectivity profiles.
+
+Algorithmic implementations strongly based on \gls{simd} parallel computing architectures, impose important restrictions on memory data alignment. \gls{omp} threads in shared memory systems are instead highly independent and powerful processing abstractions which can perform complex task with eventual vectorization optimizations when possible.
+
+Our findings show that the parallelization strategies used in this work present good and robust scaling efficiency even in the face of intensive \gls{ipc} loads. Such behavior can be kept in a sustained manner as long as a minimum of balance in the computational load among different threads remains. In section~\ref{MRSTSA_Scaling_Tests} we showed very high scaling efficiencies. Yet, we warned about difficulties in the face of a context with uneven corpus sizes. Achieving load balance in distributed memory systems is extremely expensive given the amount of \gls{ipc} overload needed. In this manner, we claim that the best way to balance computational load among computing elements is to try to confine as much computational load as possible in a shared memory unit without far exceeding the concurrent threading or hyperthreading capacity provided by a node. Once such conditions are satisfied it is relatively straightforward to spawn a number of threads in which the work could be distributed. Once in a shared memory system, \gls{omp} threads are much lighter than \gls{mpi} processes, since threads do not duplicate heap nor program and they do not need complex communication methods to share data. Furthermore, \gls{omp} threads can manage load balancing efficiently and automatically since \gls{omp} manages dynamic parallel schedule on its own. This is highly desirable, specially in a simulation environment in which individual modules--such as \glspl{cc} in our cortical model--are not uniformly analogous in terms of size and or connectivity. In \gls{mpi} instead, the programmer has to deal with load balancing using intensive \gls{ipc} which is highly expensive especially when the communication is carried out among processes in different nodes. On the other side \gls{omp} threads suffer from false shearing in the \glspl{cpu} caches, but with a highly flexible parallelization scheme as the one used in section \ref{EL_Parallelization} the user can flexibly vary the parallelization granularity as to achieve the best performance avoiding that each thread exceeds the quota of cache memory available in each \gls{cpu}.
+
+In Figs.~\ref{fig:Corpora_Scaling}, \ref{fig:MRSTSA_Scaling}, \ref{fig:EL_Strong_Scaling} and \ref{fig:EL_Weak_Scaling} the phenomenon of \emph{super-linear} speedup is present for several cases. In \cite{7733347} the authors pointed out that: \textit{ The superlinear speedup performance in persistent algorithms occurs mainly due to the increased cache resources in the parallel computer architectures, the prefetching of shared variables in shared memory organization, or better scheduling in heterogeneous environments. The effects of the shared memory architectures also impact the performance behavior of the granular and scalable algorithms}. We absolutely endorse such statement and consider it sustainable as a general explanation for our case. Nevertheless, we also consider that more in depth analysis of memory utilization using profiling tools will be needed in the future.  
+
+In section~\ref{EL_Parallelization} some problems could arise when a single \gls{cc} is too large to share a computing node with many others. If just 2 \glspl{cc} could fit in a node, the parallelization granularity would be very poor, but \gls{omp} is highly versatile and can easily manage nested threading. In such case we could vary the parallelization granularity in an extremely accessible manner with all the advantages of \gls{omp} in terms of dynamic load balancing. This nested parallelization strategy could be applied in section~\ref{MRSTSA_Scaling_Tests} in the face of an eventual unbalanced computational load from an uneven corpora size distribution. 
+
+This scenario in which the computational burden assigned to each shared memory system is distributed among a set of highly lightweight, flexible and dynamic \gls{omp} threads is really favorable in a context in which the number of \glspl{cpu} shearing memory increases specially in high-end supercomputers. In such respect and in teh face of the good results returned by our experiments, we evaluate as viable the implementation of these parallelization strategies in high end supercomputers in the future.
+
+We claim thus that this work introduces parallelization strategies whose flexibility and robustness are particularly useful in overly variable and biologically inspired computational scientific scenarios whose modelization approaches can vary dramatically in different biologically accurate implementations strategies in which there are erratic network structures with highly sparse and random connectivity profiles.
+}
+
+
+
+
+
+
+
+\iftoggle{DEBUG}{
+\section{Conclusión}
+}{
+\section{Conclusion}
+
+In this paper we showed a hybrid \gls{mpi}+\gls{omp} parallelization strategy which scales efficiently in a distributed memory system while running a computational approach inspired in the biology of mammalian cortex with a highly sparse and irregular connectivity profile. We showed this efficiency by means of strong and weak scaling tests at Cooley nodes.
+
+Independence of data coalescence, flexible granularity reconfiguration, dynamically scheduled load balancing and lightweight parallel processing at shared memory parcels, configured salient features in our parallelization approach.
+
+We consider such features of fundamental importance for the usage of this parallelization procedure in highly variable computational scientific scenarios with irregularly structured datasets typically found in biologically inspired research approaches.
+
+By means of the results returned by this round of tests, we esteem this parallelization policy as viable to be used in high-end leadership supercomputers in the future.
+}
