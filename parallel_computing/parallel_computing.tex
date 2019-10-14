@@ -1,5 +1,5 @@
 \iftoggle{DEBUG}{
-\chapter{Hacia una Alta Escalabilidad en Modelos Computacionales Biológicamente-Inspirados}
+\chapter{Hacia una Alta Escalabilidad en Modelos Biológicamente-Inspirados}
 }{
 \chapter{Towards High-End Scalability on Biologically-Inspired Computational Models}
 }
@@ -8,6 +8,57 @@
 
 \iftoggle{DEBUG}{
 \section{Introducción}
+
+Sin lugar a dudas, la neurociencia nos ha provisto de un entendimiento más profundo de la organización del cerebro en las últimas décadas.
+Sin embargo, la principal corriente de investigación en \gls{ai} no ha incorporado dichos avances en sus modelos.
+Este hecho, podría ser atribuido--al menos en parte--al éxito alcanzado por algunos enfoques de \gls{ai}--tales como Redes Neuronales Convolucionales--los cuales han alcanzado niveles de exactitud en clasificación sin precedente en los últimos años.
+De todas formas, algunos investigadores desde la comunidad de la \gls{ai} reconocen que para poder superar las limitaciones actuales de la \gls{ai} y así crear máquinas inteligentes será necesario entender y poder imitar el cerebro.
+En tal sentido, para entender y explorar con más profundidad cómo el cerebro podría procesar información, es esencial utilizar modelos de neuronas y redes más complejos y biológicamente precisos que los hoy predominantes.
+
+El modelo de \gls{hh}~\cite{HODGKIN199025}--por ejemplo--simula receptores sinapticos y canales de iones explícitamente.
+Sin embargo, mientras más interesantes los mecanismos biológicos, mayores son las limitaciones de las redes en cuanto a tamaño y complejidad.
+Existen algunos modelos alternativos como el spiking model~\cite{Izhikevich2004SpiketimingDO} y el integrate-and-fire model~\cite{1333071} que se han propuesto como una simplificación del modelo de \gls{hh}.
+Tales modelos demandan menos poder computacional, pero no pueden simular directamente la dinámica biológica presente en los canales iónicos.
+Por otro lado, nos encontramos con las aplicaciones de \gls{dl}~\cite{lecun_deep_2015} que están parcialmente inspiradas en la biología de la ruta ventral visual, y que han mejorado dramáticamente el estado del arte en muchos dominios de la \gls{ai} mientras que han--al mismo tiempo--ignorado hechos biológico importantes dándole prioridad a la eficiencia computacional y a la exactitud en clasificación.
+
+Encontrar el nivel apropiado de detalle a la hora de modelar el cerebro parece ser el santo grial para descubrir los misterios del comportamiento animal.
+En~\cite{10.1371/journal.pone.0217966} siguiendo mecanismos de aprendizajes de secuencias aplicados en~\cite{10.3389/fncir.2016.00023} agrupando lo que es--bajo nuestro punto de vista--solo hechos neuro-anatómicos y neuro-fisiológicos para procesar información en el tejido cortical.
+En tal trabajo agrupamos solo aspectos biológicamente relevantes evitando cargar a las simulaciones con carga computacional excesiva y--al mismo tiempo--capturando la esencia de las propiedades de procesamiento de la información en la corteza.
+
+\begin{figure*}[ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{EncoderColumnConnections1.png}
+    \caption{Organización general del \glsfirst{cstm}. Perfil de conectividad dispersa y aleatoria para una \glsfirst{cc} (en rojo) en la \glsfirst{el}.}
+    \label{fig:EncoderColumnConnections1}
+\end{figure*}
+
+En relación al software para la implementación del modelado computacional, en años recientes, los marcos de \gls{dl} han evolucionado extremadamente rápido y han establecido un marco de aplicación dinámico.
+La primera generación de marcos de \gls{dl}--la cual fue ampliamente adoptada en la comunidad científica--se construyó principalmente en la academia, pero generaciones más recientes se están desviando hacia la industria.
+Existe un desvío interesante qu da una idea de los niveles de desarrollo, refinamiento y sofisticación que tales marcos de trabajo pueden ofrecer cuando se comienza a elaborar una implementación de \gls{ai}~\cite{Bahrampour2015ComparativeSO,7979887}.
+
+De hecho, existen tres razones principales que pueden conducir al uso de uno de esos marcos, en lugar de escribir el código desde cero.
+La primera razón es que estos marcos habilitan un uso y trato fácil de gráficos computacionales grandes sin tener que preocuparse por los detalles de su manejo.
+La segunda razón es que cuando se trabaja en \gls{dl} siempre es necesario computar gradientes, es decir, computar alguna pérdida y luego computar los gradientes alrededor de los pesos con respecto a la pérdida.
+Es mejor hacer esas operaciones tan automáticamente como sea posible, dejando que el marco maneje los detalles del algoritmo backpropagation.
+Por lo tanto, el escenario común es escribir solo el paso directo de la red y tener el paso reverso de alguna manera libre sin incluir aditamentos significativos al código.
+Finalmente, es altamente deseable tener el marco corriendo eficientemente en  \gls{gpu_pl}, sin preocuparse de detalles del hardware de bajo nivel como los paquetes cuBLAS y cuDNN en \gls{cuda}, el movimiento de datos entre la \gls{cpu} y la \gls{gpu}, etc.
+De esta manera, los detalles se mantienen ocultos por medio de estas herramientas que los manejan de manera apropiada.
+
+Con estos puntos en mente, se tomaron en cuenta ciertos aspectos para afrontar la implementación de nuestro modelo computacional.
+Primeramente, la plausibilidad biológica de  nuestro modelo nos libera de la necesidad de computar gradientes.
+Aunque existen trabajos importantes que apoyan la idea de que la \emph{asignación de crédito}--la meta final del algoritmo backpropagation--podría ser un fenómeno que sucede en el tejido cortical~\cite{Guerguiev2017TowardsDL}, ponderamos que no se sabe si ciertas señales llamadas \emph{teaching signals} existen en el cerebro.
+Más aún, no hay suficiente evidencia como para incluir mecanismos tan complejos en nuestro modelo todavía.
+En su lugar, decidimos ser conservativos en dicho respecto.
+Segundo, los marcos de \gls{dl} están direccionados a la paralelización en \gls{gpu_pl} en núcleos \gls{cuda}.
+Más allá de que dichos marcos han sido optimizados extensivamente para sacar el máximo provecho específicamente de las tarjetas NVIDIA, se tienen que satisfacer demasiadas condiciones para obtener el mejor desempeño.
+Aunque tales marcos han alcanzado un progreso sobresaliente en los últimos años (junto al desarrollo de su hardware complementario), existe una especialización muy puntual de tales tecnologías hacia el desarrollo preciso de ciertos marcos de \gls{dl} con poco espacio para implementaciones innovativas y especialmente biológicamente plausibles.
+En tal sentido, uno de los mayores problemas en tales enfoques surge cuando se tratan de implementar poblaciones neuronales con estructuras de conectividad dispersa y aleatoria.
+Tales implementaciones--fuertemente demandadas en el modelado biológicamente plausible--comprometen la coalescencia en las tarjetas \gls{gpu} y perjudican seriamente el desempeño~\cite{doi:10.3109/0954898X.2012.739292}.
+
+Siguiendo esta línea, implementamos nuestro modelo en \CC14 utilizando el paradigma de \gls{oop} y lo paralelizamos por medio de una estrategia híbrida usando \gls{mpi} y \gls{omp}.
+El paradigma de \gls{oop} nos dio una herramienta poderosa para componer estructuras modulares permitiéndonos manejar gráficos computacionales complejos. \gls{mpi} habilitó nuestro modelo para correr en sistemas de memoria distribuida de manera coherente y estable.
+Finalmente, \gls{omp} proveyó una distribución fina de la carga de trabajo dentro de cada nodo computacional con la opción de planificar los hilos \gls{omp} de manera dinámica.
+Esto nos permitió manejar diferentes opciones de afinidad de hilos y variar el número de hilos en cada nodo computacional, entre otras opciones.
 }{
 \section{Introduction}
 
@@ -58,12 +109,37 @@ Following this line, we implemented our model in \CC14 using \gls{oop} paradigm 
 
 \iftoggle{DEBUG}{
 \section{Nuestro Aporte}
+
+En este trabajo introducimos una estrategia de paralelización con gran independencia de la coalescencia de datos y mostramos cómo esta escala eficientemente en sistemas de memoria distribuida mientras corre nuestro modelo computacional biológicamente inspirado el cual simula la dinámica cortical con perfiles de conectividad altamente dispersos y aleatorios~\cite{10.1371/journal.pone.0217966}.
+
+La organización general de nuestro enfoque computacional se muestra en la Fig.~\ref{fig:EncoderColumnConnections1}.
+Primero, para generar los archivos de audio de los corpus utilizamos el sintetizador Festival text to speech~\cite{festival2014}, implementando un código en Python paralelizado por medio de un paquete \gls{mpi} para Python llamado mpi4py.
+Segundo, para producir las entradas desde los flujos auditivos seguimos los  lineamientos generales de Chi T. et al.~\cite{chi_2005} e implementamos un algoritmo llamado \gls{mrstsa}~\cite{10.1371/journal.pone.0217966}.
+Nuestra implementación sigue principalmente la sección cortical en~\cite{chi_2005} en lugar de su contraparte sub-cortical.
+Implementamos el algoritmo en C y lo paralelizamos por medio del paradigma híbrido con \gls{mpi} y \gls{omp} utilizando secciones paralelas en \gls{omp}.
+Finalmente, en~\cite{10.1371/journal.pone.0217966} nuestro grupo implementó un modelo computacional no supervisado e inspirado biológicamente--la \glsfirst{el} en la Fig.~\ref{fig:EncoderColumnConnections1}--el cual incorpora propiedades claves de la corteza de los mamíferos y devuelve características fonéticas que mejoran los niveles de exactitud en clasificación del algoritmo de \gls{svm} en tareas de clasificación de palabras.
+Esto sucede en presencia de ruido, reverberación y variaciones de tono no presentes durante el entrenamiento.
+La paralelización del código se lleva a cabo por medio de un paradigma híbrido \gls{mpi} y \gls{omp} y a través del uso de sistemas de archivo paralelos ( \gls{mpi} I/O) con capacidad de Checkpoint y rearanque en la etapa de entrenamiento donde se tiene total flexcibilidad en términos del número de procesos con los que la ejecución es reiniciada. 
+Aunque ya implementada, el algoritmo de la gls{cl} en la Fig.~\ref{fig:EncoderColumnConnections1} todavía no ha sido probada ni en escalado ni en el desempeño en clasificación fonética.
+Decidimos incluir dicha sección en la Fig.~\ref{fig:EncoderColumnConnections1} para mostrar el hecho de que la \gls{el} puede recibir \emph{Conecciónes Dendríticas Apicales} desde capas superiores de la misma manera en que recibe \emph{Conexiones Laterales Distales} desde \gls{cc_pl} vecinas.
+
+Realizamos todos los experimentos computacionales en Cooley~\cite{noauthor_cooley_nodate}, un cluster para visualización y análisis en el Laboratorio Nacional Argonne en el cual ejecutamos las siguientes tareas: 
+i) pruebas de escalado para los algoritmos de Generación de Corpus de audio en python usando hasta 6 nodos corriendo 64 procesos \gls{mpi} sobre 64 \gls{cpu_pl}.
+Desempeño en pruebas de escalado Fuerte y Débil. Medidas de eficiencia en escalado.
+ii) pruebas de escalado del algoritmo de \gls{mrstsa} utilizando hasta 64 nodos (un proceso \gls{mpi} por nodo) y hasta 5 hilos \gls{omp} por nodo/proceso.
+Pruebas de desempeño en escalado Fuerte y Débil. Mediciones de eficiencia en escalado. 
+iii) pruebas de escalado en la \gls{el}--el algoritmo central de nuestro modelo--utilizando hasta 64 nodos (un proceso \gls{mpi} por nodo) y hasta 8 hilos \gls{omp} por nodo/proceso. Realizamos pruebas de escalado Fuerte y Débil y medimos eficiencia de escalado.
+
+Las medidas de eficiencia de escalado devueltas por nuestros pruebas nos permiten vislumbrar un uso eficiente de recursos computacionales paralelos de alto desempeño.
+En este trabajo hemos mostrado un enfoque de paralelización viable para implementaciones altamente flexibles de modelos corticales cerebrales en los que la coalescencia de los datos no es un requisito fundamental.
+Hemos mostrado la versatilidad de este esquema de paralelización en nuestro modelo computacional inspirado en el cerebro simulando la dinámica cortical con un perfil de conexión altamente disperso y aleatorio.
+De esta forma podemos decir que esta estrategia de paralelización es un procedimiento prometedor para abordar nuevas implementaciones computacionales, con más plausibilidad biológica y con conjuntos de datos más irregulares y desestructurados en recursos computacionales de alto desempeño.
 }{
 \section{Our Contributions}
 
 In this paper we introduce a parallelization strategy with great independence on data coalescence and show how it scales efficiently on distributed memory systems while running our biologically-inspired computational model which simulates cortical dynamics with highly sparse and random connectivity profiles~\cite{10.1371/journal.pone.0217966}.
 
-The general layout of our computational setup is shown in Fig.~\ref{fig:EncoderColumnConnections}. First, to generate the corpora audio files, we employed Festival text to speech synthesizer~\cite{festival2014}, implementing a Python code parallelized by means of a \gls{mpi} package for Python called mpi4py. Second, in order to produce the inputs from auditory streams we followed main guidelines from Chi T. et al.~\cite{chi_2005} and implemented an algorithm called \gls{mrstsa}~\cite{10.1371/journal.pone.0217966}. Our implementation follows primarily the cortical section in~\cite{chi_2005} rather than its sub-cortical counterpart. We implemented the algorithm in C and parallelized it by means of \gls{mpi} and \gls{omp} hybrid paradigm using \gls{omp} parallel sections. Finally, in~\cite{10.1371/journal.pone.0217966} our group pursued the implementation of a completely unsupervised and biologically inspired computational model--the \glsfirst{el} in Fig.~\ref{fig:EncoderColumnConnections}--which incorporated key properties from the mammalian cortex and returned phonetic features that improved the classification accuracy levels of the \gls{svm} algorithm in word classification tasks. This happened in the presence of noise, reverberation and pitch variations not present during training. The parallelization of the code is approached by means of a hybrid \gls{mpi} and \gls{omp} paradigm and through the use of \gls{mpi} I/O parallel file system with Checkpoint and Restart capacity in the training stage where there is total flexibility in terms of the number of ranks with which the execution is restarted. While already implemented, the \gls{cl} algorithm in Fig.~\ref{fig:EncoderColumnConnections} has not yet been tested in scaling nor in phonetic classification performance. We decided to sketch it in Fig.~\ref{fig:EncoderColumnConnections} to show the fact that \emph{Distal Apical Connections} from superior layers can be received by the \gls{el} in the same fashion than \emph{Distal Lateral Connections} from neighboring \glspl{cc}. 
+The general layout of our computational setup is shown in Fig.~\ref{fig:EncoderColumnConnections1}. First, to generate the corpora audio files, we employed Festival text to speech synthesizer~\cite{festival2014}, implementing a Python code parallelized by means of a \gls{mpi} package for Python called mpi4py. Second, in order to produce the inputs from auditory streams we followed main guidelines from Chi T. et al.~\cite{chi_2005} and implemented an algorithm called \gls{mrstsa}~\cite{10.1371/journal.pone.0217966}. Our implementation follows primarily the cortical section in~\cite{chi_2005} rather than its sub-cortical counterpart. We implemented the algorithm in C and parallelized it by means of \gls{mpi} and \gls{omp} hybrid paradigm using \gls{omp} parallel sections. Finally, in~\cite{10.1371/journal.pone.0217966} our group pursued the implementation of a completely unsupervised and biologically inspired computational model--the \glsfirst{el} in Fig.~\ref{fig:EncoderColumnConnections1}--which incorporated key properties from the mammalian cortex and returned phonetic features that improved the classification accuracy levels of the \gls{svm} algorithm in word classification tasks. This happened in the presence of noise, reverberation and pitch variations not present during training. The parallelization of the code is approached by means of a hybrid \gls{mpi} and \gls{omp} paradigm and through the use of \gls{mpi} I/O parallel file system with Checkpoint and Restart capacity in the training stage where there is total flexibility in terms of the number of ranks with which the execution is restarted. While already implemented, the \gls{cl} algorithm in Fig.~\ref{fig:EncoderColumnConnections1} has not yet been tested in scaling nor in phonetic classification performance. We decided to sketch it in Fig.~\ref{fig:EncoderColumnConnections1} to show the fact that \emph{Distal Apical Connections} from superior layers can be received by the \gls{el} in the same fashion than \emph{Distal Lateral Connections} from neighboring \glspl{cc}. 
 
 We performed all computational experiments on Cooley~\cite{noauthor_cooley_nodate}, a visualization and analysis cluster at Argonne National Laboratory in which we executed the following tasks: i) scaling tests on audio Corpora Generation algorithm in python using up to 6 nodes running 64 \gls{mpi} processes on 64 \glspl{cpu}. Performance of strong and weak scaling tests. Measurement of scaling efficiency. ii) scaling tests on the \gls{mrstsa} algorithm using up to 64 nodes (one \gls{mpi} rank per node) and up to 5 \gls{omp} threads per node/rank. Performance of strong and weak scaling tests. Measurement of scaling efficiency. iii) scaling tests on the \gls{el}--the central algorithm in our model--using up to 64 nodes (one \gls{mpi} rank per node) and up to 8 \gls{omp} threads per node/rank. We performed strong and weak scaling tests and measure scaling efficiency. 
 
@@ -90,6 +166,14 @@ The measurements of scaling efficiency returned by our tests allow us to foresee
 
 \iftoggle{DEBUG}{
 \section{Trabajo Relacionado}
+
+Más allá del hecho de que el cerebro de los humanos consume alrededor de 25 Watts~\cite{edited_by_stephen_c._cunnane_human_2010}, tiene en promedio 86 billones de neuronas~\cite{Azevedo2009EqualNO} y trillones de sinapsis ya que cada neurona se conecta con otras neuronas utilizando miles de vínculos sinapticos.
+Cada sinapsis puede computar una operación en 0.005 segundos dando al cerebro humano la capacidad de computar 20 billones de operaciones por segundo~\cite{10.2307/j.ctt5vkr1h}.
+Aunque tales números parecen arrolladores, dicha capacidad de computación es aún mejorada por medio de propiedades únicas existentes en el tejido cortical, tales como una gran tolerancia a fallas, una flexibilidad exhaustiva y un alto nivel de paralelismo.
+
+EL esfuerzo computacional demandado por tales especificaciones nos fuerza  a considerar sólo aquellas características fisiológicas y anatómicas claves para el procesamiento de la información en el cerebro evitando así cargar las simulaciones computacionales con detalles biológicos innecesarios.
+En la misma dirección, las estrategias de paralelización tienen que ser altamente calificadas para afrontar los desafíos presentados por la implementación de enfoques nuevos y biológicamente precisos en recursos \gls{hpc}.
+
 }{
 \section{Related Work}
 
@@ -108,6 +192,33 @@ The computational effort demanded by such specifications force us to consider on
 
 \iftoggle{DEBUG}{
 \subsection{Enfoques Computacionales de \gls{ann_pl} Inspiradas en el Cerebro}
+
+Una de las principales motivaciones del modelado inspirado en el cerebro es desarrollar nuevos algoritmos más poderosos cuya inspiración en el cerebro nos permita procesar la información mejor para forjar sistemas con comportamientos más inteligentes.
+
+El desarrollo de las \gls{ann_pl} se clsifica en tres generaciones en relación a sus unidades computacionales~\cite{MAASS19971659,10.1007/978-3-642-03156-4_17}.
+En 1943, la primer generación de \gls{ann_pl} vino de la mano de McCulloch y Pitts~\cite{McCulloch1990ALC}.
+Los autores introdujeron neuronas como unidades computacionales que recibían entradas binarias asociadas a pesos y producían salidas binarias dependientes de un umbral.
+Derivaciones importantes de tales \gls{ann_pl} son los perceptrones multicapa, las redes de Hopfield y las Máquinas de Boltzman.
+
+En la segunda generación, las unidades neuronales son elementos computacionales cuyas salidas representan un conjunto continuo de valores posibles por medio de funciones de activación aplicadas a la suma ponderada de las entradas.
+Funciones de activación comunes son la sigmoide, la polinomial o la exponencial.
+Ejemplos de dichas redes son las redes neuronales sigmoidales de vía directa y recurrentes. 
+Un rasgo extremadamente importante de tales redes es que sostienen algoritmos de aprendizaje basados en descenso de gradiente--como el popular backpropagation.
+Finalmente, las salidas de valores reales de la neuronas de esta generación se interpretan como tasas de disparo en las neuronas reales.
+
+Evidencia comportamental y fisiológica importante, sin embargo, hicieron a la \emph{interpretación de la tasa de disparo} cuestionable, y dio lugar a la tercera generación de \gls{ann_pl} que emplearon \emph{neuronas pulsantes}--o \emph{neuronas de integración y disparo}--como unidades computacionales~\cite{HODGKIN199025,Izhikevich2004SpiketimingDO,1333071}.
+Estos modelos--a diferencia de los modelos de la segunda generación--utilizan temporización con potenciales de acción--o disparos--para codificar la información.
+Incluyendo el concepto de tiempo en su modelo de procesamiento, las \gls{snn_pl} pudieron capturar el comportamiento neuronal de manera más precisa que las redes neuronales tradicionales.
+A diferencia de las \gls{ann_pl}, la idea principal en que las neuronas en una \gls{snn} no disparan en cada ciclo, en su lugar, lo hacen sólo si un potencial de membrana alcanza su umbral.
+
+Independientemente de este enfoque de modelado convincente, los circuitos de umbral como los introducidos en la primera generación pueden ser vistos como modelos abstractos de para computación digital sobre redes de neuronas pulsantes.
+En tal sentido, un bit en estado activo se podría interpretar como una neurona disparando dentro de cierta ventana corta de tiempo y el mismo bit en estado inactivo se podría interpretar como la misma neurona no disparando en tal ventana~\cite{Valiant:1994:CM:199266}.
+Esta estrategia de codificación provee un buen modelo para una red de neuronas pulsantes siempre y cuando los tiempos entre las neuronas pre y post-sinaptica estén sincronizados dentro de ventanas de tiempo de pocos milisegundos.
+Existe evidencia que sostiene el hecho de que dicha actividad fuertemente sincronizada realmente ocurre en el tejido biológico~\cite{Abeles1993SpatiotemporalFP,bair1994}.
+
+En tal sentido, existen nuevos desarrollos algorítmicos~\cite{10.3389/fncir.2016.00023,10.1371/journal.pone.0217966} los que en lugar de modelar activaciones precisamente temporizadas priorizan los diferentes roles de las configuraciones dendríticas próximas y distales incorporando fenómenos fisiológicos y anatómicos importantes como la consideración de las ramas dendríticas como elementos de procesamiento activos, la organización columnar en el tejido cortical y los patrones de activación dispersos en el neocortex--entre otros.
+Casi todas las \gls{ann_pl}, como aquellas utilizadas en aprendizaje profundo~\cite{lecun_deep_2015} y redes neuronales pulsantes~\cite{MAASS19971659}, usan neuronas sin considerar dendritas activas y con un número no realista--muy bajo--de sinapsis.
+Estos hechos sugieren que esas \gls{ann_pl} están perdiendo propiedades funcionales fundamentales presentes en el tejido del cerebro.
 }{
 \subsection{Brain-Inspired \gls{ann} Computational Approaches}
 
@@ -135,6 +246,49 @@ In such sense, there are new algorithmic developments~\cite{10.3389/fncir.2016.0
 
 \iftoggle{DEBUG}{
 \subsection{\glspl{cpu} y \glspl{gpu} para Simulaciones Grandes de \gls{ann_pl}}
+
+Los objetivos de diseño originales fr las \gls{cpu_pl} estaban principalmente direccionados a hacer a los hilos individuales ráídos reduciendo latencia por medio de grandes sistemas de cache y ejecución especulativa incluyendo predicción de ramificaciones y de dependencia de memoria en los procesadores con sistemas de tuberías.
+En contraste, para las \gls{gpu_pl} el rendimiento importa más que los hilos individuales, ocultando la latencia de la memoria por medio de paralelismo masivo y evitando así los relojes de alta frecuencia presentes en las \gls{cpu_pl}.
+
+Esencialmente, cada operación en una \gls{gpu} es paralela. En una \gls{cpu} en cambio, el compilador tiene que ser persuadido de que una operación se puede vectorizar.
+Para lograr esto, la operación en la \gls{cpu} tiene que satisfacer algún criterio, por ejemplo, los datos utilizados por la operación tienen que etar alineados en memoria de cierta manera.
+Esta es una restricción importante.
+A nivel central, cada operación en una \gls{gpu} es vectorizada (sin alternativa).
+No hay ninguna nececidad de persuadir al compilador para realizar operaciones vectoriales en una \gls{gpu}.
+Por lo tanto, cada núcleo \gls{cpu} ejecuta operaciones escalares o vectoriales mientras que cada núcleo \gls{gpu} ejecuta sólo instrucciones vectoriales.
+De todas maneras, este acceso irrestricto a la vectorización no es gratis, ya  que la coalescencia es un requerimiento fuerte para obtener una medidas de alta eficiencia paralela sobre las \gls{gpu_pl}.
+
+En referencia al mercado de las \gls{gpu_pl} y su relación con las aplicaciones de \gls{dl}, NVIDIA--a diferencia de AMD--ha estado empujando mucho en los últimos años para el \gls{dl}.
+Mucho esfuerzo de ingeniería se ha invertido por NVIDIA para hacer su hardware mpas adecuado al \gls{dl}.
+Como ejemplo de ello podemos citar los últimos \emph{tensor cores} de Volta los que pueden realizar una operación  de matrices de 4 por 4 $A*B+C$ completamente en paralelo.
+Como resultado, NVIDIA es muy dominante en lo que respecta al \gls{dl} actualmente.
+
+En el reino de los modelos computacionales biológicamente plausibles, la dicotomía \gls{cpu}/\gls{gpu} no está tan claramente definida como en \gls{dl}.
+En~\cite{doi:10.3109/0954898X.2012.739292} por ejemplo, los autores analizaron las ventajas y desventajas de la paralelización en \gls{cpu} and \gls{gpu} en diferentes paradigmas de paralelización de memoria compartida, como \gls{omp}, \gls{cuda} y \gls{opencl} de neuronas de tasa de disparo medio.
+Los autores probaron diferentes limitadores de velocidad como la precisión del punto flotante, la configuración de hilo, la organización de los datos y la estructura de conectividad de las redes.
+Las implementaciones paralelas en \gls{cpu} fueron grandemente beneficiadas con redes más pequeñas, mayormente por los efectos de la cache.
+Las redes grandes--en cambio--se beneficiaron con la \gls{gpu} solo si estas demandaban memoria más allá de la disponnible en las caches de las \gls{cpu_pl}, de otra forma la implementación en \gls{omp} fue altamente preferida.
+Los autores compararon varias representaciones estructurales sobre marcos de paralelización diferentes mostrando que en las \gls{cpu_pl}, dichas representaciones alcanzaban casi el mismo tiempo de computación, en las \gls{gpu_pl} en cambio, el desempeño se vió seriamente afectado por las violaciones de coalescencia inducidas por estructuras de datos heterogeneas.
+Finalmente, el problema más serio apareción cuando la red presentó una estructura de conectividad dispersa y aleatoria, es decir, cuando las neuronas recibían conexiones aleatoriamente desde otras neuronas, y no en un orden ascendentemente organizado.
+Como explicaron los autores, esto destruyo por completo el desempeño de las implementaciones en \gls{gpu}, mientras que las \gls{cpu_pl} fueron apenas afectadas.
+Este fue quizás el argumento más fuerte en contra de las implementaciones en \gls{gpu} de redes neuronales de tasa media de disparo, ya que la conectividad dispersa es un patrón repetitivo en las redes biológicas así como lo es en el modelo computacional presentado en este trabajo.
+
+En~\cite{10.3389/fninf.2015.00019} los autores describieron un simulador neuronal que provee inferencia de alto nivel para generar redes neuronales con codificación de tasa de disparo, codificación de disparo o red híbrida.
+Las definiciones de las redes generan una librería en \CC altamente optimizada para un marco de paralelización subyacente tal como \gls{omp} para sistemas de memoria compartida o \gls{cuda} para \gls{gpu_pl}.
+Para la implementación en \gls{omp}, se varío el número de hilos entre 2 y 12.
+Para la implementación en \gls{cuda}, la configuración por defecto del simulador (32 hilos las actualizaciones de las variables neuronales, 192 hilos para las sumas ponderadas) fue utilizada.
+Con \gls{omp}, el escalado para 1000 neuronas fue ligeramente subóptimo, mientras que el de 4000 neuronas se saturó rápidamente.
+La situación se revirtió con \gls{cuda}.
+En tal caso la red con 1000 neuronas solo alcanzó una tasa de asceleración limitada, mientras que la red con 4000 neuronas alcanzó una gran tasa.
+
+En~\cite{HUQQANI2013349} los autores desarrollaron y analizaron dos estratejias de paralelización diferentes para redes neuronales con backpropagation para reconocimiento de rostros.
+El trabajo se concentró en dos ambientes de paralelización.
+Por un lado, se utilizó \gls{omp} sobre una \gls{cpu} multihilo convencional y por el otro lado se utilizó \gls{cuda} sobre una \gls{gpu}.
+Los autores concluyeron que la paralelización basada en \gls{gpu} se debía de preferir generalmente frente a la basada en \gls{cpu} con múltiples hilos.
+Sin embargo, para simulaciones con entradas pequeñas y para un número pqeuño de neuronas ocultas, la ajecución basada en \gls{cpu} fue mejor.
+
+En este escenario encontramos un patrón recurrente en el cual las redes enuronales más grandes son beneficiadas por \gls{cuda} mientras que las redes más pequeñas se benefician con \gls{omp}.
+Sin embargo, es importante considerar factores clave tales como la irregularidad, dispersión y aleatoriedad de las estructuras de conectividad de la red en el contexto de su relación con la coalescencia de datos en la eficiencia de paralelización.
 }{
 \subsection{\glspl{cpu} and \glspl{gpu} for \gls{ann} Large Simulations}
 
@@ -163,6 +317,44 @@ In this scenario we find a recurrent pattern in which larger networks are benefi
 
 \iftoggle{DEBUG}{
 \subsection{Multi-Hilo y Multi-Proceso para Implementaciones Paralelas de \gls{ann_pl} en Sistemas de Memoria Compartida}
+
+Desde un punto de vista teórico, sobre un solo nodo de memoria compartida no hay necesidad de generar redundancia de \emph{código} ni del \emph{heap} ya que están disponibles para ser accedidos libremente.
+Por otro lado, los \emph{registros}, el \emph{contador de programa} y la \emph{pila} deben ser replicados para establecer un contexto coherente para cada hilo de ejecución.
+De esta manera, la paralelización con multi-hilos deberían preferirse sobre la paralelización con multi-procesos en un sistema de memoria compartida.
+En implementaciones con \gls{omp}--por ejemplo--los hilos computan diferentes partes de las redes en paralelo.
+Debido a que la memoria se comparte entre los hilos, cada uno accede a los datos de los otros hilos libremente.
+Por lo dicho, tanto la computación interna de la red así como el tráfico de datos  se llevan a cabo localmente.
+Sin embargo, la coherencia de la caché produce sobrecargas adicionales que son más pronunciadas cuando se corren redes pequeñas y se crea un excesivo número de hilos.
+Las implementaciones que usan \gls{mpi} habilitan el intercambio de datos entre núcleos sobre memoria compartida en un nodo.
+En cada núcleo, una unidad de ejecución única--un proceso \gls{mpi}--maneja un subconjunto de redes neuronales y se comunica con otros procesos usando métodos \gls{mpi} especiales.
+En algunos casos la myor carga de \gls{ipc} se compensa con la ausencia del fenómeno denominado false-shearing entre hilos \gls{omp}.
+En una implementación híbrida, los núcleos se organizan frecuentemente en grupos--como procesos \gls{mpi}.
+Dentro de cada grupo, todos los núcleos se comunican sobre memoria compartida, corriendo hilos \gls{omp} para acelerar laterea.
+En cada grupo, un hilo--el master--puede realizar llamadas \gls{mpi} de un solo hilo para intercambio de datos inter-grupo, mientras que el empaquetado y desempaquetado de los datos puede ser realizado por los hilos \gls{omp} generados por el grupo completo.
+Este tipo de implementación es uns solución de compromiso agrupando ventajas de desventajas de ambas estrategias lo cual es logicamente extensible a plataformas multi-nodo.
+
+Olena Schuessler y Diego Loyola~\cite{Schuessler:2011:PTA:1997052.1997062} delinearon diferentes métodos para la paralelización de redes neuronales artificiales basadas en el algoritmo backpropagation utilizando multihilado y \gls{cpu_pl} multinúcleo en un sistema de memoria compartida.
+En este trabajo, los autores usaron Hilos \gls{posix} (Pthreads) y \gls{omp} obteniendo un incremento en velocidad de cómputo muy cercano al ideal esperado (743\% utilizando 8 núcleos).
+El entrenamiento paralelo implementado en \gls{omp} devolvió resultados ligeramente mejores comparados a los Pthreads.
+
+En~\cite{Strey2003ACO}, una implementación basada en hilos sobre \gls{omp} y una implementación basada en procesos sobre \gls{mpi} fueron comparadas en una arquitectura rápidad de memoria compartida.
+Diferentes estratégias de particionado y de datos así como el desempeño de todas las implementaciones fueron esploradas.
+Se mostró que las implementaciones basadas en \gls{mpi} fueron significativamente más rápidas que las basadas en \gls{omp}.
+Los autores señalaron que la aceleración más baja de la implementación basada en \gls{omp} pareció ser originada en false cache sharing de los arreglos de datos los cual puede ser modificado por varias configuraciones de números de hilos en diferentes corridas.
+
+En~\cite{6232827} los autores propusieron usar \gls{mpi} y \gls{omp} en un enfoque \gls{eann} para \gls{tsf} basado en \gls{eda} que evoluciona una red \glspl{eann} completamente conectada.  
+Los experimentos utilizaron varias series temporales y el número de núcleos se extendió de 1 a 6.
+De esta forma los autores mostraron que \gls{mpi} con 5 núcleos fue la mejor estrategia de paralelización, la cual tomó el menor tiempo de ejecución e hizo un uso razonable de los recursos computacionales.
+
+En~\cite{6511739} los autores reportaron una paralelización basada en \gls{omp} para la implementación de un simulador \gls{snn} asíncrono con el objetivo de mostrar eficiencia básica de paralelización de núcleo y de hiperhilado.
+Los primeros resultados mostraron una eficiencia paralela en los rangos de 0,94-0,98 con cuatro núcleos físicos y 0,86-0,89 con 8 hiperhilos para 1000 neuronas.
+PAra 4000 neuronas la eficiencia paralela estuvo en el rango de 0,86-0,87 con 4 núcleos físicos y 0,56-0,57 con 8 hiperhilos.
+
+En~\cite{Chatzikonstantis:2016:FID:2903150.2903477} los autores presentaron una simulación del olivar inferior basada en modelos \glsfirst{hh} extendidos sobre el host y el coprocesador Intel Xeon-Xeon Phi en un sistema de un único nodo.
+La implementación en \gls{mpi} tubo bajo rendimiento para el acelerador Xeon Phi ya que no utilizó los recursos de multihilado del coprocesador, pero se desempeñó bien en el host. 
+Una implementación híbrida mejoró sobre las implemetaciones \gls{mpi} en el acelerador.
+\gls{omp}--por otro lado--fue la mejor opción en las dos plataformas para redes más pequeñas, independientemente del hecho de que su desempeño no escaló linealmente para todos los casos.
+La implementación híbrida del acelerador y el método de programación en \gls{mpi}-puro en el host rivaliza con \gls{omp} para redes grandes debido a su extensibilidad a sistemas multi nodo.
 }{
 \subsection{Multi-Thread and Multi-Process for Parallel \gls{ann} Implementations on Shared Memory Systems}
 
@@ -198,7 +390,27 @@ In~\cite{Chatzikonstantis:2016:FID:2903150.2903477} the authors presented an inf
 
 
 \iftoggle{DEBUG}{
-\subsection{Implementaciones Paralelas de \gls{ann_pl} Sistemas de Memoria Distribuída}
+\subsection{Implementaciones Paralelas de \gls{ann_pl} en Sistemas de Memoria Distribuída}
+En~\cite{6821186} los autores propusieron un esquema de paralelización basado en \gls{mpi} para una red neuronal impulsiva asincrona con más de 50.000 neuronas y 300 millones de sinapsis.
+La solución propuesta fue evaluada en un sistema \gls{hpc} para producción, utilizando hasta 512 procesos paralelos.
+Los primeros resultados mostraron situaciones con muy buena aceleración (super-lineal relativo a procesos con un caso de referencia de 36 procesos \gls{mpi}).
+De todas maneras la estrategia de paralelización escogida tuvo la limitación de que uno de los procesos paralelos (el master) solamente lideó con la coordinación de los procesos de trabajo estando raramente involucrado en la computación.
+Se esperaba que con el incremento en el número de procesos de trabajo, se podría necesitar una organización jerárquica de procesos maestros.
+
+En~\cite{Pastorelli2015ScalingT1} los autores presentaron mediciones de asceleración en análisis de escalado fuerte y débil de una red \gls{lif} corriendo en un rango de 1 a 1024 procesos de software y núcleos de hardware.
+Los autores demostraron abilidad para simular una grilla de 96x96 columnas neuronales, conteniendo un total de 11.4M de neuronas \gls{lif} con adaptación a la frecuencia de disparo, y representando 20.4G sinapsis equivalentes.
+La red neuronal se distribuyó sobre un conjunto de procesos \gls{mpi} y las simulaciones se corrieron sobre una plataforma servidora compuesta de hasta 64 nodos de sócalo dual.
+En referencia al escalado fuerte, la asceleración real para una grilla de 24x24 fue de 67,3,  perdiendo un 30\% comparado con la asceleración ideal (96).
+La asceleración real para la grilla de 48x48 fue de 54,2 mientras que los recursos de hardware se incrementaron en un factor de 96.
+Para la grilla de 96x96 la asceleración es de 10,8 (16 serpia el ideal).
+
+En~\cite{hu2012biophysically} el autor propuso una implementación paralela de modelos neuronales biológicamente realistas utilizando tres estrategias de paralelización:
+paralelización \gls{mpi}, paralelización \gls{mpi} con esquemas de balanceo de carga dinámicos y paralelización híbrida \gls{mpi}/\gls{omp}.
+El autor corrió experimentos en un cluster de memoria distribuída y los resultados mostrron que cuando el número de procesos fue pequeño, la implementación \gls{mpi} alcanzó un buen desempeño sin problemas de balanceo de carga.
+Sin embargo, con un incremento en el tamaño de la red neuronal y del número de procesadores, la tasa de desvalance creció considerablemente.
+Pro medio de la utilización de técnicas de balanceo dinámico, el autor balanceó exitosamente la carga de trabajo entre los procesadores.
+Sin embargo, se consumió más tiempo de computación como resultado del gran número de pasaje de mensajes entre los procesos \gls{mpi}.
+Finalmente, el método de simulación con la paralelización \gls{mpi}/\gls{omp} híbrida mostró mejor asceleración que la implementación \gls{mpi}.
 }{
 \subsection{Parallel \gls{ann} Implementations on Distributed Memory Systems}
 
@@ -223,12 +435,53 @@ In~\cite{hu2012biophysically} the author proposed a parallel implementation of b
 
 \iftoggle{DEBUG}{
 \subsection{\gls{cstm}}
+
+El \gls{cstm} introducido en este trabajo
+%The \gls{cstm} introduced in this paper constitutes a set of algorithms for the simulation of early phonetic acquisition in cortical dynamics~\cite{10.1371/journal.pone.0217966}. Fig.~\ref{fig:EncoderColumnConnections1} shows a representation of the \gls{cstm} centered in a connection scheme for a cortical column in the \glsfirst{el}--the central algorithm in the~\gls{cstm}. Each cylinder in the \gls{el} and in the \glsfirst{cl} represents a \glsfirst{cc} in neural tissue. Each prism in the \glsfirst{mrstsa} represents a \gls{a1} activation, (implemented as a real valued variable in the~\gls{mrstsa}). The figure is a visualization of a \gls{cc} (in red) and its three receptive fields (in yellow). The receptive field of a \gls{cc}--on the \gls{el} or the \gls{cl}--is an array that defines a set of \glspl{cc} with which such column could be connected. The receptive field of a \gls{cc} on the \gls{mrstsa} determines an array of real valued variables with which such column could be connected. A subset of \glspl{cc} in a receptive field (in green) represents a sparse and random set of \glspl{cc} that are really connected with the \gls{cc} in red. A similar scenario could be described for the green prisms on the \gls{mrstsa}. The size, wrap-around property and percentage of established links (in green) inside a receptive field are tunable parameters for the \gls{el}. In this work, only lateral connections have been implemented. There is no apical dendritic branches in the \gls{el} since, in the current implementation, there are no upper \glspl{cl} from which to bring such connections. We have already implemented \glspl{cl} which can receive afferent inputs from the \gls{el} outputs, but we have not been able to test those algorithms properly yet. Regardless of it, we decided to include the \gls{cl} in Fig.~\ref{fig:EncoderColumnConnections1} in order to show that lateral connections from neighboring \glspl{cc} have the same algorithmic nature than apical connections from the \glspl{cl} above the \gls{el}.
+
+%In this way, Fig. \ref{fig:EncoderColumnConnections1} shows the data flow of the information converging to a \gls{cc} inside the \gls{el}. First of all, our Corpora Generation algorithm is used to produce audio files containing the uttered corpora generated by means of speech synthesis tools. The algorithm generates cross synthesizer standard mark up language files with SABLE \cite{sable} format. In such files, \gls{festival} synthesizer is instructed to generate corpora from several number of words from different vocabularies uttered by different voices available from the synthesizer. The organization of the corpora has certain rules and restrictions in order to avoid biases in the training processes. The voices are sequentially chosen (pseudo-randomly) with the restriction that no voice could utter a second time until all the voices had uttered in their turns. Every voice utters certain number of words per turn--in pseudo-random order--and no word is repeated until all the words are used by such voice. Every word in the audio file is followed by a silence gap whose time is equivalent to the uttering time of certain monosyllabic word. We use the \texttt{text2wave} program provided by Festival in order to generate a \texttt{wav} file from the SABLE file.
+
+%Second, sound waves from the audio files are processed by the \gls{mrstsa} algorithm. In this paper we show an implementation that prompts the parsimonious incorporation of neurophysiological properties--mainly centered in cortical features. In such sense, we followed the main guidelines in the implementation of the cortical section of Chi T. et al. \cite{chi_2005} model in order to implement the \gls{mrstsa} algorithm. We implemented the initial stage in the \gls{mrstsa} with the application of \gls{fft} to the audio vector with a different sample window for each resolution. We then extracted the power spectral density from each resolution. In this way we obtained a multiresolution spectral analysis of the audio signal, with high spectral and low temporal resolution for wider sample windows and vice versa. Such different time windows in the \gls{fft}, incorporated--at the same time--leakage low-pass filters with a time constant for each resolution accounting for decrease of phase-locking in the auditory nerve~\cite{chi_2005}. We then applied a \gls{mfb} with 128 elements to each spectrum in order to represent the spectral analysis performed by the cochlear filter bank. Then, we convolved each resolution obtained in the last step along its tonotopic axis with a complex multiresolution function whose real part was a symmetric Mexican hat function and its imaginary part was its antisymmetric Hilbert transform. With this strategy we incorporated additional neuro-physiological phenomena such as symmetry \cite{shamma_1993}, bandwidth \cite{schreiner_1990} and frequency modulation selectivity \cite{shamma_1993,heil_1992,mendelson_1985} found in \gls{a1} and incorporated in the original algorithms \cite{wang_1995}.
+
+%Finally, the \gls{el} simulates a patch of cortical tissue using an n-dimensional array of complex structures called \glspl{csom} that simulate \glspl{cc} in the brain. The \gls{el} generates \glspl{sdr} \cite{ahmad_2016} from the inputs delivered by the \gls{mrstsa} stage and from the activation history in its own \glspl{cc}. \glspl{sdr} exhibit interesting mathematical properties which give them high noise rejection and fault tolerance \cite{DBLP:journals/corr/AhmadH15}. These are typical characteristics in cortical tissue where individual cells are far from 100\% reliable and the cells die and regenerate continuously. This algorithm incorporates neurophysiological phenomena such as columnar organization, afferent spontaneous micro-columnar formation, proximal and distal dendritic arborization, lateral intercolumn interaction by means of independent dendritic \gls{nmda} branch activations, \glspl{mfe} with contextual stimulus adaptation, proximal lateral intracolumn inhibition, \gls{ltp}, \gls{ltd}, \gls{stdp} and distal synaptic homeostatic regulations.
+
+%Each cell unit in a \gls{cc} has two types of dendritic branches; proximal and distal. Proximal and distal dendritic branches lead to proximal and distal connections in a cell unit respectively~\cite{10.1371/journal.pone.0217966}. Neural units in the \gls{el} simulates pyramidal cells in cortical tissue in the brain (Fig \ref{fig:Pyramidal_Cell}). 
+
+%\begin{figure}[h!]
+    %\centering
+    %\includegraphics[width=0.3\textwidth]{Pyramidal_Cell.png}
+    %\caption{Connectivity profile of a pyramidal neural unit in the \gls{el}. Adapted from (Fabuio - Own work, CC BY 4.0, \protect\url{https://commons.wikimedia.org/w/index.php?curid=60707501)}}
+    %\label{fig:Pyramidal_Cell}
+%\end{figure}
+
+%In Fig.~\ref{fig:EncoderColumnConnections1} proximal connections are composed only by afferent connections from the \gls{mrstsa} algorithm while distal connections are composed by lateral and apical connections from neighboring columns and from columns in another cortical layer above respectively. Afferent information activates different clusters of units in a \gls{cc} establishing a first and raw approximation of the phonetic features abstracted from the input auditory stream. The \gls{el} fine-tunes such raw features by means of previous contextual activations produced in the same and/or in neighboring \glspl{cc}. Such contextual information is sent to each \gls{cc} by means of lateral distal dendritic branches which work as independent processing elements in a cell (Fig.~\ref{fig:Lateral_Distal_Connections}). Current activation in such dendritic elements will affect the way in which cells receives future afferent information.
+
+%\begin{figure*}[tb] 
+    %\centering
+    %\subfloat[Lateral distal dendritic branches in a receptive field in the \gls{el}.\label{sub:Distal_Lateral_Dendrites}]{%
+       %\includegraphics[width=0.482\linewidth]{Distal_Lateral_Dendrites.png}}
+    %\hfill
+  %\subfloat[Potential synapses in a distal dendritic branch.\label{sub:Distal_Lateral_Potential_Connections}]{%
+        %\includegraphics[width=0.482\linewidth]{Distal_Lateral_Potential_Connections.png}}
+%\\
+  %\subfloat[Biological counterpart for the potential synapses in a distal dendritic branch.\label{sub:Biological_Dendrite}]{%
+       %\includegraphics[width=0.482\linewidth]{Biological_Dendrite.png}}
+    %\hfill
+    %\subfloat[Biological synaptic grow in distal dendrites.\label{sub:Biological_Synapse}]{%
+        %\includegraphics[width=0.482\linewidth]{Biological_Synapse.png}}
+	%\caption{Distal dendritic connectivity in the \gls{el}.}
+  %\label{fig:Lateral_Distal_Connections} 
+%\end{figure*}
+
+%Distal dendrite connections are shown in Fig.~\ref{fig:Lateral_Distal_Connections}. In Fig.~\ref{sub:Distal_Lateral_Dendrites} distal dendritic branches converge from neighboring \glspl{cc} inside the receptive field of a \gls{cc} in the \gls{el}. A distal dendritic branch between the red \gls{cc} and a green \gls{cc} implies that every neural unit in the red \gls{cc} is linked with a different subset of neural units in the green \gls{cc} by means of potential connections. In Fig.~\ref{sub:Distal_Lateral_Potential_Connections} such potential connections in a dendritic branch link a neural unit in the red \gls{cc} with a subset of neural units in a green \gls{cc}. The subset of potential connections constitutes a percentage of neural units inside the green \gls{cc}. Such percentage is a tunable parameter for the \gls{cc}. Fig.~\ref{sub:Biological_Dendrite} shows a biological distal dendritic branch between a pyramidal cell in a \gls{cc} and a sub-set of pyramidal cells in a neighboring \gls{cc} inside its receptive field in the \gls{el}. This is the biological counterpart of Fig.~\ref{sub:Distal_Lateral_Potential_Connections}. Fig.~\ref{sub:Biological_Synapse} shows how the physical proximity of a dendritic branch from the red cell to axonal branches from yellow cells constitutes potential connections which could prosper becoming in established synapses depending on the sequential activity among cells.
+
+%From Fig.~\ref{fig:Lateral_Distal_Connections} it can be seen that the sparseness and randomness in the connectivity profile of our computational model manifest at different scales. Such phenomena have not only a macro imprint as can be seen in Fig.~\ref{sub:Distal_Lateral_Dendrites} but also a micro imprint as can be seen in Fig.~\ref{sub:Distal_Lateral_Potential_Connections}. Furthermore, the complexity of our implementation derives in different synaptic algorithms for proximal and distal dendrites. While proximal dendrites implements a \gls{som} connectivity from afferent information, distal dendrites results in a much more precise synaptic mechanism to get~\glspl{sdr} from a sequential predictive structure in which individual dendritic branches act as independent and active computing elements.
 }{
 \subsection{\gls{cstm}}
 
-The \gls{cstm} introduced in this paper constitutes a set of algorithms for the simulation of early phonetic acquisition in cortical dynamics~\cite{10.1371/journal.pone.0217966}. Fig.~\ref{fig:EncoderColumnConnections} shows a representation of the \gls{cstm} centered in a connection scheme for a cortical column in the \glsfirst{el}--the central algorithm in the~\gls{cstm}. Each cylinder in the \gls{el} and in the \glsfirst{cl} represents a \glsfirst{cc} in neural tissue. Each prism in the \glsfirst{mrstsa} represents a \gls{a1} activation, (implemented as a real valued variable in the~\gls{mrstsa}). The figure is a visualization of a \gls{cc} (in red) and its three receptive fields (in yellow). The receptive field of a \gls{cc}--on the \gls{el} or the \gls{cl}--is an array that defines a set of \glspl{cc} with which such column could be connected. The receptive field of a \gls{cc} on the \gls{mrstsa} determines an array of real valued variables with which such column could be connected. A subset of \glspl{cc} in a receptive field (in green) represents a sparse and random set of \glspl{cc} that are really connected with the \gls{cc} in red. A similar scenario could be described for the green prisms on the \gls{mrstsa}. The size, wrap-around property and percentage of established links (in green) inside a receptive field are tunable parameters for the \gls{el}. In this work, only lateral connections have been implemented. There is no apical dendritic branches in the \gls{el} since, in the current implementation, there are no upper \glspl{cl} from which to bring such connections. We have already implemented \glspl{cl} which can receive afferent inputs from the \gls{el} outputs, but we have not been able to test those algorithms properly yet. Regardless of it, we decided to include the \gls{cl} in Fig.~\ref{fig:EncoderColumnConnections} in order to show that lateral connections from neighboring \glspl{cc} have the same algorithmic nature than apical connections from the \glspl{cl} above the \gls{el}.
+The \gls{cstm} introduced in this paper constitutes a set of algorithms for the simulation of early phonetic acquisition in cortical dynamics~\cite{10.1371/journal.pone.0217966}. Fig.~\ref{fig:EncoderColumnConnections1} shows a representation of the \gls{cstm} centered in a connection scheme for a cortical column in the \glsfirst{el}--the central algorithm in the~\gls{cstm}. Each cylinder in the \gls{el} and in the \glsfirst{cl} represents a \glsfirst{cc} in neural tissue. Each prism in the \glsfirst{mrstsa} represents a \gls{a1} activation, (implemented as a real valued variable in the~\gls{mrstsa}). The figure is a visualization of a \gls{cc} (in red) and its three receptive fields (in yellow). The receptive field of a \gls{cc}--on the \gls{el} or the \gls{cl}--is an array that defines a set of \glspl{cc} with which such column could be connected. The receptive field of a \gls{cc} on the \gls{mrstsa} determines an array of real valued variables with which such column could be connected. A subset of \glspl{cc} in a receptive field (in green) represents a sparse and random set of \glspl{cc} that are really connected with the \gls{cc} in red. A similar scenario could be described for the green prisms on the \gls{mrstsa}. The size, wrap-around property and percentage of established links (in green) inside a receptive field are tunable parameters for the \gls{el}. In this work, only lateral connections have been implemented. There is no apical dendritic branches in the \gls{el} since, in the current implementation, there are no upper \glspl{cl} from which to bring such connections. We have already implemented \glspl{cl} which can receive afferent inputs from the \gls{el} outputs, but we have not been able to test those algorithms properly yet. Regardless of it, we decided to include the \gls{cl} in Fig.~\ref{fig:EncoderColumnConnections1} in order to show that lateral connections from neighboring \glspl{cc} have the same algorithmic nature than apical connections from the \glspl{cl} above the \gls{el}.
 
-In this way, Fig. \ref{fig:EncoderColumnConnections} shows the data flow of the information converging to a \gls{cc} inside the \gls{el}. First of all, our Corpora Generation algorithm is used to produce audio files containing the uttered corpora generated by means of speech synthesis tools. The algorithm generates cross synthesizer standard mark up language files with SABLE \cite{sable} format. In such files, \gls{festival} synthesizer is instructed to generate corpora from several number of words from different vocabularies uttered by different voices available from the synthesizer. The organization of the corpora has certain rules and restrictions in order to avoid biases in the training processes. The voices are sequentially chosen (pseudo-randomly) with the restriction that no voice could utter a second time until all the voices had uttered in their turns. Every voice utters certain number of words per turn--in pseudo-random order--and no word is repeated until all the words are used by such voice. Every word in the audio file is followed by a silence gap whose time is equivalent to the uttering time of certain monosyllabic word. We use the \texttt{text2wave} program provided by Festival in order to generate a \texttt{wav} file from the SABLE file.
+In this way, Fig. \ref{fig:EncoderColumnConnections1} shows the data flow of the information converging to a \gls{cc} inside the \gls{el}. First of all, our Corpora Generation algorithm is used to produce audio files containing the uttered corpora generated by means of speech synthesis tools. The algorithm generates cross synthesizer standard mark up language files with SABLE \cite{sable} format. In such files, \gls{festival} synthesizer is instructed to generate corpora from several number of words from different vocabularies uttered by different voices available from the synthesizer. The organization of the corpora has certain rules and restrictions in order to avoid biases in the training processes. The voices are sequentially chosen (pseudo-randomly) with the restriction that no voice could utter a second time until all the voices had uttered in their turns. Every voice utters certain number of words per turn--in pseudo-random order--and no word is repeated until all the words are used by such voice. Every word in the audio file is followed by a silence gap whose time is equivalent to the uttering time of certain monosyllabic word. We use the \texttt{text2wave} program provided by Festival in order to generate a \texttt{wav} file from the SABLE file.
 
 Second, sound waves from the audio files are processed by the \gls{mrstsa} algorithm. In this paper we show an implementation that prompts the parsimonious incorporation of neurophysiological properties--mainly centered in cortical features. In such sense, we followed the main guidelines in the implementation of the cortical section of Chi T. et al. \cite{chi_2005} model in order to implement the \gls{mrstsa} algorithm. We implemented the initial stage in the \gls{mrstsa} with the application of \gls{fft} to the audio vector with a different sample window for each resolution. We then extracted the power spectral density from each resolution. In this way we obtained a multiresolution spectral analysis of the audio signal, with high spectral and low temporal resolution for wider sample windows and vice versa. Such different time windows in the \gls{fft}, incorporated--at the same time--leakage low-pass filters with a time constant for each resolution accounting for decrease of phase-locking in the auditory nerve~\cite{chi_2005}. We then applied a \gls{mfb} with 128 elements to each spectrum in order to represent the spectral analysis performed by the cochlear filter bank. Then, we convolved each resolution obtained in the last step along its tonotopic axis with a complex multiresolution function whose real part was a symmetric Mexican hat function and its imaginary part was its antisymmetric Hilbert transform. With this strategy we incorporated additional neuro-physiological phenomena such as symmetry \cite{shamma_1993}, bandwidth \cite{schreiner_1990} and frequency modulation selectivity \cite{shamma_1993,heil_1992,mendelson_1985} found in \gls{a1} and incorporated in the original algorithms \cite{wang_1995}.
 
@@ -243,7 +496,7 @@ Each cell unit in a \gls{cc} has two types of dendritic branches; proximal and d
     \label{fig:Pyramidal_Cell}
 \end{figure}
 
-In Fig.~\ref{fig:EncoderColumnConnections} proximal connections are composed only by afferent connections from the \gls{mrstsa} algorithm while distal connections are composed by lateral and apical connections from neighboring columns and from columns in another cortical layer above respectively. Afferent information activates different clusters of units in a \gls{cc} establishing a first and raw approximation of the phonetic features abstracted from the input auditory stream. The \gls{el} fine-tunes such raw features by means of previous contextual activations produced in the same and/or in neighboring \glspl{cc}. Such contextual information is sent to each \gls{cc} by means of lateral distal dendritic branches which work as independent processing elements in a cell (Fig.~\ref{fig:Lateral_Distal_Connections}). Current activation in such dendritic elements will affect the way in which cells receives future afferent information.
+In Fig.~\ref{fig:EncoderColumnConnections1} proximal connections are composed only by afferent connections from the \gls{mrstsa} algorithm while distal connections are composed by lateral and apical connections from neighboring columns and from columns in another cortical layer above respectively. Afferent information activates different clusters of units in a \gls{cc} establishing a first and raw approximation of the phonetic features abstracted from the input auditory stream. The \gls{el} fine-tunes such raw features by means of previous contextual activations produced in the same and/or in neighboring \glspl{cc}. Such contextual information is sent to each \gls{cc} by means of lateral distal dendritic branches which work as independent processing elements in a cell (Fig.~\ref{fig:Lateral_Distal_Connections}). Current activation in such dendritic elements will affect the way in which cells receives future afferent information.
 
 \begin{figure*}[tb] 
     \centering
