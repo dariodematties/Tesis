@@ -938,6 +938,40 @@ In such figure each \gls{mpi} rank keeps a private copy of the entire \gls{el} s
 
 \iftoggle{DEBUG}{
 \section{Resultados}
+
+En este trabajo probamos la eficiencia en escalabilidad de las estratégias de paralelización usadas en el \gls{cstm} por medio de pruebas de escalado fuertre y débil (\emph{strong} and \emph{weak} scaling tests).
+Realizamos nuestras pruebas en Cooley, un cluster para analizar y visualizar datos producidos en supercomputadoras de alto desempeño en el Laboratorio Nacional Argonne.
+Cooley tiene 126 nodos de computación; cada nodo cuenta con 12 núcleos \gls{cpu} y una targeta \gls{gpu}-dual NVIDIA Tesla K80.
+El desempeño agregado pico \gls{gpu} está sobre los 293 teraflops en doble precisión (usando los relojes \gls{gpu} base), y el sistema completo tiene un total de 47 terabytes de RAM de sistema y 3 terabytes de RAM \gls{gpu}.
+El acceso a Cooley se provee por medio de dos nodos login, los que proveen capacidades de envío de trabajos y compilación.
+La planificación es provista por el planificador de trabajos Cobalt.
+
+La configuración del nodo de Cooley cuenta con arquitectura Intel Haswell con dos procesadores Intel Haswell E5-2620 v3 de 2.4 GHz (6 núcleos por \gls{cpu}, un total de 12 núcleos), una NVIDIA Tesla K80 (con dos \gls{gpu_pl}), 384GB de RAM, 24 GB de GPU RAM (12 GB por GPU), interconexión FDR Infiniband y 345GB de espacio local de borrador.
+
+El \gls{alcf} utiliza SoftEnv para manejar el ambiente.
+Un archivo llamado .soft.cooley en el directorio \texttt{home} es creado para tal propósito.
+El compilador GNU versión 7.1.0 está instalado y se hace disponible agregando \texttt{+gcc-7.1.0} a .soft.cooley.
+Múltiples versiones de \gls{mpi} se encuentran disponibles, controladas por el archivo .soft.cooley.
+La asignación provee MPICH2 para utilizar con el compilador GNU.
+Agregamos la línea \texttt{+mvapich2-2.2} al archivo .soft.cooley para tal fin.
+
+También agregamos \texttt{+matlab} para utilizar matlab versión 8.6.0.267246 (R2015b), \texttt{+anaconda3-4.0.0} para usar Anaconda 4.0.0 para Python 3 - con actualizaciones de NumPy, SciPy, etc y \texttt{+ddt} para usar Allinea DDT Debugger version 18.2.1.
+Usamos Malab para pre-procesar las salidas del modelo a los fines de prepara los datos para la clasificación con \gls{svm} usando \gls{libsvm} sobre matlab.
+Finalmente utilizamos el paquete Anaconda para el algoritmo de Generación de Corpus con los paquetes Numpy y \texttt{mpi4py}.
+
+PAra compilar nuestro código utilizamos GCC 7.1.0 con las siguientes banderas: \texttt{-O3 -mcmodel=large -fopenmp -Wall -pedantic -std=c++14}.
+
+El uso del comando \texttt{qsub} permite al usuario entregar trabajos; la entrega debe ser por medio de un script que será ejecutado en el nodo rank0 asignado al usuario por el planificador.
+El script tendrá acceso a una variable de entorno denominada \texttt{COBALT\_NODEFILE}, que es el nombre de un archivo preparado para usar con la opción \texttt{mpiexec -f}. 
+El número de procesos \gls{mpi} que corren por trabajo depende completamente de los argumentos suministrados a \texttt{mpiexec} en el script.
+
+Como mínimo, a \texttt{qsub} se le debe proveer con el número de nodos deseados (\texttt{-n}), el tiempo asignado para el trabajo (\texttt{-t}), y la ruta al script.
+Si el ususario está asociado con más de un proyecto, el nombre del proyecto debe ser provisto utilizando la opción \texttt{-A}.
+Como ejemplo de un envío de trabajo utilizamos \texttt{qsub -n 9 -t 240 -A neurophon ./test\_ERRLayer9.sh} donde pedimos por 9 nodos durante 4 horas para hacer inferencia con nuesrto modelo.
+
+Corrimos el modelo usando mpiexec versión 3.1.4 con las siguientes opciones: \texttt{mpiexec -n} el número de procesos \gls{mpi} a ser usados \texttt{-f \$COBALT\_NODEFILE -env MV2\_ENABLE\_AFFINITY=0 -ppn 1 ./Test} los argumentos del programa.
+Con tales opciones corrimos un proceso \gls{mpi} por nodo y distribuimos un puñado de hilos \gls{omp} para utilizar las \gls{cpu_pl} en cada nodo.
+Definimos el número de hilos dentro del código en las sentencias pragma: \texttt{\#pragma omp parallel for default(none) shared(...) num\_threads(9)}.
 }{
 \section{Results}
 
@@ -969,6 +1003,42 @@ We ran the model using mpiexec version 3.1.4 with the following options: \texttt
 \iftoggle{DEBUG}{
 \subsection{Pruebas de Escalado para Generación de Corpus}
 \label{CG_Scaling_test}
+
+En términos de escalado Fuerte y Débil (Fig.~\ref{fig:Corpora_Scaling}), corrimos el algoritmo para crear 64 corpus desde 64 vocabularios--un corpus por vocabulario.
+El código generó 64 archivos de texto SABLE para sintetizadores y luego llamó a Festival utilizando  el script \texttt{text2wav} para generar los archivos \texttt{wav} de audio que pronunciaron el texto en los archivos SABLE.
+
+\begin{figure*}[tb] 
+    \centering
+  \subfloat[Tiempo de corrida vs. el número de \glspl{cpu}.\label{sub:Corpora_Strong_Scaling}]{%
+       \includegraphics[width=0.49\linewidth]{Corpora_Strong_Scaling.png}}
+    \hfill
+  \subfloat[Tiempo de corrida vs. el número de \glspl{cpu}.\label{sub:Corpora_Weak_Scaling}]{%
+	\includegraphics[width=0.49\linewidth]{Corpora_Weak_Scaling.png}}
+\\
+  \subfloat[Eficiencia vs. el número de \glspl{cpu}.\label{sub:Corpora_Strong_Scaling_Efficiency}]{%
+       \includegraphics[width=0.49\linewidth]{Corpora_Strong_Scaling_Efficiency.png}}
+    \hfill
+  \subfloat[Eficiencia vs. el número de \glspl{cpu}.\label{sub:Corpora_Weak_Scaling_Efficiency}]{%
+	\includegraphics[width=0.49\linewidth]{Corpora_Weak_Scaling_Efficiency.png}}
+	\caption{Pruebas de escalado Fuerte y Débil sobre el algoritmo de Generación de Corpus.}
+  \label{fig:Corpora_Scaling} 
+\end{figure*}
+
+La línea recta en la Fig.~\ref{sub:Corpora_Strong_Scaling} muestra una buena capacidad de escalado fuerte de nuestro código.
+Para las pruebas de desempeño de escalado fuerte el tamaño del problema se mantiene constante, es decir, la corrida tiene que generar 64 corpus.
+Por otro lado el número de elementos de procesamiento se incrementa desde 1 a 64 \gls{cpu_pl} en potencias de dos.
+En este caso corrimos un proceso \gls{mpi} por \gls{cpu}.
+Debido a que un nodo en Cooley tiene 12 \gls{cpu_pl} solo necesitamos 1 nodo para correr 1, 2, 4 u 8 procesos, 2 nodos (24 \gls{cpu_pl}) para correr 16 procesos, 3 nodos (36 \gls{cpu_pl}) para correr 32 procesos y finalmente 6 nodos (72 \gls{cpu_pl}) para correr 64 procesos.
+
+Algo a tomar en cuenta es que para hacer que este código escale de la manera mostrada en las gráficas, todos los corpus deben tener el mismo tamaño, de otra manera--debido a que el código distribuye los corpus sobre los diferentes procesos de manera estática--algunos procesos que se encargan de corpus más pequeños habrían finalizado antes que otros procesos los que manejan corpus más grandes y habrian desperdiciado su tiempo esperando de manera inactiva por la finalización de aquellos procesos.
+Por lo tanto es necesario realizar una distribución de vocabularios sobre procesos de manera dinámica--así como la planificación dinámica en \gls{omp}.
+De todas formas, tratar de balancear la carga entre los diferentes procesos \gls{mpi} podría producir una degradación severa de la Eficiencia originada en el ingremento de la carga en \gls{ipc} que tales técnicas requieren~\cite{hu2012biophysically}.
+
+Sea $t_1$ la cantidad de tiempo requerida para completar una unidad de trabajo con $1$ elemento de procesamiento, y $t_N$ la cantidad de tiempo para completar la misma unidad de trabajo con $N$ elementos de procesamiento, la Eficiencia de Escalado Fuerte es: $t_1 / (N * t_N) * 100$. En la Fig.~\ref{sub:Corpora_Strong_Scaling_Efficiency} podemos ver que la eficiencia mínima de escalado fuerte está bien arriba del 75\%.
+
+En referencia al escalado débil (Fig.~\ref{sub:Corpora_Weak_Scaling}) el problema de la carga de trabajo asignada a cad elemento de procesamiento se mantiene constante y se utilizan elementos adicionales para resolver un problema más grande (es decir mientras agregamos más \glspl{cpu} también agregamos más corpus de tal manera que que un corpus sea generado por \gls{cpu}).
+Generamos un corpus por proceso utilizando un corpus por proceso \gls{mpi}, dos corpus por proceso \gls{mpi} y así.
+Sea $t_1$ la cantidad de tiempo para completar una unidad de trabajo con $1$ elemento de procesamiento, y $t_N$ la cantidad de tiempo para completar $N$ veces la misma unidad de trabajo con $N$ elementos de procesamiento, la eficiencia de escalado débil es: $t_1 / t_N * 100$. Las líneas casi horizontales muestradas en la Fig.~\ref{sub:Corpora_Weak_Scaling} ilustran que el código escala bien en términos de escalado débil también y que--como la Fig.~\ref{sub:Corpora_Weak_Scaling_Efficiency} muestra--la eficiencia del escalado débil del código nunca estuvo por debajo del the 70\%.
 }{
 \subsection{Corpora Generation Scaling Tests}
 \label{CG_Scaling_test}
@@ -1013,6 +1083,40 @@ In reference to Weak scaling (Fig.~\ref{sub:Corpora_Weak_Scaling}) the problem w
 \iftoggle{DEBUG}{
 \subsection{Pruebas de Escalado para \glsfirst{mrstsa}}
 \label{MRSTSA_Scaling_Tests}
+
+En términos de Escalado Fuerte, corremos el algoritmo para procesar 64 corpus--un corpus por vocabulario.
+Las líneas rectas en la Fig.~\ref{sub:MRSTSA_Strong_Scaling} muestran un escalad realmente bueno de este código.
+El tamaño del problema se mantuvo constante en 64 corpus procesados por medio del algortimo \gls{mrstsa} mientras que se incrementó el número de elementos de procesamiento.
+
+\begin{figure*}[tb] 
+    \centering
+  \subfloat[Tiempo de corrida vs. el número de nodos para diferentes números de hilos por nodo.\label{sub:MRSTSA_Strong_Scaling}]{%
+       \includegraphics[width=0.49\linewidth]{MRSTSA_Strong_Scaling.png}}
+    \hfill
+  \subfloat[Tiempo de corrida vs. el número de nodos para 5 hilos por nodo.\label{sub:MRSTSA_Weak_Scaling}]{%
+	\includegraphics[width=0.49\linewidth]{MRSTSA_Weak_Scaling.png}}
+\\
+  \subfloat[Efficiency vs. el número de nodos para diferentes números de hilos por nodo.\label{sub:MRSTSA_Strong_Scaling_Efficiency}]{%
+       \includegraphics[width=0.49\linewidth]{MRSTSA_Strong_Scaling_Efficiency.png}}
+    \hfill
+  \subfloat[Efficiency vs. el número de nodos para 5 hilos por nodo.\label{sub:MRSTSA_Weak_Scaling_Efficiency}]{%
+	\includegraphics[width=0.49\linewidth]{MRSTSA_Weak_Scaling_Efficiency.png}}
+	\caption{Pruebas de escalado Fuerte y Débil del algoritmo \gls{mrstsa} sobre los nodos de Cooley. Cada proceso \gls{mpi} corre en un nodo diferente con 1, 2, 4 y 5 hilos \gls{omp} corriendo en cada proceso.}
+  \label{fig:MRSTSA_Scaling} 
+\end{figure*}
+
+Cada proceso corre en un nodo diferente. Utilizamos un número de hilos \gls{omp} cuyo rango varió de 1 a 5.
+Cinco es el número de componentes espectrales en el algoritmo \gls{mrstsa}~\cite{10.1371/journal.pone.0217966}.
+Como en la sección \ref{CG_Scaling_test}, un aspecto a tomar en cuenta es que para hacer que este código escale de la manera expuesta por la gráfica, todos los corpus debieron tener el mismo tamaño, de lo contrario--debido a que el código distribuye los corpus en diferentes procesos de manera estática--algunos procesos que se encarguen de corpus más pequeños habrían finalizado antes que otros procesos encargados de corpus más grandes, produciendo así un desbaance importante de la carga en el entorno \gls{mpi}.
+Por lo tanto es necesario hacer que la distribución de corpus en los procesos sea dinámica--tal como la planificación dinámica en \gls{omp}.
+Sin embargo, así como se expresó en la sección \ref{CG_Scaling_test}, tratar de balancear la carga entre los diferentes procesos \gls{mpi} podría producir una degradación severa de la eficiencia originada en el incremento de la carga de \gls{ipc} que tales técnicas requieren~\cite{hu2012biophysically}.
+
+En referencia al escalado débil, procesamos un corpus por proceso \gls{mpi} por medio del procesamiento de un corpus para un proceso \gls{mpi}, dos corpus para dos procesos \gls{mpi}, cuatro corpus para cuatro procesos \gls{mpi} y así.
+En la Fig.~\ref{sub:MRSTSA_Weak_Scaling} la carga de trabajo en el problema asignada a cada elemento de procesamiento se mantuvo constante y se incorporaron elementos adicionales para resolver un problema más grande.
+Incorporamos más corpus por corrida mientras el número de nodos se incrementaba de tal manera de ca cada nodo tuviera un corpus para procesar.
+La línea horizontal en la Fig.~\ref{sub:MRSTSA_Weak_Scaling} muestra que este código escala bien en términos de escalado débil también.
+
+Finalmente, las Figs.~\ref{sub:MRSTSA_Strong_Scaling_Efficiency} and~\ref{sub:MRSTSA_Weak_Scaling_Efficiency} sostienen el comportamiento de las gráficas con eficiencias de escalado fuerte bien arriba del 96\% y de escalado débil arriba del 93\%. 
 }{
 \subsection{\glsfirst{mrstsa} Scaling Tests}
 \label{MRSTSA_Scaling_Tests}
