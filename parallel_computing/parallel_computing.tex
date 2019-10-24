@@ -1152,6 +1152,115 @@ Finally, Figs.~\ref{sub:MRSTSA_Strong_Scaling_Efficiency} and~\ref{sub:MRSTSA_We
 
 \iftoggle{DEBUG}{
 \subsection{Pruebas de Escalado de la \glsfirst{el}}
+
+La Fig. \ref{fig:EL_Strong_Scaling} muestra la capacidad de escalado fuerte de nuestro código en términos del tiempo de corrida vs. el número de elementos de procesamiento utilizados para la tarea.
+En estas pruebas restringimos el código para que corra un proceso \gls{mpi} por nodo.
+Cada proceso \gls{mpi} distribuye un número específico de hilos a través de las diferentes \gls{cpu_pl} en su nodo correspondiente como se muestra en la Fig. \ref{fig:Encoder_Parallelization}.
+Como anteriormente, el tamaño del problema se mantuvo constante y se incrementó el número de elementos de procesamiento.
+Las líneas rectas en las Figs.~\ref{sub:EL_Strong_Scaling_Left} y~\ref{sub:EL_Strong_Scaling1_Left} muestran--a primera vista--un buena capacidad de escalado.
+Este hecho es respaldado por las Figs.~\ref{sub:EL_Strong_Scaling_Right} y~\ref{sub:EL_Strong_Scaling1_Right} por medio de la eficiencia de escalado fuerte: $t_1 / (N * t_N) * 100$.
+
+\begin{figure*}[tb] 
+    \centering
+  \subfloat[Tiempo de corrida vs. el número de nodos para diferente números de hilos por nodo.\label{sub:EL_Strong_Scaling_Left}]{%
+       \includegraphics[width=0.49\linewidth]{EL_Strong_Scaling_Left.png}}
+    \hfill
+  \subfloat[Eficiencia vs. el número de nodos para diferente números de hilos por nodo.\label{sub:EL_Strong_Scaling_Right}]{%
+	\includegraphics[width=0.49\linewidth]{EL_Strong_Scaling_Right.png}}
+\\
+  \subfloat[Tiempo de corrida vs. el número de nodos para diferente números de hilos por nodo.\label{sub:EL_Strong_Scaling1_Left}]{%
+       \includegraphics[width=0.49\linewidth]{EL_Strong_Scaling1_Left.png}}
+    \hfill
+    \subfloat[Eficiencia vs. el número de nodos para diferentes números de hilos por nodo. Referencia (Race line) se toma desde los 8 nodos computacionales.\label{sub:EL_Strong_Scaling1_Right}]{%
+	\includegraphics[width=0.49\linewidth]{EL_Strong_Scaling1_Right.png}}
+	\caption{Pruebas de escalado Fuerte del algoritmo \gls{el}. Cada proceso \gls{mpi} corre en un nodo diferente con 1, 2, 4 y 8 hilos \gls{omp} corriendo en cada proceso.}
+  \label{fig:EL_Strong_Scaling} 
+\end{figure*}
+
+Para las pruebas mostradas en las Figs.~\ref{sub:EL_Strong_Scaling_Left} y~\ref{sub:EL_Strong_Scaling_Right} generamos una \gls{el} cuyas especificaciones se muestran en el Cuadro~\ref{Medium_Model}, mientras que para las pruebas mostradas en las Figs.~\ref{sub:EL_Strong_Scaling1_Left} and~\ref{sub:EL_Strong_Scaling1_Right} generamos una \gls{el} cuyas especificaciones se muestran en el Cuadro~\ref{Big_Model}.
+
+\begin{table*}[tb]
+\centering
+\caption{Una \gls{el} de tamaño normal para probar el escalado fuerte sobre 1, 2, 4 y 8 nodos computacionales. Los \glspl{rf} diferentes, los porcentajes y las dimensionalidades se expresan en~\cite{10.1371/journal.pone.0217966}.}
+\begin{tabular}{|c|l|l|l|l|l|l|l|}
+\hline
+Modelo  & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Número\\ de CCs\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}CR\\ Aferente\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Aferente\\ \%\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}CR\\ Lateral\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Lateral\\ \%\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Dimensionalidad de\\ la Population\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Potencial\\ \%\end{tabular}} \\ \hline
+Normal & 23 x 23                                                                      & 5 x 127                                                                      & 5\%                                                                        & 9 x 9                                                                     & 90\%                                                                      & 15 x 15                                                                                  & 3\%                                                                         \\ \hline
+\end{tabular}%}
+\label{Medium_Model}
+\end{table*}
+
+Primeramente, la \gls{el} probada en las Figs.~\ref{sub:EL_Strong_Scaling_Left} y~\ref{sub:EL_Strong_Scaling_Right} tiene 529 \gls{cc_pl}.
+Para evitar la degradación en la eficiencia del escalado, la \gls{el} tiene que mantener cierto número dej\gls{cc_pl} por hilo \gls{omp}.
+En general, mientras más baja sea la tasa de \glspl{cc} por hilo \gls{omp}, más baja es la eficiencia de escalado medida.
+EL peor caso en la Fig.~\ref{sub:EL_Strong_Scaling_Left} es para 8 nodos corriendo 8 hilos cada uno (es decir, 64 hilos en total).
+En tal caso terminamos teniendo aproximadamente 8,2 \gls{cc_pl} por hilo \gls{omp}.
+Como se puede ver en la Fig.~\ref{sub:EL_Strong_Scaling_Right} la eficiencia de escalado fuerte nunca estuvo por debajo del 80\%.
+
+Debido a que nuestro modelo computacional se direcciona a correr en supercomputadoras del más alto desempeño--como Theta en el \gls{alcf}--en el futuro, fue necesario probar la eficiencia de escalado fuerte del modelo en más nodos computacionales.
+Especificamente queríamos probar el comportamiento del escalado corriendo con hasta 64 nodos cada uno con 8 hilos \gls{omp} ya que mientras más nodos se incorporan, más carga en \gls{ipc} se tiene.
+Para mantener un número considerable de \gls{cc_pl} por  hilo \gls{omp} generamos una \gls{el} con las especificaciones mostradas en el Cuadro~\ref{Big_Model}.
+
+\begin{table*}[tb]
+\centering
+\caption{Una \gls{el} de tamaño grande para pruebas de escalado fuerte sobre 8, 16, 32 y 64 nodos computacionales. Los diferentes \glspl{rf}, los porcentajes y dimensionalidades se explican en~\cite{10.1371/journal.pone.0217966}.}
+\begin{tabular}{|c|l|l|l|l|l|l|l|}
+\hline
+Modelo  & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Npumero\\ de CCs\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}CR\\ Aferente\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Aferente\\ \%\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}CR\\ Lateral\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Lateral\\ \%\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Dimensionalidad de\\ la Población\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Potencial\\ \%\end{tabular}} \\ \hline
+Grande & 128 x 128                                                                      & 5 x 127                                                                      & 5\%                                                                        & 9 x 9                                                                     & 90\%                                                                      & 15 x 15                                                                                  & 3\%                                                                         \\ \hline
+\end{tabular}%}
+\label{Big_Model}
+\end{table*}
+
+Este modelo tuvo 16384 \glspl{cc} y para el peor caso en el cual hubieron 64 nodos computacionales con 8 hilos \gls{omp} cada uno (512 hilos en total), el modelo terminó distribuyendo 32 \gls{cc_pl} por hilo \gls{omp}, una tasa mucho mejor que la dada para el caso anterior.
+Cada \gls{cc} en este modelo tuvo 225 unidades neuronales para alcanzar un totalde 3686400 unidades neuronales.
+Cada unidad neuronal tuvo 31 sinapsis próximas (aferentes) y 432 sinapsis distales (laterales) para alcanzar un total de 1706803200 sinapsis en la \gls{el}.
+Dado el tamaño de este modelo no pudimos correr experimentos desde 1, 2 o 4 nodos computacionales ya que la cantidad de tiempo que una simulación de tales características puede tomar, exede por mucho el tiempo provisto por el comando \texttt{qsub} en Cooley.
+Por lo tanto, comenzamos las pruebas desde 8 nodos computacionales para  1, 2, 4 y 8 hilos \gls{omp} como muestra la Fig.~\ref{sub:EL_Strong_Scaling1_Left}.
+
+Como se puede ver en la Fig.~\ref{sub:EL_Strong_Scaling1_Right}, la mayor cantidad de nodos computacionales (procesos \gls{mpi}) con el consecuente crecimiento de la carga en \gls{ipc} \gls{mpi}, no afectó la eficiencia del escalado fuerte del modelo la cual estuvo bien arriba del 87\% cuando se corrieron 8 hilos por nodo, pero estuvo bien arriba del 97\% cuando se corrieron dos hilos por nodo para 64 nodos. 
+
+En referencia al escalado débil, con el fin de mantener la tasa en el número de \glspl{cc} por hilo \gls{omp} constante utilizamos la \gls{el} detallada en el Cuadro~\ref{Weak_Scaling_Models}.
+Para todos los casos detallados en el cuadro, la tasa de \gls{cc_pl} por hilo \gls{omp} fue de 32.
+
+\begin{table*}[tb]
+\centering
+\caption{\glspl{el} de diferentes tamaños para probar el escalado débil sobre 1, 2, 4, 8, 16, 32 y 64 nodos computacionales. Los diferentes \glspl{rf}, porcentajes y dimensionalidades se explican en~\cite{10.1371/journal.pone.0217966}.}
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+\begin{tabular}[c]{@{}c@{}}Número de\\ Nodos\end{tabular} & \begin{tabular}[c]{@{}c@{}}Número\\ de CCs\end{tabular} & \begin{tabular}[c]{@{}c@{}}CR\\ Aferente\end{tabular} & \begin{tabular}[c]{@{}c@{}}Aferente\\ \%\end{tabular} & \begin{tabular}[c]{@{}c@{}}CR\\ Lateral\end{tabular} & \begin{tabular}[c]{@{}c@{}}Lateral\\ \%\end{tabular} & \begin{tabular}[c]{@{}c@{}}Dimensionalidad de\\ la Población\end{tabular} & \begin{tabular}[c]{@{}c@{}}Potencial\\ \%\end{tabular} \\ \hline
+1 Nodo                                                    & 16 x 16                                                 & 5 x 127                                                 & 5\%                                                   & 9 x 9                                                & 90\%                                                 & 15 x 15                                                             & 3\%                                                    \\ \hline
+2 Nodos                                                   & 16 x 32                                                 & 5 x 127                                                 & 5\%                                                   & 9 x 9                                                & 90\%                                                 & 15 x 15                                                             & 3\%                                                    \\ \hline
+4 Nodos                                                   & 32 x 32                                                 & 5 x 127                                                 & 5\%                                                   & 9 x 9                                                & 90\%                                                 & 15 x 15                                                             & 3\%                                                    \\ \hline
+8 Nodos                                                   & 32 x 64                                                 & 5 x 127                                                 & 5\%                                                   & 9 x 9                                                & 90\%                                                 & 15 x 15                                                             & 3\%                                                    \\ \hline
+16 Nodos                                                  & 64 x 64                                                 & 5 x 127                                                 & 5\%                                                   & 9 x 9                                                & 90\%                                                 & 15 x 15                                                             & 3\%                                                    \\ \hline
+32 Nodos                                                  & 64 x 128                                                & 5 x 127                                                 & 5\%                                                   & 9 x 9                                                & 90\%                                                 & 15 x 15                                                             & 3\%                                                    \\ \hline
+64 Nodos                                                  & 128 x 128                                               & 5 x 127                                                 & 5\%                                                   & 9 x 9                                                & 90\%                                                 & 15 x 15                                                             & 3\%                                                    \\ \hline
+\end{tabular}%}
+\label{Weak_Scaling_Models}
+\end{table*}
+
+La Fig.~\ref{fig:EL_Weak_Scaling} muestra el desempeño de escalado débil del modelo.
+En este caso la carga del problema signada a cada elemento de procesamiento se mantuvo constante  y se agregaron elementos adicionales para resolver un problema más grande.
+Las líneas horizontales en la Fig.~\ref{sub:EL_Weak_Scaling_Left} muestran--a primera vista--un buen ecenario.
+Como se puede ver en la Fig.~\ref{sub:EL_Weak_Scaling_Right}, la eficiencia de escalado estuvo siempre por arriba del 75\%, donde la eficiencia de escalado débil es: $t_1 / t_N * 100$.
+Estas medidas muestran que la ejecución paralela del modelo no fue afectada por la carga \gls{ipc} \gls{mpi} cuando el número de nodos computacionales se incrementó.
+Este escenario es especialmente evidente para el caso de un hilo \gls{omp} en cuyo caso la peor eficiencia está arriba del 95\%.
+
+\begin{figure*}[tb] 
+    \centering
+  \subfloat[Tiempo de corrida vs. el número de nodos para diferentes números de hilos por nodo.\label{sub:EL_Weak_Scaling_Left}]{%
+       \includegraphics[width=0.49\linewidth]{EL_Weak_Scaling_Left.png}}
+    \hfill
+  \subfloat[Eficiencia vs. el número de nodos para diferentes números de hilos por nodo.\label{sub:EL_Weak_Scaling_Right}]{%
+	\includegraphics[width=0.49\linewidth]{EL_Weak_Scaling_Right.png}}
+
+	\caption{Pruebas de escalado débil del algoritmo \gls{el} sobre los nodos de Cooley. Cada proceso \gls{mpi} corre en un nodo diferente con 1, 2, 4 y 8 hilos \gls{omp} corriendo en cada proceso.}
+  \label{fig:EL_Weak_Scaling} 
+\end{figure*}
+
+Las Figs.~\ref{sub:EL_Strong_Scaling_Left} y~\ref{sub:EL_Strong_Scaling1_Left} muestran una escalabilidad fuerte inicialmente buena de nuestro código miesntras que la Fig. \ref{sub:EL_Weak_Scaling_Left} nos permite vislumbrar un buen desempeño en escalabilidad débil en supercomputadoras de alto desempeño también.
+Todos esos resultados visuales son sostenidos por buenas medidas de eficiencia.
 }{
 \subsection{\glsfirst{el} Scaling Tests}
 
@@ -1254,6 +1363,20 @@ Figs.~\ref{sub:EL_Strong_Scaling_Left} and~\ref{sub:EL_Strong_Scaling1_Left} sho
 
 \iftoggle{DEBUG}{
 \section{Discusión}
+
+%In this paper we show how parallelization strategies with great independence on data coalescence scale efficiently on distributed memory systems while running biologically inspired computational models with highly sparse and random connectivity profiles.
+
+%Algorithmic implementations strongly based on \gls{simd} parallel computing architectures, impose important restrictions on memory data alignment. \gls{omp} threads in shared memory systems are instead highly independent and powerful processing abstractions which can perform complex task with eventual vectorization optimizations when possible.
+
+%Our findings show that the parallelization strategies used in this work present good and robust scaling efficiency even in the face of intensive \gls{ipc} loads. Such behavior can be kept in a sustained manner as long as a minimum of balance in the computational load among different threads remains. In section~\ref{MRSTSA_Scaling_Tests} we showed very high scaling efficiencies. Yet, we warned about difficulties in the face of a context with uneven corpus sizes. Achieving load balance in distributed memory systems is extremely expensive given the amount of \gls{ipc} overload needed. In this manner, we claim that the best way to balance computational load among computing elements is to try to confine as much computational load as possible in a shared memory unit without far exceeding the concurrent threading or hyperthreading capacity provided by a node. Once such conditions are satisfied it is relatively straightforward to spawn a number of threads in which the work could be distributed. Once in a shared memory system, \gls{omp} threads are much lighter than \gls{mpi} processes, since threads do not duplicate heap nor program and they do not need complex communication methods to share data. Furthermore, \gls{omp} threads can manage load balancing efficiently and automatically since \gls{omp} manages dynamic parallel schedule on its own. This is highly desirable, specially in a simulation environment in which individual modules--such as \glspl{cc} in our cortical model--are not uniformly analogous in terms of size and or connectivity. In \gls{mpi} instead, the programmer has to deal with load balancing using intensive \gls{ipc} which is highly expensive especially when the communication is carried out among processes in different nodes. On the other side \gls{omp} threads suffer from false shearing in the \glspl{cpu} caches, but with a highly flexible parallelization scheme as the one used in section \ref{EL_Parallelization} the user can flexibly vary the parallelization granularity as to achieve the best performance avoiding that each thread exceeds the quota of cache memory available in each \gls{cpu}.
+
+%In Figs.~\ref{fig:Corpora_Scaling}, \ref{fig:MRSTSA_Scaling}, \ref{fig:EL_Strong_Scaling} and \ref{fig:EL_Weak_Scaling} the phenomenon of \emph{super-linear} speedup is present for several cases. In \cite{7733347} the authors pointed out that: \textit{ The superlinear speedup performance in persistent algorithms occurs mainly due to the increased cache resources in the parallel computer architectures, the prefetching of shared variables in shared memory organization, or better scheduling in heterogeneous environments. The effects of the shared memory architectures also impact the performance behavior of the granular and scalable algorithms}. We absolutely endorse such statement and consider it sustainable as a general explanation for our case. Nevertheless, we also consider that more in depth analysis of memory utilization using profiling tools will be needed in the future.  
+
+%In section~\ref{EL_Parallelization} some problems could arise when a single \gls{cc} is too large to share a computing node with many others. If just 2 \glspl{cc} could fit in a node, the parallelization granularity would be very poor, but \gls{omp} is highly versatile and can easily manage nested threading. In such case we could vary the parallelization granularity in an extremely accessible manner with all the advantages of \gls{omp} in terms of dynamic load balancing. This nested parallelization strategy could be applied in section~\ref{MRSTSA_Scaling_Tests} in the face of an eventual unbalanced computational load from an uneven corpora size distribution. 
+
+%This scenario in which the computational burden assigned to each shared memory system is distributed among a set of highly lightweight, flexible and dynamic \gls{omp} threads is really favorable in a context in which the number of \glspl{cpu} shearing memory increases specially in high-end supercomputers. In such respect and in teh face of the good results returned by our experiments, we evaluate as viable the implementation of these parallelization strategies in high end supercomputers in the future.
+
+%We claim thus that this work introduces parallelization strategies whose flexibility and robustness are particularly useful in overly variable and biologically inspired computational scientific scenarios whose modelization approaches can vary dramatically in different biologically accurate implementations strategies in which there are erratic network structures with highly sparse and random connectivity profiles.
 }{
 \section{Discussion}
 
