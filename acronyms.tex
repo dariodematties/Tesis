@@ -11,11 +11,24 @@
 
 \newacronym{hh}{HH}{Hodgkin-Huxley}
 
+\iftoggle{DEBUG}{
+\newacronym{tsf}{PST}{Predicci\'on en Series Temporales}
+}{
 \newacronym{tsf}{TSF}{Time Series Forecasting}
+}
 
+\iftoggle{DEBUG}{
+\newacronym{eda}{AED}{Algoritmo de Estimaci\'on de Distribuci\'on}
+\newacronym{eda_pl}{AEDs}{Algoritmos de Estimaci\'on de Distribuci\'on}
+}{
 \newacronym{eda}{EDA}{Estimation Distribution Algorithm}
+}
 
+\iftoggle{DEBUG}{
+\newacronym{lif}{FID}{Fuga Integraci\'on-y-Disparo}
+}{
 \newacronym{lif}{LIF}{Leaky Integrate-and-Fire}
+}
 
 \newacronym{rnn}{RNN}{Recurrent Neural Network}
 %\newacronym{rnr}{RNR}{Red Neuronal Recurrente}
@@ -122,7 +135,11 @@
 
 \newacronym{rlr}{RLR}{regularLayerResponse}
 
+\iftoggle{DEBUG}{
+\newacronym{ipc}{CEP}{Communicación Entre Procesos}
+}{
 \newacronym{ipc}{IPC}{Inter-Process Communication}
+}
 
 \newacronym{stl}{STL}{Standard Template Library}
 
@@ -292,7 +309,11 @@
 
 \newacronym{meg}{MEG}{Magnetoencephalograph}
 
+\iftoggle{DEBUG}{
+\newacronym{oop}{POO}{Programación Orientada a Objetos}
+}{
 \newacronym{oop}{OOP}{Object-oriented programing}
+}
 
 \newacronym{dft}{DFT}{Discrete Fourier Transform}
 
