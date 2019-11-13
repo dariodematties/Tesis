@@ -798,6 +798,7 @@ Corpus 4   & \begin{tabular}[c]{@{}l@{}}rank 1\\ task 16\end{tabular} & \begin{t
 
 \iftoggle{DEBUG}{
 \subsection{Implementación Paralela de la \glsfirst{el}}
+\label{EL_Parallelization}
 
 La \gls{el} simula un parche de tejido cortical e incorpora organización columnar, formación espontánea micro-columnar, depolarización parcial \gls{nmda} y adaptación a activaciones contextuales.
 Simulamos células piramidales segregando las conexiones próximas--desde ramas dendríticas aferentes--completamente de las conexiones distales--desde ramas dendríticas laterales.
@@ -1366,38 +1367,38 @@ Figs.~\ref{sub:EL_Strong_Scaling_Left} and~\ref{sub:EL_Strong_Scaling1_Left} sho
 \iftoggle{DEBUG}{
 \section{Discusión}
 
-En este trabajo mostramos cómo estrategias de paralelización con gran independencia de la coalescencia de los datos escalan eficientemente en sistemas de memoria distribuída mientras corren modelos computacionales biológicamente inspirados con perfiles de conectividad altamente dispersos y aleatorios.
+En este trabajo mostramos cómo estrategias específicas de paralelización con gran independencia de la coalescencia de los datos escalan eficientemente en sistemas de memoria distribuida mientras corren modelos computacionales biológicamente inspirados con perfiles de conectividad altamente dispersos y aleatorios.
 
-Las implementaciones algorítmicas que se basan fuertemente en arquitecturas de computación paralela \gls{simd} imponen restricciones importantes sobre el alineamiento de los datos en memoria.
+Las implementaciones algorítmicas fuertemente basadas en arquitecturas de computación paralela \emph{\gls{simd}} imponen restricciones importantes sobre el alineamiento de los datos en memoria.
 Los hilos \gls{omp} en sistemas de memoria compartida son en cambio abstracciones altamente independientes y poderosas de procesamiento que pueden realizar tareas complejas con optimizaciones eventuales de vectorización cuando sea posible.
 
-Nuestros hallazgos muestran que las estrategias de paralelización utilizadas en este trabajo presentan una eficiencia de escalabilidad buena y robusta aún frente a cargas intencivas de \gls{ipc}.
+Nuestros hallazgos muestran que las estrategias de paralelización utilizadas en este trabajo presentan una eficiencia de escalabilidad buena y robusta aún frente a cargas intensivas de \gls{ipc}.
 Tal comportamiento se puede mantener de manera sostenida siempre y cuando se conserve un balance de carga computacional mínimo entre los diferentes hilos.
-En la sección~\ref{MRSTSA_Scaling_Tests} mostramos eficiencias de escalado muy altes. 
+En la sección~\ref{MRSTSA_Scaling_Tests} mostramos eficiencias de escalado muy altas.
 Aún así advertimos acerca de las dificultades de cara a un contexto con tamaños disímiles de corpus.
 Alcanzar balance en la carga en sistemas de memoria distribuida es extremadamente caro dada la cantidad de sobrecarga de \gls{ipc} requerida.
-De esta forma, afirmamos que la mejor manera de balancear la carga computacional entre los elementos coputacionales is tratar de confinar tanta carga computacional como sea posible en una unidad de memoria compartida sin exceder las capacidades de hilado concurrente o hiperhilado provistas por un nodo.
-Una vez que se satisfacen tales condiciones se hace relativamente simple repartir un cierto número de hilos en los que se puede distribuir el trabajo.
-Ya en un sistema de memoria compartida, los hilos \gls{omp} son mucho más ligeros que los procesos \gls{mpi}, ya que los hilos no duplican el heap ni el programa y no necesitan métodos complejos de comunicación para compartir los datos.
+De esta forma, afirmamos que la mejor manera de balancear la carga computacional entre los elementos computacionales is tratar de confinar tanta carga computacional como sea posible en una unidad de memoria compartida sin exceder las capacidades de hilado concurrente o hiper-hilado provistas por un nodo.
+Una vez que se satisfacen tales condiciones se hace relativamente simple lanzar un cierto número de hilos en los que se puede distribuir el trabajo.
+Ya en un sistema de memoria compartida, los hilos \gls{omp} son mucho más ligeros que los procesos \gls{mpi}, ya que los hilos no duplican el \emph{heap} ni el programa y no necesitan métodos complejos de comunicación para compartir los datos.
 Asimismo, los hilos \gls{omp} pueden manejar el balance de la carga de manera eficiente y automáticamente ya que \gls{omp} maneja planificación paralela dinámica de manera autónoma.
 Esto es muy deseable, especialmente en un entorno de simulación en el que los módulos individuales--como las \gls{cc_pl} en nuestro modelo cortical--no son uniformemente análogos en términos de tamaño ni conectividad.
 En \gls{mpi} en cambio, el programador se tiene que hacer cargo del balanceo de la carga utilizando \gls{ipc} de manera intensiva especialmente cuando la comunicación es entre procesos en nodos diferentes.
-Por otro lado los hilos \gls{omp} sufren el fenómeno denominado false shearing en las caches de las \gls{cpu_pl}, pero con un esquema de paralelización altamente flexible como el utilizado en la sección \ref{EL_Parallelization} el usuario puede variar la granularidad en la paralelización de manera flexible para alcanzar el mejor desempeño evitando que cada hilo exceda la cuota de memoria cache disponible en cada \gls{cpu}.
+Por otro lado los hilos \gls{omp} sufren el fenómeno denominado \emph{false shearing} en las caches de las \gls{cpu_pl}, pero con un esquema de paralelización altamente flexible como el utilizado en la sección \ref{EL_Parallelization} el usuario puede variar la granularidad en la paralelización de manera flexible para alcanzar el mejor desempeño evitando que cada hilo exceda la cuota de memoria cache disponible en cada \gls{cpu}.
 
-En las Figs.~\ref{fig:Corpora_Scaling}, \ref{fig:MRSTSA_Scaling}, \ref{fig:EL_Strong_Scaling} and \ref{fig:EL_Weak_Scaling} el fenómeno de \emph{super-linear} speedup se hace presente en varios casos.
-En \cite{7733347} los autores afirmaron que \texttt{la mejora superlinear en el desempeño en algoritmos persistentes ocurre principalmente debido al incremento de recursos de cache en arquitecturas de computadoras paralelas, el precargado de variables compartidas en la organización de memoria compartida, o una mejor planificación en entornos eterogeneos.
+En las Figs.~\ref{fig:Corpora_Scaling}, \ref{fig:MRSTSA_Scaling}, \ref{fig:EL_Strong_Scaling} y \ref{fig:EL_Weak_Scaling} el fenómeno de \emph{super-linear speedup} se hace presente en varios casos.
+En \cite{7733347} los autores afirmaron que: \texttt{la mejora super-lineal en el desempeño en algoritmos persistentes ocurre principalmente debido al incremento de recursos de cache en arquitecturas de computadoras paralelas, el precargado de variables compartidas en la organización de memoria compartida, o una mejor planificación en entornos heterogéneos.
 Los efectos de las arquitecturas de memoria compartida también impactan el desempeño del comportamiento de los algoritmos granulares y escalares.}
-Nosotrso apoyamos absolutamente dicha mosión y consideramos esta sustentable como una explicación genral para nuestro caso. Sin embargo, también consideramos que se requerirá un análisis más profundo de la utilización de la memoria haciendo uso de herramientas de profiling que se podrían requerir en el futuro.
+Nosotros apoyamos dicha moción y consideramos esta sustentable como una explicación general para nuestro caso. Sin embargo, también consideramos que se requerirá un análisis más profundo de la utilización de la memoria haciendo uso de herramientas de profiling que se podrían requerir en el futuro.
 
 En la sectión~\ref{EL_Parallelization} podrían surgir algunos problemas cuando una única \gls{cc} es muy grande para compartir un nodo computacional con muchas otras.
 Si solo 2 \gls{cc_pl} entraran en un nodo, la granularidad en la paralelización sería muy pobre, pero los hilos \gls{omp} son altamente versátiles y pueden fácilmente  manejar hilado anidado.
-En tal caso podríamos variar la granularidad de paralelización de manera extremadaamente accesible con todas las ventajas de \gls{omp} en términos de balance de carga dinámica.
-Esta estratégia de paralelización anidada se podría aplicar en la sección~\ref{MRSTSA_Scaling_Tests} de cara a un eventual desvalance de la carga computacional desde una distribución inequitatica del tamaño de los corpus.
+En tal caso podríamos variar la granularidad de paralelización de manera extremadamente accesible con todas las ventajas de \gls{omp} en términos de balance de carga dinámica.
+Esta estrategia de paralelización anidada se podría aplicar en la sección~\ref{MRSTSA_Scaling_Tests} de cara a un eventual desbalance de la carga computacional desde una distribución inequitativa del tamaño de los corpus.
 
-Este escenario en el que la carga computacional asignada a cada sistema de memoria compartida es distribuido entre un conjunto de hilos \gls{omp} altamente libianos, flexibles y dinámicos es muy favorable en un contexto en el cual el número de \gls{cpu_pl} compartiendo memoria se incrementa especialmente en computadoras de alto desempeño.
+Este escenario en el que la carga computacional asignada a cada sistema de memoria compartida es distribuido entre un conjunto de hilos \gls{omp} altamente livianos, flexibles y dinámicos es muy favorable en un contexto en el cual el número de \gls{cpu_pl} compartiendo memoria se incrementa año tras año especialmente en computadoras de alto desempeño.
 A tal efecto y de cara a los buenos resultados devueltos por nuestros experimentos, evaluamos la implementación de estas estrategias de paralelización como válidas en supercomputadoras de alto desempeño en el futuro.
 
-Afirmamos por lo tanto que este trabajo introduce estrategias de paralelización cuya flexibilidad y robustez son particularmente útiles escenarios científicos computacionales ampliamente variables y biológicamente inspirados cuyos enfoques de modelización pueden variar dramáticamente en estrategias de implementación biológicamente precisas diferentes en las cuales hay estrucutras de redes erráticas con perfiles de conectividad altamente dispersos y aleatórios.
+Afirmamos por lo tanto que este trabajo introduce estrategias de paralelización cuya flexibilidad y robustez son particularmente útiles en escenarios científicos computacionales ampliamente variables y biológicamente inspirados cuyos enfoques de modelización pueden variar dramáticamente en estrategias de implementación biológicamente precisas diferentes en las cuales hay estructuras de redes erráticas con perfiles de conectividad altamente dispersos y aleatorios.
 }{
 \section{Discussion}
 
@@ -1425,14 +1426,14 @@ We claim thus that this work introduces parallelization strategies whose flexibi
 \iftoggle{DEBUG}{
 \section{Conclusión}
 
-En este trabajo mostramos una estratégia de paralelización híbrida \gls{mpi}+\gls{omp} que escala eficientemente en un sistema de memoria distribuída corriendo un enfoque computacional inspirado en la biología de la corteza de los mamíferos con un perfil de conectividad altamente disperso e irregular.
-Mostramos esta eficiencia por meido de pruebas de escalado fuerte y débil en los nodos de Cooley.
+En este trabajo mostramos una estrategia de paralelización híbrida \gls{mpi}+\gls{omp} que escala eficientemente en un sistema de memoria distribuida corriendo un enfoque computacional inspirado en la biología de la corteza de los mamíferos con un perfil de conectividad altamente disperso e irregular.
+Mostramos esta eficiencia por medio de pruebas de escalado fuerte y débil en los nodos de Cooley.
 
-La independencia de la coalescencia de los datos, la reconfiguración flexible de la granularidad, el balanceo de carga dinámicamente planificado y el procesamiento paralelo libianno en porciones de memoria compartida configuran los rasgoz sobresalientes en nuestro enfoque de paralelización.
+La independencia de la coalescencia de los datos, la reconfiguración flexible de la granularidad, el balanceo de carga dinámicamente planificado y el procesamiento paralelo liviano en porciones de memoria compartida configuran los rasgos sobresalientes en nuestro enfoque de paralelización.
 
-Consideramos tales características de fundamental importancia para el uso de este procedimiento de paralelización en escenarios científicos computacionales altamente variables  con datasets iregularmente estructurados hallados de manera típica en enfoques de investigación biológicamente inspirados.
+Consideramos tales características de fundamental importancia para el uso de este procedimiento de paralelización en escenarios científicos computacionales altamente variables con conjuntos de datos irregularmente estructurados hallados de manera típica en enfoques de investigación biológicamente inspirados.
 
-Por medio de los resultados devueltos por esta rueda de pruebas estimamos que política de paralelización como viable para ser usada en supercomputadoras de alta performance líderes en el futuro.
+Por medio de los resultados devueltos por esta rueda de pruebas estimamos que política de paralelización como viable para ser usada en supercomputadoras líderes de muy alto desempeño en el futuro.
 }{
 \section{Conclusion}
 
