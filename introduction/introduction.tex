@@ -87,74 +87,81 @@ En el \gls{ml} lo primero que un investigador hace es construir un modelo adapta
 Este modelo inicial, construido en base al conocimiento del dominio tendrá varios parámetro que pueden ser ajustados basandose en los datos para el entrenamiento.
 El investigador luego desarrolla algoritmos que pueden adaptar esos parámetros.
 Típicamente , los parámetros son ajustados adaptándolos para minimizar un criterio de error \cite{bishop2007,dudaHart1973}.
-% A model whose parameters are thus tuned can then be used to classify
-%novel patterns, predict future patterns, compress, reconstruct etc. However, despite
-%its mathematical elegance, this method hides some fundamental problems associated
-%with learning.
-%One aspect of learning is the sample complexity – the number of examples required
-%for training a model to a reasonable level of performance. If the hypothesis space for
-%a learning problem is very large, then the construction of a learned model can take a
-%large number of training examples and long training times. The No Free Lunch (NFL)
-%theorem, a fundamental result on search and optimization, addresses aspects about
-%the complexity of learning [50]. Intuitively, the NFL theorem for learning argues
-%that no learning algorithm has an inherent superiority over another algorithm for all
-%learning problems. If an algorithm is superior for a particular problem, it is only
-%because that algorithm exploited assumptions that are suitable for that problem.
-%The same algorithm will not do well on a problem that has assumptions different
-%from that of the original one. This means that, to make the algorithms effective, the
-%machine-learning researcher has to encode knowledge about the problem domain into
-%the initial model structure. The more prior knowledge that is put in, the easier it is
-%to learn. Does that mean we need to create a new model for each new problem that
-%we try to solve using machine learning? Clearly, such an approach would be very
-%human intensive.
-%On the other hand, humans and other mammals seem to solve these problems in
-%a different way altogether. The fact that humans can learn and adapt to problems
-%that did not exist when the initial model (the neocortex) was created is proof of
-%the generic nature of the mechanisms used by the human brain. Moreover, a large
-%number of researchers now conjecture that the neocortex is using fundamentally the
-%same algorithm for learning different modalities. This means that the same algorithm
-%is in operation for learning models for audition, vision, somatosensory perception and
-%language.
-%Although not proven conclusively, there is increasing amount of evidence for a
-%common cortical algorithm. The existence of a common cortical algorithm was con-
-%jectured first by a neuroscientist who studied cortical tissues of different mammals
-%[68]. The remarkable similarity of the cortical connectivity across different modalities
-%and even across different species was the reason for this conjecture. Experimental re-
-%sults on ferrets provided further support for this theory [103]. In these experiments,
-%the optical nerve fibers in the ferret were re-routed to the auditory area. With expo-
-%sure to visual patterns, the auditory area of the ferret developed visual receptive fields
-%and was able to demonstrate behavior using this “audio-vision”. Sensory substitu-
-%tion studies where the impression of visual patterns on to the somatosensory modality
-%gives rise to visual perception also lends support to the existence of a common cortical
-%algorithm [3, 2].
-%The combination of the common cortical algorithm and the NFL theorem produces
-%important implications for machine learning and for our quest to build intelligent
-%machines. On the surface, the NFL theorem seems to create problems for the idea
-%of a common cortical algorithm. How can one mechanism/algorithm do very well
-%on tasks as different as vision, audition and language? The answer comes from the
-%part of the NFL theorem that talks about the assumptions that need to be exploited.
-%The common cortical algorithm and the NFL theorem can be consistent with each
-%other provided we can exploit the same basic assumptions to learn vision, audition,
-%language etc. If the cortex is good at learning a wide variety of tasks using a common
-%mechanism, then there must be something common about these seemingly different
-%tasks. Evolution must have discovered this commonality and neocortex must be
-%exploiting that.
-%From the NFL theorem we conclude that a universal theory of learning is, in
-%essence, a universal theory of assumptions. The set of assumptions that a learner
-%uses to predict outputs, given inputs that it has not encountered, is known as the
-%inductive bias of that learning algorithm [66, 36]. The more assumptions we make,
-%the easier it becomes to learn. However, the more assumptions we make, the fewer
-%the number of problems we can solve. If we need to design an algorithm that can
-%be applied to a large class of problems, the question we need to ask is: What is
-%the basic set of assumptions that are specific enough to make learning feasible in a
-%reasonable amount of time while being general enough to be applicable to a large class
-%of problems? We are in luck if the same set of assumptions works for a large class of
-%problems.
-%This brings us to the question we raised at the beginning of this section. We should
-%study the neo-cortex because we need to find out the precise set of assumptions about
-%the world that should be encoded in our learning algorithms. First, the neo-cortex
-%is an existence proof that such a general set of assumptions exists. Second, studying
-%the neo-cortex in the right way will tell us more about these assumptions.
+Un modelo cuyos parámetro se ajustan puede luego ser utilizado para clasificar nuevos patrones,
+predecir futuros patrones, comprimir, reconstruir, etc.
+Sin embargo, independientemente de su elegancia matemática, este método esconde algunas dificultades fundamentales asociadas al aprendizaje.
+Un aspecto del aprendizaje es la complejidad de la muestra--es decir, el número de ejemplos requeridos para entrenar un modelo
+a un nivel de desempeño rasonable.
+Si el espacio de hipótesis para un problema de aprendizaje es muy grande,
+entonces, la construcción de un modelo entrenado puede tomar un gran número de ejemplos de entrenamiento
+y mucho tiempo para ser entrenado.
+
+El teorema de \gls{nfl}, que plantea un dilema fundamental en búsqueda y optimización,
+aborda aspectos acerca de la complejidad del aprendizaje \cite{RePEc:eee:renene:v:134:y:2019:i:c:p:1295-1306}.
+Intuitivamente el teorema de \gls{nfl} para el aprendizaje alega que 
+no existe un algoritmo de aprendizaje que presente una superioridad inherente con respecto a otro algoritmo
+para todos los preblemas de aprendizaje.
+Si un algoritmo es superior para un probema particular es sólo porque dicho algoritmo explota
+supuestos que son adecuados para dicho problema.
+El mismo algoritmo no se desmpeñará bien en un problema que tiene diferentes supuestos
+a los del problema original.
+Esto significa que para construir algoritmos efectivos, el investigador en \gls{ml}
+tiene que codificar el conocimiento acerca del dominio del problema dentro de la estructura del modelo inicial.
+Mientras más conocimiento previo es introducido, es mismo es adquirido más rápido por el modelo.
+Pero, ¿esto en realidad significa que necesitamos crear un nuevo modelo para cada nuevo problema
+que intentamos resolver utilizando \gls{ml}?
+Claramente, dicha estrategia sería excesivamente humano dependiente.
+
+Por otro lado, los humános y otros mamíferos parecen resolver todos estos problemas de manera diferente.
+El hecho de que los humanos puedan aprender y adaptarse a problemas que no existían
+cuando el modelo inicial--el neocortex--fue freado por la selección natural
+es la pruaba de cierta naturaleza genérica de los mecanismos utilizados por el cerebro humano.
+Asimismo, un gran número de investigadores ahora conjeturan que el neocortex está utilizando fundamentalmente el mismo algoritmo
+para aprender modelidades diferentes.
+Esto significa que el mismo algoritmo está en operación como modelo de aprendizaje para la audición, la visión, la percepción somatosensorial
+y el lenguaje.
+
+Aunque todavía no existe evidencia concluyente, hay una cantidad cada vez mayor de evidencia que soporta un algoritmo cortical comun.
+La existencia de un algoritmo cortical comun fue primeramente conjeturada po un nerucientífico que estudió el tejido cortical de diferentes mamífersos \cite{mountcastle_1978}.
+La similitud sorprendente de la conectividad cortical a través de modalidades diferentes
+y aún entre especies diferentes fue la razón para esta conjetura.
+Resultados experimentales en hurones proveen apoyo adicional a esta teoría \cite{von2000visual}.
+En estos experimentos, las fibras del nervio óptico in el urón se re-rutearon hacia el área auditiva.
+Con exposición a patrones visuales el área auditiva del urón desarrolló campos receptivos visuales
+y pudo demostrar comportamiento utilizando esta \emph{audio-visión}.
+Estudios de sustitución sensorial donde la impresión de patrones visuales en la modalidad somatosensorial
+da origen a percepción visual también respaldan la existencia de un algoritmo cortical común \cite{doi:10.1196/annals.1305.006,BachyRita2003SensorySA}.
+La combinación de un algoritmo cortical común y del teorema \gls{nfl} produce implicancias importantes para el \gls{ml}
+y también para nuestra necesidad de construir máquinas inteligentes.
+Superficialmente, el teorema \gls{nfl} parece traerle problemas a la idea de un algoritmo cortical común.
+¿Cómo un algoritmo puede desempeñarse tan bien en tareas tan disímiles como
+visión, audición y lenguaje?
+La respuesta viene desde la parte del teorema \gls{nfl} que habla acerca de los supuestos que se necesitan explotar.
+EL algoritmo cortical común y el teorema \gls{nfl} pueden ser consistentes el uno con el otro
+debido a que podemos explotar los mismos supuestos básicos para aprender visión, audición,
+lenguaje, etc.
+Si la corteza es buena aprendiendo una amplia variedad de tareas utilizando un mecanismo común,
+debe de haber algo en común entre todas estas tareas--aparentemente diferentes.
+La evolución debe haber descubierto estos razgos comunes y el neocortex debe estar esplotándolos. 
+
+Desde el teorema \gls{nfl} concluimos que una teoría universal de aprendizaje es,
+en esencia, una teoría universal de supuestos.
+El conjunto de supuestos que un aprendiz utiliza para predecir las salidas, dadas ciertas entradas
+que este aún no ha recibido se conoce como el sesgo inductivo del algoritmo de aprendizaje \cite{Mitchell80theneed,10.1007/BF00993472}.
+Mientras más supuestos se adoptan, más fácil es aprender.
+Sin embargo, mientras más supuestos se adoptan, también se reduce más el número de problemas que podemos resolver.
+Si necesitamos diseñar un algoritmo que se pueda aplicar a un gran espectro con una amplia clase de problemas,
+la pregunta que necesitamos hacernos es:
+¿Cuál es el conjunto de supuesto básicos que son suficientemente específicos para que el aprendizaje sea posible
+en una cantidad razonable de tiempo mientras que sea suficientemente general para ser aplicable a una
+amplia clase de problemas?
+Tendremos suerte si el mismo conjunto de supuestos funciona para una amplia clase de problemas.
+
+Todo esto nos trae denuevo a la pregunta formulada al principio de esta sección.
+Debemos estudiar la corteza ya que necesitamos hallar el conjunto preciso de supuestos
+acerca del mundo que deben ser codificados en nuestros algoritmos de aprendizaje.
+Primero, el neocortex consittuye una prueba en acción de que tal conjunto de supuestos esiste.
+Segundo, estudiando el neocortex de manera apropiada nos dará más información sobre dichos supuestos.
 
 
 
@@ -320,6 +327,65 @@ Típicamente , los parámetros son ajustados adaptándolos para minimizar un cri
 
 \section{Aportes}
 
+Las teorías computacionales en el \glsfirst{ml} en general--y los enfoques de \gls{dl} en particular--no toman en cuenta algunos hechos neurofsiológicos persuacivos descubiertos recientemente.
+Algunos de estos elementos incluyen las activaciones \gls{nmda} de ramas dendríticas independientes producidas por la excitación de cierta cantidad de sinapsis distales, la adaptación a estímulos contextuales en el tejido cortical para mejorar la eficiencia en la codificación de información sensorial, y el hecho de que el cerebro utiliza \gls{sdr_pl} para procesar la información.
+
+Más allá de su gran éxito \cite{lecun_deep_2015}, los enfoques tradicionales en el \gls{ml} podrían estar alcanzando una meceta difícil de revertir.
+Si bien los algoritmos de dichos enfoque avanzan día tras día de manera vertiginosa, se observa una clara tendencia que atribuye cada vez más importancia al volumen de los datos más allá del tipo de algoritmo a utilizar \cite{PPR:PPR91722}.
+Creemos que métodos alternativos más inspirados en la neurofisiología actual deberían ser desarrollados para obtener mejores técnicas computacionales de aprendizaje.
+
+Tomamos una ruta alternativa al \gls{ml} tradicional abordando dichos inconvenientes por medio de la observación de las propiedades dinámicas y estructurales de la corteza de los mamíferos.
+
+\subsection{Adquisición Fonética en Dinámica Cortical, Un Enfoque Computacional}
+
+Consideramos importante investigar los rasgos fisiológicos y anatómicos en el tejido cortical,
+basándonos en el hecho de que (i) los humanos y varias especies animales pueden clasificar unidades fonéticas de manera robusta independientemente de las perturbaciones importantes sufridas por los estímulos; y (ii) la activación cortical en algunos animales revela un ajuste espectro-temporal suficientemente fuerte como para sostener discriminación fonética, aún cuando los estímulos son distorcionados por ruido aditivo y reverberación.
+
+A tal efecto, en nuestro primer trabajo \cite{10.1371/journal.pone.0217966} identificamos propiedades neurofisiológicas y anatómicas precisas en el cerebro de los mamíferos que consideramos potencialmente relevantes para la adquisición de las reglas fonotácticas del lenguaje.
+Nuestro modelo computacional incorpora tales propiedades, las que testeamos en términos de invarianza y generalización fonética contra ruido aditivo, reverberación y variaciones de voz y de tono.
+
+La sección cortical de nuestra implementación muestra una invarianza y generalización fonética prometedoras superando representaciones en \gls{mrstsa} 
+\footnote{Inspirada en el trabajo de T. Chi, et al. \cite{chi_2005}}
+para varias tareas de clasificación de palabras; cada una con diferentes números de sílabras.
+Los resultados presentados en este paper sugieren que más investigación para entender y modelar las características corticales en aplicaciones de adquisición de fonética, constituye un esfuerzo que vale la pena tomar.
+
+
+
+
+
+
+\subsection{Hacia una Escalabilidad de Alta Gama en Modelos Computacionales Biológicamente Inspirados}
+
+Esta investigación \cite{} constituye un enfoque relevante hacia el desarrollo de estrategias de paralelización masivas enfocadas en la implementación de modelos computacionales biológicamente inspirados que incluyen perfiles de conectividad altamente dispersos y aleatorios en equipos de \gls{hpc}.
+La eficiencia en escalabilidad observada en nuestros experimentos nos permite augurar una utilización eficiente de recursos computacionales con un gran número de núcleos por nodo.
+En este trabajo mostramos una estratégia viable de paralelización para implementaciones altamente flexibles de modelos de la corteza cerebral en la que la cohalescencia de los datos no configura un requisito.
+También mostramos la versatilidad de este esquema de paralelización en un modelo computacional--inspirado en el cerebro--de la dinámica cortical con un esquema de conección altamente disperso y aleatório.
+Por lo tanto, creemos que esta estratégia de paralelización es un enfoque prometedor para implementaciones computacionales novedosas, con más plausibilidad biológica y comás irregularidad en los conjuntos de datos para entrenar.
+
+
+\subsection{Una Teoría Computacional para la Emergencia de Categorías Gramaticales en Dinámica Cortical}
+
+
+Esta investigación \cite{} intenta traer nuevos modelos computacionales bio-inspirados para el procesamiento del lenguaje humano,
+lo que configura un gran desafío en el \gls{ml}.
+Presentamos un modelo computacional que introduce hipótesis pertinentes acerca de la dinámica cortical.
+Respaldamos nuestras hipótesis citando investigación neurofisiológica relevante y situando nuestras postulaciones entro de la literatura psico-lingüística actual.
+También comparamos nuestros algoritmos con aquellos utilizados en otros modelos y métodos psico-lingüísticos comparables, algunos de los cuales empleando enfoques de \gls{ml} predominantes. 
+
+Testeamos nuestro modelo en taréas de clasificación de categorías gramaticales para palabras individuales en un contexto oracional y demostramos como sus activaciones dispersas bio-inspiradas se apoyan en representaciones de \gls{ds} (\emph{Text Embedding}).
+De esta forma, postulamos que nuestra investigación podría promover aplicaciones de \gls{ml} mas inspiradas en el cerebro para el \gls{nlp}.
+También nuestro trabajo podría proveer una validación computacional para teorías psico-lingüísticas del procesamiento del lenguaje.
+Dicha validación está inspirada en datos neurofisiológicos desde la corteza de los mamíferos.
+
+
+
+
+
+
+
+
+
+
 %\begin{itemize}
 
 %\item Implementamos un modelo computacional completamente no supervisado y biológicamente inspirado que incorpora características halladas en la corteza de mamíferos. Nuestro modelo devuelve niveles de clasificación fonética similares a aquellos encontrados en enfoques profundos de clasificación de patrones de primera línea.
@@ -369,13 +435,13 @@ Típicamente , los parámetros son ajustados adaptándolos para minimizar un cri
 
 
 
-\section{Declaración de Originalidad}
+%\section{Declaración de Originalidad}
 
-%Statement here.
+%%Statement here.
 
 
-\section{Publicaciones}
+%\section{Publicaciones}
 
-Para este trabajo se ha enviado un manuscrito \cite{dematties2018} que se encuentra en proceso de revisión.
+%Para este trabajo se ha enviado un manuscrito \cite{10.1371/journal.pone.0217966} que se encuentra en proceso de revisión.
 
-%Publications here.
+%%Publications here.
