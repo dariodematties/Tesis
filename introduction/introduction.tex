@@ -185,15 +185,67 @@ Segundo, estudiando el neocortex de manera apropiada nos dará más información
 
 \section{Objetivos}
 
+El cerebro humano es el objeto más complejo creado por al evolución en el universo conocido.
+Sin embargo, ¿cuánta de esa complejidad está dedicada exclusivamente a sustentar sus capacidades algorítmicas
+y cuanta ha sido heredada desde rutas biológicas evolutivas para poder funcionar de manera apropiada en su
+entorno físico?
+¿Qué pasaría si las propiedades de procesamiento de la información del cerebro se pudieran reducir a unas pocas
+reglas--quizás columnares--repetidas a través de toda la corteza?
+
+Realizar la ingeniería inversa de la corteza constituye un problema de larga data.
+¿Cómo deberíamos buscar estos supuestos universales?
+Existen detalles anatómicos y fisiológicos en el cerebro; ¿cómo saber qué es importante y qué no lo es?
+¿Cómo detectar lo que es un mero detalle de implementación que la biología tiene que emplear ya que esta sólo cuenta con neuronas
+para realizar su trabajo, y lo que es un principio computacional importante que no se debería soslayar?
+Una buena estrategia sería la de etudiar el neocortex y el entorno--el mundo que lo rodea--al mismo tiempo.
+Deberíamos de hallar principios generales que se perfilen como relevantes desde el punto de vista del aprendizaje.
+Deberíamos seleccionar sólo aquellos principios para los cuales podamos hallar contrapartes en el entorno.
+
+En nuestra investigación tratamos de hallar tales principios por medio de la elaboración de modelos computacionales inspirados en la corteza de los mamíferos.
+Si una propiedad de organización en el neocortex va a la par con cierta propiedad de organización del entorno, podemos contar con cierta certesa
+de que hemos hallado un principio que es relevante desde el punto de vista del aprendizaje.
+
+Por una parte, mientras más simples sean los principios o reglas halladas, más repeticiones de tales reglas necesitarán ser implementadas
+para conseguir comportamientos interesantes--similares a los evidenciados por humanos--desde nuestros modelos--tales como invarianza en la percepción o la adquisición de fenómenos cognitivos emergentes más abstractos.
+El cerebro de los mamíferos--con sus estados combinatorios posibles que ván más allá del número de átomos en
+el universo conocido--nos provee con indicios categóricos a favor de tal posición.
+Por otro lado, a mayor número de repeticiones de aquellas reglas simples, mayor cantidad de recursos computacionales
+se necesitan para implementar los modelos.
+
+
+
+En tal sentido creemos que la diciplina de la \glsfirst{hpc} recibirá una contribución relevante desde trabajos con las características del aquí desarrollado.
+Más allá del gran progreso evidenciado por la \gls{hpc} en los últimos años, lo cierto es que las supercomputadoras más poderosas en el mundo
+siguen basándose en los mismos principios arquitectónicos descriptos por John Von Neumann en 1945 \cite{10.1109/85.238389}.
+Aunque con sus limitaciones, el \glsfirst{dl}--por ejemplo--ha mostrado logros incomparables
+que sugieren rutas alternativas en el futuro del diseño de la arquitectura para las nuevas computadoras.
+Investigadores relevantes en el mundo advierten sobre futuros cambios en la arquitectura de los
+sistemas de \gls{hpc} a los fines de correr algoritmos de \gls{ai} y de \gls{dl} más eficientemente.
+
+Sin embargo, en relación a las limitaciones exchibidas por el \gls{dl} existe motivación en prestar más atención
+a ciertas propiedades claves del tejido cortical para el diseño de nuevas arquitecturas
+basadas en la corteza cerebral de los mamíferos.
+De hecho, algunas organizaciónes han tomado estas ideas y las están incorporando de manera parsimoniosa.
+Companías como IBM y organizaciones federales como DARPA implementan estas ideas en silicio,
+allanando el camino para los procesadores neuromórficos que procesan información 
+construyendo representaciones de patrones y realizando predicciones casi en tiempo real.
 
 
 
 
+Este trabajo comparte con tal línea de investigación la idea de que para
+obtener máquinas que realmente reflejen la inteligencia humana no es necesario
+copiar toda la complejidad del cerebro; sólo se necesita agrupar
+los rasgos neuro-fisiológicos clasves para el procesamiento de la información en el tejido cortical.
 
 
 
 
-
+Emprendemos este desafío tratando de replicar ciertas capacidades de adquisición del lenguaje en infantes.
+Comenzamos nuestro trabajo con la adquisición temprana de reglas fonotácticas, específicas a un lenguaje particular \cite{10.1371/journal.pone.0217966}.
+Implementamos un modelo neurocomputacional inspirado en la biología de la corteza que nos permite testear hipótesis neurofisiologicas incorporadas en los algoritmos.
+Luego, dada la necesidad de la utilización de recursos de \gls{hpc} demandados por estos modelos, analizamos la eficiencia en escalabilidad paralela de los mismos \cite{}.
+Finalmente, basados en la uniformidad de la corteza cerebral de los mamiferos, aplicamos principios computacionales similares al estudio de adquisición de propiedades cognitivas más abstractas como la adquisición de ciertos aspectos gramaticales del lenguaje desde la confluencia de información de \glsfirst{ds} y sintaxis básica ayudada desde la fonología \cite{}.
 
 
 
@@ -372,7 +424,7 @@ Presentamos un modelo computacional que introduce hipótesis pertinentes acerca 
 Respaldamos nuestras hipótesis citando investigación neurofisiológica relevante y situando nuestras postulaciones entro de la literatura psico-lingüística actual.
 También comparamos nuestros algoritmos con aquellos utilizados en otros modelos y métodos psico-lingüísticos comparables, algunos de los cuales empleando enfoques de \gls{ml} predominantes. 
 
-Testeamos nuestro modelo en taréas de clasificación de categorías gramaticales para palabras individuales en un contexto oracional y demostramos como sus activaciones dispersas bio-inspiradas se apoyan en representaciones de \gls{ds} (\emph{Text Embedding}).
+Testeamos nuestro modelo en taréas de clasificación de categorías gramaticales para palabras individuales en un contexto oracional y demostramos como sus activaciones dispersas bio-inspiradas se apoyan en representaciones de \gls{ds} (\emph{Text Embedding} \cite{Mikolov:2013:DRW:2999792.2999959}).
 De esta forma, postulamos que nuestra investigación podría promover aplicaciones de \gls{ml} mas inspiradas en el cerebro para el \gls{nlp}.
 También nuestro trabajo podría proveer una validación computacional para teorías psico-lingüísticas del procesamiento del lenguaje.
 Dicha validación está inspirada en datos neurofisiológicos desde la corteza de los mamíferos.
