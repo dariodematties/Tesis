@@ -1,6 +1,11 @@
 \newacronym{mpf}{MPF}{Memory-Prediction Framework}
 
+
+\iftoggle{DEBUG}{
 \newacronym{simd}{SIMD}{Single Instruction, Multiple Data}
+}{
+\newacronym{simd}{SIMD}{Single Instruction, Multiple Data}
+}
 
 \newacronym{opencl}{OpenCL}{Open Computing Language}
 
@@ -70,7 +75,12 @@
 
 \newacronym{alcf}{ALCF}{Argonne Leadership Computing Facility}
 
+\iftoggle{DEBUG}{
+\newacronym{anl}{LNA}{Laboratorio Nacional Argonne}
+}{
 \newacronym{anl}{ANL}{Argonne National Laboratory}
+}
+
 
 \newacronym{dmn}{DMN}{Deep Maxout Network}
 

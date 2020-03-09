@@ -214,13 +214,13 @@ se necesitan para implementar los modelos.
 
 
 
-En tal sentido creemos que la diciplina de la \glsfirst{hpc} recibirá una contribución relevante desde trabajos con las características del aquí desarrollado.
+En tal sentido creemos que la  \glsfirst{hpc} recibirá contribuciones importantes a partir de trabajos con características similares a las aquí desarrolladas.
 Más allá del gran progreso evidenciado por la \gls{hpc} en los últimos años, lo cierto es que las supercomputadoras más poderosas en el mundo
 siguen basándose en los mismos principios arquitectónicos descriptos por John Von Neumann en 1945 \cite{10.1109/85.238389}.
 Aunque con sus limitaciones, el \glsfirst{dl}--por ejemplo--ha mostrado logros incomparables
 que sugieren rutas alternativas en el futuro del diseño de la arquitectura para las nuevas computadoras.
-Investigadores relevantes en el mundo advierten sobre futuros cambios en la arquitectura de los
-sistemas de \gls{hpc} a los fines de correr algoritmos de \gls{ai} y de \gls{dl} más eficientemente.
+Investigadores de renombre alrededor del mundo advierten sobre futuros cambios en la arquitectura de los
+sistemas de \gls{hpc} a los fines de correr algoritmos de \gls{ai} y de \gls{dl} de manera más eficiente.
 
 Sin embargo, en relación a las limitaciones exchibidas por el \gls{dl} existe motivación en prestar más atención
 a ciertas propiedades claves del tejido cortical para el diseño de nuevas arquitecturas
@@ -241,27 +241,70 @@ los rasgos neuro-fisiológicos clasves para el procesamiento de la información 
 
 
 
-Emprendemos este desafío tratando de replicar ciertas capacidades de adquisición del lenguaje en infantes.
-Comenzamos nuestro trabajo con la adquisición temprana de reglas fonotácticas, específicas a un lenguaje particular \cite{10.1371/journal.pone.0217966}.
-Implementamos un modelo neurocomputacional inspirado en la biología de la corteza que nos permite testear hipótesis neurofisiologicas incorporadas en los algoritmos.
-Luego, dada la necesidad de la utilización de recursos de \gls{hpc} demandados por estos modelos, analizamos la eficiencia en escalabilidad paralela de los mismos \cite{}.
-Finalmente, basados en la uniformidad de la corteza cerebral de los mamiferos, aplicamos principios computacionales similares al estudio de adquisición de propiedades cognitivas más abstractas como la adquisición de ciertos aspectos gramaticales del lenguaje desde la confluencia de información de \glsfirst{ds} y sintaxis básica ayudada desde la fonología \cite{}.
+En tal sentido, emprendemos este desafío tratando de replicar ciertas capacidades de adquisición del lenguaje en infantes.
 
 
 
 
 
+\subsection{Objetivos Generales}
 
-
-A través de dichos resultados es trabajo aquí presentado se propone ...
-
-
-
-
-
+En este trabajo nos proponemos detectar y agrupar características neurofisiológicas relevantes teneiendo en cuenta un entorno configurado por rasgos restringidos de la adquisición del lenguaje en humanos.
+A tales fines utilizamos modelos computacionales bio-inspirados cuyas hipótesis estan basadas en los principios fisiológicos receptados como relevantes para el entorno considerado en el trabajo.
+El objetivo general es el de impulsar el desarrollo de máquinas inteligentes que reflejen más fielmente el comportamiento humano sin utilizar hipótesis computacionales que se encuentren alejadas de la neurofisiología y anatomía cerebral.
 
 
 
+
+
+\subsection{Objetivos Específicos}
+
+Las teorías computacionales en el \glsfirst{ml} en general--y los enfoques de \glsfirst{dl} en particular--no toman en cuenta algunos hechos neurofsiológicos persuacivos descubiertos recientemente.
+Algunos de estos elementos incluyen las activaciones \gls{nmda} de ramas dendríticas independientes producidas por la excitación de cierta cantidad de sinapsis distales, la adaptación a estímulos contextuales en el tejido cortical para mejorar la eficiencia en la codificación de información sensorial, y el hecho de que el cerebro utiliza \gls{sdr_pl} para procesar la información.
+
+Más allá de su gran éxito \cite{lecun_deep_2015}, los enfoques tradicionales en el \gls{ml} podrían estar alcanzando una meceta difícil de revertir.
+Si bien los algoritmos de dichos enfoque avanzan día tras día de manera vertiginosa, se observa una clara tendencia que atribuye cada vez más importancia al volumen de los datos más allá del tipo de algoritmo a utilizar \cite{PPR:PPR91722}.
+Creemos que métodos alternativos más inspirados en la neurofisiología actual deberían ser desarrollados para obtener mejores técnicas computacionales de aprendizaje.
+
+Aquí, nos proponemos tomar una ruta alternativa al \gls{ml} tradicional abordando dichos inconvenientes por medio de la observación de las propiedades dinámicas y estructurales de la corteza de los mamíferos.
+
+
+\subsubsection{Adquisición de Fonética en Dinámica Cortical}
+
+Consideramos importante investigar los rasgos fisiológicos y anatómicos en el tejido cortical,
+basándonos en el hecho de que (i) los humanos y varias especies animales pueden clasificar unidades fonéticas de manera robusta independientemente de las perturbaciones importantes sufridas por los estímulos; y (ii) la activación cortical en algunos animales revela un ajuste espectro-temporal suficientemente fuerte como para sostener discriminación fonética, aún cuando los estímulos son distorcionados por ruido aditivo y reverberación.
+
+A tal efecto, en nuestro primer trabajo nos proponemos identificar propiedades neurofisiológicas y anatómicas precisas en el cerebro de los mamíferos que consideramos potencialmente relevantes para la adquisición de las reglas fonotácticas del lenguaje.
+Proponemos desarrollar un modelo computacional que incorpore tales propiedades, las que deberemos testear en términos de invarianza y generalización fonética contra ruido adiferentes tipos de perturbaciones.
+
+Los resultados a presentar en este trabajo deberían sugerir más investigación a los efectos de entender y modelar las características corticales en aplicaciones de adquisición de fonética.
+
+
+
+
+\subsubsection{Escalabilidad de Alta Gama en Modelos Biológicamente Inspirados}
+
+Nos proponemos desarrollar un enfoque relevante hacia el desarrollo de estrategias de paralelización masivas enfocadas en la implementación de modelos computacionales biológicamente inspirados que incluyan perfiles de conectividad altamente dispersos y aleatorios--similares a los hallados en la corteza de los mamíferos--en equipos de \gls{hpc}.
+Se medirá la eficiencia en escalabilidad en nuestros modelos, lo que nos permitirá augurar una utilización eficiente de recursos computacionales con un gran número de núcleos por nodo \footnote{\url{https://www.alcf.anl.gov/support-center/cooley/cooley-system-overview}}.
+En este trabajo nos proponemos mostrar una estratégia viable de paralelización para implementaciones altamente flexibles de modelos de la corteza cerebral en la que la cohalescencia de los datos no configura un requisito \footnote{La coalesencia enel acceso a la memoria hace referencia a combinar multiples accesos a la misma dentro de una única transacción}.
+También nos proponemos mostrar la versatilidad de este esquema de paralelización en un modelo computacional--inspirado en el cerebro--de la dinámica cortical con un esquema de conección altamente disperso y aleatório.
+Por lo tanto, esperamos que esta estratégia de paralelización pueda resultar en un enfoque para implementaciones computacionales novedosas, con más plausibilidad biológica.
+
+
+
+
+\subsubsection{Categorías Gramaticales Emergentes en Dinámica Cortical}
+
+Finalmente proponemos traer nuevos modelos computacionales bio-inspirados para el procesamiento de aspectos más abstractos del lenguaje humano,
+lo que configura un gran desafío en el \gls{ml}.
+Desarrollaremos un modelo computacional que también introduzca hipótesis pertinentes acerca de la dinámica cortical.
+Respaldamos nuestras hipótesis citando investigación neurofisiológica relevante y situando nuestras postulaciones entro de la literatura psico-lingüística actual.
+Compararemos nuestros algoritmos con aquellos utilizados en otros modelos y métodos psico-lingüísticos comparables, algunos de los cuales aún empleando enfoques de \gls{ml} predominantes. 
+
+Proponemos testear nuestro modelo en taréas de clasificación de categorías gramaticales para palabras individuales en un contexto oracional y demostrar como sus activaciones dispersas bio-inspiradas se apoyan en representaciones de \gls{ds} (\emph{Text Embedding}) para conseguir su desempeño.
+De esta forma, nos proponemos desarrollar una investigación que promueva aplicaciones de \gls{ml} mas inspiradas en el cerebro para el \gls{nlp}.
+En tal sentido este trabajo también podría proveer una validación computacional para teorías psico-lingüísticas del procesamiento del lenguaje.
+Dicha validación deberá estar inspirada en datos neurofisiológicos desde la corteza de los mamíferos.
 
 
 
@@ -379,58 +422,55 @@ A través de dichos resultados es trabajo aquí presentado se propone ...
 
 \section{Aportes}
 
-Las teorías computacionales en el \glsfirst{ml} en general--y los enfoques de \gls{dl} en particular--no toman en cuenta algunos hechos neurofsiológicos persuacivos descubiertos recientemente.
-Algunos de estos elementos incluyen las activaciones \gls{nmda} de ramas dendríticas independientes producidas por la excitación de cierta cantidad de sinapsis distales, la adaptación a estímulos contextuales en el tejido cortical para mejorar la eficiencia en la codificación de información sensorial, y el hecho de que el cerebro utiliza \gls{sdr_pl} para procesar la información.
-
-Más allá de su gran éxito \cite{lecun_deep_2015}, los enfoques tradicionales en el \gls{ml} podrían estar alcanzando una meceta difícil de revertir.
-Si bien los algoritmos de dichos enfoque avanzan día tras día de manera vertiginosa, se observa una clara tendencia que atribuye cada vez más importancia al volumen de los datos más allá del tipo de algoritmo a utilizar \cite{PPR:PPR91722}.
-Creemos que métodos alternativos más inspirados en la neurofisiología actual deberían ser desarrollados para obtener mejores técnicas computacionales de aprendizaje.
-
-Tomamos una ruta alternativa al \gls{ml} tradicional abordando dichos inconvenientes por medio de la observación de las propiedades dinámicas y estructurales de la corteza de los mamíferos.
+Comenzamos nuestro trabajo con la adquisición temprana de reglas fonotácticas, específicas a un lenguaje particular \cite{10.1371/journal.pone.0217966}.
+Implementamos un modelo neurocomputacional inspirado en la biología de la corteza que nos permite testear hipótesis neurofisiologicas incorporadas en los algoritmos.
+Luego, dada la necesidad de la utilización de recursos de \gls{hpc} demandados por estos modelos, analizamos la eficiencia en escalabilidad paralela de los mismos \cite{}.
+Finalmente, basados en la uniformidad de la corteza cerebral de los mamiferos, aplicamos principios computacionales similares al estudio de adquisición de propiedades cognitivas más abstractas como la adquisición de ciertos aspectos gramaticales del lenguaje desde la confluencia de información de \glsfirst{ds} y sintaxis básica ayudada desde la fonología \cite{}.
 
 \subsection{Adquisición Fonética en Dinámica Cortical, Un Enfoque Computacional}
 
-Consideramos importante investigar los rasgos fisiológicos y anatómicos en el tejido cortical,
-basándonos en el hecho de que (i) los humanos y varias especies animales pueden clasificar unidades fonéticas de manera robusta independientemente de las perturbaciones importantes sufridas por los estímulos; y (ii) la activación cortical en algunos animales revela un ajuste espectro-temporal suficientemente fuerte como para sostener discriminación fonética, aún cuando los estímulos son distorcionados por ruido aditivo y reverberación.
-
-A tal efecto, en nuestro primer trabajo \cite{10.1371/journal.pone.0217966} identificamos propiedades neurofisiológicas y anatómicas precisas en el cerebro de los mamíferos que consideramos potencialmente relevantes para la adquisición de las reglas fonotácticas del lenguaje.
-Nuestro modelo computacional incorpora tales propiedades, las que testeamos en términos de invarianza y generalización fonética contra ruido aditivo, reverberación y variaciones de voz y de tono.
-
-La sección cortical de nuestra implementación muestra una invarianza y generalización fonética prometedoras superando representaciones en \gls{mrstsa} 
-\footnote{Inspirada en el trabajo de T. Chi, et al. \cite{chi_2005}}
-para varias tareas de clasificación de palabras; cada una con diferentes números de sílabras.
-Los resultados presentados en este paper sugieren que más investigación para entender y modelar las características corticales en aplicaciones de adquisición de fonética, constituye un esfuerzo que vale la pena tomar.
-
-
+Muchas teorías computacionales han sido desarrolladas para mejorar el desempeño en clasificación fonética desde flujos auditivos lingüísticos.
+Sin embargo creemos que no se le ha prestado la atención suficiente a los datos psico-lingüísticos ni a las propiedades neurofisiológicas halladas en el tejido cortical.
+Nos basamos en un contexto en el que ciertas unidades lingüísticas básicas--como los fonemas--son extraidos y clasificados de manera robusta por humanos y otros animales desde flujos acústicos complejos en el habla.
+Este trabajo está específicamente motivado en el hecho de que infantes humanos de 8 meses de edad pueden alcanzar segmentación de palabras desde una cadena de audio fluida 
+basándose de manera exclusiva en las relaciones estadísticas entre sonidos colindantes sin ningún tipo de supervisión. 
+En este trabajo introducimos un enfoque neurocomputacional biológicamente inspirado no-supervisado que incorpora propiedades corticales neurofisiológicas y anatómicas claves, incluyendo organización columnar, formación microcolumnar espontánea, adaptación a activaciones contextuales y \gls{sdr_pl} producidas por medio de depolarizaciones parciales \gls{nmda}.
+Sus capacidades de abstracción de rasgos muestran atributos de invarianza y generalización fonética prometedoras.
+Nuestro modelo mejora el desempeño de algoritmos de clasificación de \gls{svm} en taréas de clasificación de palabras monosilábicas, bisilábicas y de más de dos sílabas en presencia de disturbios ambientales como el ruido blanco, la reverberación y las variaciones de tono y voz.
+De hecho, nuestro enfoque enfatiza principios corticales potenciales  de auto-organización alcanzando una mejora sin ningún tipo de guia de optimización que pudiera minimizar funciones de pérdida por medio de--por ejemplo--backpropagation.
+De esta forma, nuestro modelo computacional supera respresentaciones de rasgos espectro-temporales de múltiple resolución utilizando sólo la estrucutra secuencial estadística inmersa en las reglas fonotácticas del flujo de entrada.
 
 
 
 
 \subsection{Hacia una Escalabilidad de Alta Gama en Modelos Computacionales Biológicamente Inspirados}
 
-Esta investigación \cite{} constituye un enfoque relevante hacia el desarrollo de estrategias de paralelización masivas enfocadas en la implementación de modelos computacionales biológicamente inspirados que incluyen perfiles de conectividad altamente dispersos y aleatorios en equipos de \gls{hpc}.
-La eficiencia en escalabilidad observada en nuestros experimentos nos permite augurar una utilización eficiente de recursos computacionales con un gran número de núcleos por nodo.
-En este trabajo mostramos una estratégia viable de paralelización para implementaciones altamente flexibles de modelos de la corteza cerebral en la que la cohalescencia de los datos no configura un requisito.
-También mostramos la versatilidad de este esquema de paralelización en un modelo computacional--inspirado en el cerebro--de la dinámica cortical con un esquema de conección altamente disperso y aleatório.
-Por lo tanto, creemos que esta estratégia de paralelización es un enfoque prometedor para implementaciones computacionales novedosas, con más plausibilidad biológica y comás irregularidad en los conjuntos de datos para entrenar.
+El campo interdiciplinario de la neurociencia ha alcanzado un progreso significatico en décadas recientes, proveyendo a la comunidad científica en general con un nuevo nivel de entendimiento en cuanto a cómo funciona el cerebro más allá de los modelos de almacenamiento y disparo (\emph{store-and-fire}) hallados en redes neuronales artificiales tradicionales.
+Mientras tanto, el \glsfirst{ml} basado en modelos ya establecidos ha evidenciado un surgimiento del interés por la comunidad de la \glsfirst{hpc}, especialmente a través de la utilización de aceleradores de alta gama como las \glsfirst{gpu_pl}, incluidas en \emph{clusters} para \gls{hpc}. 
+En este trabajo, nos motiva explotar dichos desarrollos en \gls{hpc} y entender los desafíos de dados al tratar de escalar nuevos modelos biológicamente inspirados en recursos computacionales de alta gama.
+Estos modelos emergentes se caracterizan por tener perfiles de conectividad dispersos y aleatórios que se mapean mejor en arquiecturas paralelas acopladas más holgadamente con un gran número de \gls{cpu_pl} por nodo.
+En contraste a los códigos del \gls{ml} tradicional, estos métodos explotan estructuras de datos dispersas, holgadamente vinculadas en oposición a la computación en matrices densas y acopladas de manera rígida, las que se benefician de un paralelismo de estilo \emph{\gls{simd}} hallado en las \gls{gpu_pl}.
+En este trabajo introducimos un esquema de paralelización híbrido basado en \emph{\gls{mpi}} y \emph{\gls{omp}} para acelerar y escalar nuestro modelo computacional basado en la dinámica del tejido cortical.
+Corremos pruebas computacionales en un \emph{cluster} de alta gama para visualización y análisis en el \gls{anl}.
+Incluimos un estudio de escalado fuerte y débil (\emph{strong and weak scaling}) donde obtenemos medidas de eficiencia paralela con un mínimo de 87\% y un máximo de 97\% para simulaciones de nuestra red neuronal biológicamente inspirada en hasta 64 nodos con 8 hilos de ejecución cada uno.
+Este estudio muestra al enfoque híbrido \gls{mpi}+\gls{omp} como una estratégia prometedora para sostener esenarios experimentales computacionales flexibles y biológicamente inspirados.
+Adicionalmente exponemos la viabilidad en la aplicación de estas estratégias en un futuro en super-computadores de catalogados liderazgo en el ranquing mundial.
+
+
+
 
 
 \subsection{Una Teoría Computacional para la Emergencia de Categorías Gramaticales en Dinámica Cortical}
 
-
-Esta investigación \cite{} intenta traer nuevos modelos computacionales bio-inspirados para el procesamiento del lenguaje humano,
-lo que configura un gran desafío en el \gls{ml}.
-Presentamos un modelo computacional que introduce hipótesis pertinentes acerca de la dinámica cortical.
-Respaldamos nuestras hipótesis citando investigación neurofisiológica relevante y situando nuestras postulaciones entro de la literatura psico-lingüística actual.
-También comparamos nuestros algoritmos con aquellos utilizados en otros modelos y métodos psico-lingüísticos comparables, algunos de los cuales empleando enfoques de \gls{ml} predominantes. 
-
-Testeamos nuestro modelo en taréas de clasificación de categorías gramaticales para palabras individuales en un contexto oracional y demostramos como sus activaciones dispersas bio-inspiradas se apoyan en representaciones de \gls{ds} (\emph{Text Embedding} \cite{Mikolov:2013:DRW:2999792.2999959}).
-De esta forma, postulamos que nuestra investigación podría promover aplicaciones de \gls{ml} mas inspiradas en el cerebro para el \gls{nlp}.
-También nuestro trabajo podría proveer una validación computacional para teorías psico-lingüísticas del procesamiento del lenguaje.
-Dicha validación está inspirada en datos neurofisiológicos desde la corteza de los mamíferos.
-
-
-
+Un consenso general en psico-lingüística afirma que la sintáxis y el significado se unifican de manera precisa y muy rápidamente durante el procesamiento oracional en línea.
+Aunque muchas teorías han dado argumentos en relación a las bases neurocomputacionales de este fenómeno, creemos que dichas teorías podrían beneficiarse incluyendo datos neurofisiológicos en relación a restricciones desde la dinámica cortical en el tejido cerebral.
+Adicionalmente, algunas teorías promueben la integración de métodos de optimización complejos en el tejido cortical.
+En este trabajo intentamos subsanar estas brechas introduciendo un modelo computacional inspirado en la dinámica del tejido cortical.
+En nuestro enfoque de modelado, las dendritas aferentes próximas producen activaciones celulares estocásticas, mientras que las ramas dendríticas distales--por el otro lado--contribuyen de manera independiente a la depolarización somática por medio de impulsos dendríticos, y finalmente, fallas de predicción producen \gls{mfe_pl} los que comprometen la formación de \gls{sdr_pl}.
+El modelo presentado en este trabajo combina restricciones semánticas y sintácticas \emph{de grano grueso} para cada palabra en el contexto oracional hasta que la discriminación de funciones gramaticalmente relacionadas enmergen espontáneamente por la sola correlación de la información léxica desde fuentes diferentes sin la aplicación de métodos de optimización complejos.
+Por medio de técnicas de \gls{svm} mostramos que las activaciones dispersas devueltas por nuestro modelo son apropiadas para alcanzar la clasificación de funciones gramaticales de palabras individuales en la oración, posándose en los datos devueltos por mecanismos denominadas \emph{Word Embedding}.
+De esta forma desarrollamos una explicación computacional biológicamente guiada para procesos de unificación lingüísticamente relevantes en la corteza que conecta la psico-lingüística con aspecto neurobiológicos del lenguaje.
+También podemos decir que las hipótesis computacionales establecidas en esta investigación podrían promover más trabajo en algoritmos de aprendixaje biológicamente inspirados para aplicaciones en el procesamiento del lenguaje natural.
 
 
 

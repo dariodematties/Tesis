@@ -12,17 +12,17 @@
 Sin lugar a dudas, la neurociencia nos ha provisto de un entendimiento más profundo de la organización del cerebro en las últimas décadas.
 Sin embargo, las corrientes principales de investigación en \gls{ai} no han incorporado dichos avances en sus modelos.
 Este hecho, podría ser atribuido--al menos en parte--al éxito alcanzado por algunos enfoques de \gls{ai}--tales como el de las Redes Neuronales Convolucionales--los cuales han alcanzado niveles de exactitud en clasificación sin precedente en los últimos años.
-De todas formas, algunos investigadores desde la comunidad de la \gls{ai} reconocen que para poder superar las limitaciones actuales de la \gls{ai} y así crear máquinas inteligentes--es decir, máquinas cuya inteligencia se asemeje más a la de algunos mamíferos en general--será necesario entender y poder imitar el cerebro.
-En tal sentido, para entender y explorar con más profundidad cómo el cerebro podría procesar información, es esencial utilizar modelos de neuronas y redes más complejos y biológicamente precisos que los hoy predominantes.
+No obstante, algunos investigadores desde la comunidad de la \gls{ai} reconocen que para poder superar las limitaciones actuales de la \gls{ai} y así crear máquinas inteligentes--es decir, máquinas cuya inteligencia se asemeje más a la de algunos mamíferos en general--será necesario entender y poder imitar el cerebro.
+En tal sentido, para entender y explorar con más profundidad cómo el cerebro podría procesar información, es esencial utilizar modelos de neuronas y redes más complejos y biológicamente precisos que los hoy predominan.
 
 El modelo de \gls{hh}~\cite{HODGKIN199025}--por ejemplo--simula receptores sinápticos y canales de iones explícitamente.
 Sin embargo, mientras más interesantes son los mecanismos biológicos, mayores son las limitaciones de las redes en cuanto a tamaño y complejidad.
 Existen algunos modelos alternativos como el modelo de impulsos (\emph{spiking model})~\cite{Izhikevich2004SpiketimingDO} y el \emph{integrate-and-fire model}~\cite{1333071} que se han propuesto como una simplificación del modelo de \gls{hh}.
 Tales modelos demandan menos poder computacional, pero no pueden simular directamente la dinámica biológica presente en los canales iónicos.
-Por otro lado, nos encontramos con las aplicaciones de \gls{dl}~\cite{lecun_deep_2015} que están parcialmente inspiradas en la biología de la ruta visual ventral, y que han mejorado dramáticamente el estado del arte en muchos dominios de la \gls{ai} mientras que--al mismo tiempo--han ignorado hechos biológico importantes dándole prioridad a la eficiencia computacional y a la exactitud en clasificación.
+Por otro lado, nos encontramos con las aplicaciones de \gls{dl}~\cite{lecun_deep_2015} que están parcialmente inspiradas en la biología de la ruta visual ventral, y que han mejorado drásticamente el estado del arte en muchos dominios de la \gls{ai} mientras que--al mismo tiempo--han ignorado hechos biológicos importantes dándole prioridad a la eficiencia computacional y a la exactitud en clasificación.
 
 Encontrar el nivel apropiado de detalle a la hora de modelar el cerebro se presenta como el santo grial para descubrir los misterios del comportamiento animal.
-En~\cite{10.1371/journal.pone.0217966} siguiendo mecanismos de aprendizajes de secuencias aplicados en~\cite{10.3389/fncir.2016.00023} agrupamos lo que es--bajo nuestro punto de vista--solo hechos neuro-anatómicos y neuro-fisiológicos importantes para procesar información en el tejido cortical.
+En~D. Dematties et al. \cite{10.1371/journal.pone.0217966} siguiendo mecanismos de aprendizajes de secuencias aplicados en~J. Hawkins y S. Ahmad \cite{10.3389/fncir.2016.00023} agrupamos lo que es--bajo nuestro punto de vista--solo hechos neuro-anatómicos y neuro-fisiológicos importantes para procesar información en el tejido cortical.
 En tal trabajo agrupamos solo aspectos biológicamente relevantes evitando embestir las simulaciones con carga computacional excesiva y--al mismo tiempo--capturando la esencia de las propiedades de procesamiento de la información en la corteza.
 
 \begin{figure*}[ht]
@@ -39,7 +39,7 @@ Existe un desvío interesante que da cuenta de los niveles de desarrollo, refina
 De hecho, existen tres razones principales que pueden conducir al uso de uno de esos marcos, en lugar de escribir el código de un proyecto desde cero.
 La primera razón es que estos marcos habilitan un uso y trato fácil de gráficos computacionales grandes sin tener que preocuparse por los detalles de su manejo.
 La segunda razón es que cuando se trabaja en \gls{dl} siempre es necesario computar gradientes, es decir, computar alguna pérdida y luego computar los gradientes alrededor de los pesos con respecto a la pérdida.
-Es mejor hacer esas operaciones tan automáticas como sea posible, dejando que el marco maneje los detalles del algoritmo \emph{backpropagation}.
+Es mejor hacer esas operaciones tan automáticas como sea posible, dejando que la herramienta maneje los detalles del algoritmo \emph{backpropagation}.
 Por lo tanto, el escenario común es escribir solo el paso directo de la red y tener el paso reverso de alguna manera libre sin incluir aditamentos significativos al código.
 Finalmente, es altamente deseable tener el marco corriendo eficientemente en  \gls{gpu_pl}, sin preocuparse de los detalles del hardware de bajo nivel como los paquetes cuBLAS y cuDNN en \emph{\gls{cuda}}, el movimiento de datos entre la \gls{cpu} y la \gls{gpu}, etc.
 De esta manera, los detalles se mantienen ocultos por medio de estas herramientas que los manejan de manera apropiada.
@@ -49,14 +49,14 @@ Primeramente, la plausibilidad biológica de  nuestro modelo nos libera de la ne
 Aunque existen trabajos importantes que apoyan la idea de que la asignación de crédito (\emph{credit assignament})--la meta final del algoritmo \emph{backpropagation}--podría ser un fenómeno que sucede en el tejido cortical~\cite{Guerguiev2017TowardsDL}, ponderamos que aún no se sabe si ciertas señales llamadas \emph{teaching signals} existen en el cerebro.
 Más aún, no hay suficiente evidencia como para incluir mecanismos tan complejos en nuestro modelo todavía.
 En su lugar, decidimos ser conservativos en dicho respecto.
-Segundo, los marcos de \gls{dl} están direccionados a la paralelización en \gls{gpu_pl} en núcleos \gls{cuda}.
+En segundo lugar, los marcos de \gls{dl} están direccionados a la paralelización en \gls{gpu_pl} en núcleos \gls{cuda}.
 Más allá de que dichos marcos han sido optimizados extensivamente para sacar el máximo provecho específicamente de las tarjetas NVIDIA, se tienen que satisfacer demasiadas condiciones para obtener el mejor desempeño.
 Aunque tales marcos han alcanzado un progreso sobresaliente en los últimos años (junto al desarrollo de su hardware complementario), existe una especialización muy puntual de tales tecnologías hacia el desarrollo preciso de ciertos marcos de \gls{dl} con poco espacio para implementaciones innovadoras y especialmente biológicamente plausibles.
 En tal sentido, uno de los mayores problemas en tales enfoques surge cuando se tratan de implementar poblaciones neuronales con estructuras de conectividad dispersa y aleatoria.
 Tales implementaciones--fuertemente demandadas en el modelado biológicamente plausible--comprometen la coalescencia en las tarjetas \gls{gpu} y perjudican seriamente el desempeño~\cite{doi:10.3109/0954898X.2012.739292}.
 
 Siguiendo esta línea, implementamos nuestro modelo en \CC14 utilizando el paradigma de \gls{oop} y lo paralelizamos por medio de una estrategia híbrida usando \gls{mpi} y \gls{omp}.
-El paradigma de \gls{oop} nos dio una herramienta poderosa para componer estructuras modulares permitiéndonos manejar gráficos computacionales complejos. \gls{mpi} habilitó nuestro modelo para correr en sistemas de memoria distribuida de manera coherente y estable.
+El paradigma de \gls{oop} nos dio una herramienta fuerte para componer estructuras modulares permitiéndonos manejar gráficos computacionales complejos. \gls{mpi} habilitó nuestro modelo para correr en sistemas de memoria distribuida de manera coherente y estable.
 Finalmente, \gls{omp} nos proveyó de una distribución fina de la carga de trabajo dentro de cada nodo computacional con la opción de planificar los hilos \gls{omp} de manera dinámica.
 Esto nos permitió manejar diferentes opciones de afinidad de hilos y variar el número de hilos en cada nodo computacional, entre otras opciones.
 }{
@@ -113,17 +113,17 @@ Following this line, we implemented our model in \CC14 using \gls{oop} paradigm 
 En este trabajo introducimos una estrategia de paralelización con gran independencia de la coalescencia de datos y mostramos cómo esta escala eficientemente en sistemas de memoria distribuida mientras corre nuestro modelo computacional biológicamente inspirado el cual simula la dinámica cortical con perfiles de conectividad altamente dispersos y aleatorios~\cite{10.1371/journal.pone.0217966}.
 
 La organización general de nuestro enfoque computacional se muestra en la Fig.~\ref{fig:EncoderColumnConnections1}.
-Primero, para generar los archivos de audio de los corpus utilizamos el sintetizador Festival \emph{text to speech}~\cite{festival2014}, implementando un código en Python paralelizado por medio de un paquete \gls{mpi} para Python llamado \texttt{mpi4py}.
-Segundo, para producir las entradas desde los flujos auditivos seguimos los  lineamientos generales de Chi T. et al.~\cite{chi_2005} e implementamos un algoritmo llamado \glsfirst{mrstsa}~\cite{10.1371/journal.pone.0217966}.
-Nuestra implementación sigue principalmente la sección cortical en~\cite{chi_2005} en lugar de su contraparte sub-cortical.
+En primer lugar, para generar los archivos de audio de los corpus utilizamos el sintetizador Festival \emph{text to speech}~\cite{festival2014}, implementando un código en Python paralelizado por medio de un paquete \gls{mpi} para Python llamado \texttt{mpi4py}.
+En segundo lugar, para producir las entradas desde los flujos auditivos seguimos los  lineamientos generales de Chi T. et al.~\cite{chi_2005} e implementamos un algoritmo llamado \glsfirst{mrstsa}~\cite{10.1371/journal.pone.0217966}.
+Nuestra implementación sigue principalmente la sección cortical en~T. Chi et al. \cite{chi_2005} en lugar de su contraparte sub-cortical.
 Implementamos el algoritmo en C y lo paralelizamos por medio del paradigma híbrido con \gls{mpi} y \gls{omp} utilizando secciones paralelas en \gls{omp}.
-Finalmente, en~\cite{10.1371/journal.pone.0217966} nuestro grupo implementó un modelo computacional no supervisado e inspirado biológicamente--la \glsfirst{el} en la Fig.~\ref{fig:EncoderColumnConnections1}--el cual incorpora propiedades claves de la corteza de los mamíferos y devuelve características fonéticas que mejoran los niveles de exactitud en clasificación del algoritmo de \gls{svm} en tareas de clasificación de palabras.
+Finalmente, en~D. Dematties et al. \cite{10.1371/journal.pone.0217966} nuestro grupo implementó un modelo computacional no supervisado e inspirado biológicamente--la \glsfirst{el} en la Fig.~\ref{fig:EncoderColumnConnections1}--el cual incorpora propiedades claves de la corteza de los mamíferos y devuelve características fonéticas que mejoran los niveles de exactitud en clasificación del algoritmo de \gls{svm} en tareas de clasificación de palabras.
 Esto sucede en presencia de ruido, reverberación y variaciones de tono no presentes durante el entrenamiento.
 La paralelización del código se lleva a cabo por medio de un paradigma híbrido \gls{mpi} y \gls{omp} y a través del uso de sistemas de archivo paralelos (\gls{mpi} I/O) con capacidad de \emph{Checkpoint} y rearanque en la etapa de entrenamiento donde se tiene total flexibilidad en términos del número de procesos con los que la ejecución es reiniciada. 
-Aunque ya implementado, el algoritmo de la \gls{cl} en la Fig.~\ref{fig:EncoderColumnConnections1} todavía no ha sido probado ni en escalado ni en el desempeño en clasificación fonética.
+Aunque ya implementado, el algoritmo de la \gls{cl} en la Fig.~\ref{fig:EncoderColumnConnections1} todavía no ha sido probado en escalado ni en el desempeño en clasificación fonética.
 Decidimos incluir dicha sección en la Fig.~\ref{fig:EncoderColumnConnections1} para mostrar el hecho de que la \gls{el} puede recibir \emph{Conexiones Dendríticas Apicales} desde capas superiores de la misma manera en que recibe \emph{Conexiones Dendríticas Laterales} distales desde \gls{cc_pl} vecinas.
 
-Realizamos todos los experimentos computacionales en Cooley~\cite{noauthor_cooley_nodate}, un cluster para visualización y análisis en el Laboratorio Nacional Argonne en el cual ejecutamos las siguientes tareas: 
+Realizamos todos los experimentos computacionales en Cooley~\cite{noauthor_cooley_nodate}, un cluster para visualización y análisis en el \glsfirst{anl} \footnote{\url{https://www.anl.gov/}} en el cual ejecutamos las siguientes tareas: 
 \begin{itemize}
 \item Pruebas de escalado para los algoritmos de Generación de Corpus de audio en Python usando hasta 6 nodos corriendo 64 procesos \gls{mpi} sobre 64 \gls{cpu_pl}.
 Desempeño en pruebas de escalado Fuerte y Débil. Medidas de eficiencia en escalado.
@@ -173,7 +173,7 @@ Más allá de que el cerebro de los humanos consume alrededor de 25 Watts~\cite{
 Cada sinapsis puede computar una operación en 0.005 segundos dando al cerebro humano la capacidad de computar 20 billones de operaciones por segundo~\cite{10.2307/j.ctt5vkr1h}.
 Aunque tales números parecen arrolladores, dicha capacidad de computación es aún mejorada por medio de propiedades únicas existentes en el tejido cortical, tales como una gran tolerancia a fallas, una flexibilidad exhaustiva y un alto nivel de paralelismo.
 
-EL esfuerzo computacional demandado por tales especificaciones nos obliga  a considerar sólo aquellas características fisiológicas y anatómicas claves para el procesamiento de la información en el cerebro evitando así cargar las simulaciones computacionales con detalles biológicos innecesarios.
+El esfuerzo computacional demandado por tales especificaciones nos obliga  a considerar sólo aquellas características fisiológicas y anatómicas claves para el procesamiento de la información en el cerebro, evitando así cargar las simulaciones computacionales con detalles biológicos innecesarios.
 En la misma dirección, las estrategias de paralelización tienen que ser altamente efectivas para afrontar los desafíos presentados por la implementación de enfoques nuevos y biológicamente precisos en recursos \gls{hpc}.
 
 }{
@@ -195,7 +195,7 @@ The computational effort demanded by such specifications force us to consider on
 \iftoggle{DEBUG}{
 \subsection{Enfoques Computacionales de \gls{ann_pl} Inspiradas en el Cerebro}
 
-Una de las principales motivaciones del modelado inspirado en el cerebro es desarrollar nuevos algoritmos más poderosos cuya inspiración en el cerebro nos permita procesar la información de una manera más efectiva y eficiente para construir sistemas con comportamientos más inteligentes.
+Una de las principales motivaciones del modelo inspirado en el cerebro es desarrollar nuevos algoritmos más poderosos cuya inspiración en el cerebro nos permita procesar la información de una manera más efectiva y eficiente para construir sistemas con comportamientos más inteligentes.
 
 El desarrollo de las \gls{ann_pl} se clasifica en tres generaciones en relación a sus unidades computacionales~\cite{MAASS19971659,10.1007/978-3-642-03156-4_17}.
 En 1943, la primer generación de \gls{ann_pl} vino de la mano de McCulloch y Pitts~\cite{McCulloch1990ALC}.
@@ -208,14 +208,14 @@ Ejemplos de dichas redes son las redes neuronales sigmoidales de vía directa (\
 Un rasgo extremadamente importante de tales redes es que sostienen algoritmos de aprendizaje basados en descenso de gradiente (\emph{gradient descent})--como el popular \emph{backpropagation}.
 Finalmente, las salidas de valores reales de la neuronas de esta generación se interpretan como tasas de disparo en las neuronas reales.
 
-Evidencia importante comportamental y fisiológica, sin embargo, puso en duda la \emph{interpretación de la tasa de disparo}, y dio lugar a la tercera generación de \gls{ann_pl} que emplearon \emph{neuronas de impulso} (\emph{spiking neurons})--o \emph{neuronas de integración y disparo} (\emph{integrate and fire neurons})--como unidades computacionales~\cite{HODGKIN199025,Izhikevich2004SpiketimingDO,1333071}.
+Importante evidencia comportamental y fisiológica, sin embargo, puso en duda la \emph{interpretación de la tasa de disparo}, y dio lugar a la tercera generación de \gls{ann_pl} que emplearon \emph{neuronas de impulso} (\emph{spiking neurons})--o \emph{neuronas de integración y disparo} (\emph{integrate and fire neurons})--como unidades computacionales~\cite{HODGKIN199025,Izhikevich2004SpiketimingDO,1333071}.
 Estos modelos--a diferencia de los modelos de la segunda generación--utilizan temporización con potenciales de acción--o disparos--para codificar la información.
 Incluyendo el concepto de tiempo en su modelo de procesamiento, las \gls{snn_pl} pudieron capturar el comportamiento neuronal de manera más precisa que las redes neuronales tradicionales.
-A diferencia de las \gls{ann_pl}, la idea principal es que las neuronas en una \gls{snn} no disparan en cada ciclo, en su lugar, lo hacen sólo si un potencial de membrana alcanza su umbral.
+A diferencia de las \gls{ann_pl} la idea principal es que las neuronas en una \gls{snn} no disparan en cada ciclo, en su lugar, lo hacen sólo si un potencial de membrana alcanza su umbral.
 
-Independientemente de que este enfoque de modelado es convincente, los circuitos de umbral como los introducidos en la primera generación pueden ser vistos como modelos abstractos de para computación digital sobre redes de neuronas de impulso.
+Independientemente de que este enfoque de modelado es convincente, los circuitos de umbral como los introducidos en la primera generación pueden ser vistos como modelos abstractos de computación digital sobre redes de neuronas de impulso.
 En tal sentido, un bit en estado activo se podría interpretar como una neurona disparando dentro de cierta ventana corta de tiempo y el mismo bit en estado inactivo se podría interpretar como la misma neurona no disparando en tal ventana~\cite{Valiant:1994:CM:199266}.
-Esta estrategia de codificación provee un buen modelo para una red de neuronas de impulso siempre y cuando los tiempos entre las neuronas pre y post-sináptica estén sincronizados dentro de ventanas de tiempo de pocos milisegundos.
+Esta estrategia de codificación provee un buen modelo para una red de neuronas de impulso, siempre y cuando los tiempos entre las neuronas pre y post-sináptica estén sincronizados dentro de ventanas de tiempo de pocos milisegundos.
 Existe evidencia que sostiene el hecho de que dicha actividad fuertemente sincronizada realmente ocurre en el tejido biológico~\cite{Abeles1993SpatiotemporalFP,bair1994}.
 
 En tal sentido, existen nuevos desarrollos algorítmicos~\cite{10.3389/fncir.2016.00023,10.1371/journal.pone.0217966} que en lugar de modelar activaciones precisamente temporizadas priorizan los diferentes roles de las configuraciones dendríticas próximas y distales incorporando fenómenos fisiológicos y anatómicos importantes como la consideración de las ramas dendríticas como elementos de procesamiento activos, la organización columnar en el tejido cortical y los patrones de activación dispersos en el neocortex--entre otros.
@@ -249,15 +249,14 @@ In such sense, there are new algorithmic developments~\cite{10.3389/fncir.2016.0
 \iftoggle{DEBUG}{
 \subsection{\glspl{cpu} y \glspl{gpu} para Simulaciones Grandes de \gls{ann_pl}}
 
-Los objetivos de diseño originales de las \gls{cpu_pl} estaban principalmente direccionados a hacer a los hilos individuales muy rápidos reduciendo la latencia por medio de sistemas grandes de cache y ejecución especulativa incluyendo predicción de ramificaciones y de dependencia de memoria en los procesadores con sistemas de \emph{pipeline}.
-En contraste, para las \gls{gpu_pl} el rendimiento general es más importante que los hilos individuales, y en dichos dispositivos la latencia de la memoria se oculta por medio de paralelismo masivo evitando así los relojes de alta frecuencia presentes en las \gls{cpu_pl}.
+Los objetivos de diseño originales de las \gls{cpu_pl} estaban principalmente direccionados a hacer a los hilos individuales muy rápidos, reduciendo la latencia por medio de sistemas grandes de cache y ejecución especulativa incluyendo predicción de ramificaciones y de dependencia de memoria en los procesadores con sistemas de \emph{pipeline}.
+En contraste, para las \gls{gpu_pl} el rendimiento general es más importante que los hilos individuales y en dichos dispositivos la latencia de la memoria se oculta por medio de paralelismo masivo evitando así los relojes de alta frecuencia presentes en las \gls{cpu_pl}.
 
 Esencialmente, cada operación en una \gls{gpu} es paralela. En una \gls{cpu} en cambio, el compilador tiene que ser persuadido de que una operación se puede vectorizar.
-Para lograr esto, la operación en la \gls{cpu} tiene que satisfacer algún criterio, por ejemplo, los datos utilizados por la operación tienen que etar alineados en memoria de cierta manera.
-Esta es una restricción importante.
+Para lograr esto, la operación en la \gls{cpu} tiene que satisfacer algún criterio, por ejemplo, los datos utilizados por la operación tienen que estar alineados en memoria de cierta manera--esta es una restricción importante.
 Cada operación en una \gls{gpu} es vectorizada (sin alternativa) y no hay ninguna necesidad de persuadir al compilador para realizar operaciones vectoriales en una \gls{gpu}.
 Por lo tanto, cada núcleo \gls{cpu} ejecuta operaciones escalares o vectoriales mientras que cada núcleo \gls{gpu} ejecuta sólo instrucciones vectoriales.
-De todas maneras, este acceso irrestricto a la vectorización no es gratis, ya  que la coalescencia es un requerimiento fuerte para obtener mediciones de alta eficiencia paralela sobre las \gls{gpu_pl}.
+De todas maneras, este acceso irrestricto a la vectorización no viene de manera gratuita, ya  que la coalescencia es un requerimiento fuerte para obtener mediciones de alta eficiencia paralela sobre las \gls{gpu_pl}.
 
 En referencia al mercado de las \gls{gpu_pl} y su relación con las aplicaciones de \gls{dl}, NVIDIA--a diferencia de AMD--ha invertido mucho en los últimos años para el \gls{dl}.
 Mucho esfuerzo de ingeniería se ha invertido por NVIDIA para hacer su hardware más adecuado al \gls{dl}.
@@ -265,16 +264,16 @@ Como ejemplo de ello podemos citar los últimos núcleos (\emph{tensor cores}) d
 Como resultado, NVIDIA es muy dominante en lo que respecta al \gls{dl} actualmente.
 
 En el reino de los modelos computacionales biológicamente plausibles, la dicotomía \gls{cpu}/\gls{gpu} no está tan claramente definida como en el \gls{dl}.
-En~\cite{doi:10.3109/0954898X.2012.739292} por ejemplo, los autores analizaron las ventajas y desventajas de la paralelización en \gls{cpu} y \gls{gpu} en diferentes paradigmas de paralelización de memoria compartida, como \gls{omp}, \gls{cuda} y \emph{\gls{opencl}} de neuronas de tasa de disparo medio.
+En~H. Ülo Dinkelbach et al. \cite{doi:10.3109/0954898X.2012.739292} por ejemplo, los autores analizaron las ventajas y desventajas de la paralelización en \gls{cpu} y \gls{gpu} en diferentes paradigmas de paralelización de memoria compartida, como \gls{omp}, \gls{cuda} y \emph{\gls{opencl}} de neuronas de tasa de disparo medio.
 Los autores probaron diferentes limitadores de velocidad como la precisión del punto flotante, la configuración de hilos, la organización de los datos y la estructura de conectividad de las redes.
 Las implementaciones paralelas en \gls{cpu} fueron muy beneficiadas con redes más pequeñas, mayormente por los efectos de la cache.
 Las redes grandes--en cambio--se beneficiaron con las \gls{gpu_pl} solo si estas demandaban memoria más allá de la disponible en las caches de las \gls{cpu_pl}, de lo contrario la implementación en \gls{omp} fue altamente preferida.
-Los autores compararon varias representaciones estructurales sobre marcos de paralelización diferentes mostrando que en las \gls{cpu_pl}, dichas representaciones alcanzaban casi el mismo tiempo de computación, en las \gls{gpu_pl} en cambio, el desempeño se vió seriamente afectado por las violaciones de coalescencia inducidas por estructuras de datos heterogéneas.
+Los autores compararon varias representaciones estructurales sobre marcos de paralelización diferentes mostrando que en las \gls{cpu_pl}, dichas representaciones alcanzaban casi el mismo tiempo de computación; en las \gls{gpu_pl} en cambio, el desempeño se vió seriamente afectado por las violaciones de coalescencia inducidas por estructuras de datos heterogéneas.
 Finalmente, el problema más serio apareció cuando la red presentó una estructura de conectividad dispersa y aleatoria, es decir, cuando las neuronas recibían conexiones aleatoriamente desde otras neuronas, y no en un orden ascendentemente organizado.
 Como explicaron los autores, esto destruyó por completo el desempeño de las implementaciones en \gls{gpu_pl}, mientras que las \gls{cpu_pl} fueron levemente afectadas.
 Este fue quizás el argumento más fuerte en contra de las implementaciones en \gls{gpu_pl} de redes neuronales de tasa media de disparo, ya que la conectividad dispersa es un patrón repetitivo en las redes biológicas así como lo es en el modelo computacional presentado en este trabajo.
 
-En~\cite{10.3389/fninf.2015.00019} los autores describieron un simulador neuronal que provee inferencia de alto nivel para generar redes neuronales con codificación de tasa de disparo, codificación de disparo o red híbrida.
+En~ J. Vitay et al. \cite{10.3389/fninf.2015.00019} los autores describieron un simulador neuronal que provee inferencia de alto nivel para generar redes neuronales con codificación de tasa de disparo, codificación de disparo o red híbrida.
 Las definiciones de las redes generan una librería en \CC altamente optimizada para un marco de paralelización subyacente tal como \gls{omp} para sistemas de memoria compartida o \gls{cuda} para \gls{gpu_pl}.
 Para la implementación en \gls{omp}, se varío el número de hilos entre 2 y 12.
 Para la implementación en \gls{cuda}, se utilizó la configuración por defecto del simulador (32 hilos las actualizaciones de las variables neuronales, 192 hilos para las sumas ponderadas).
@@ -282,7 +281,7 @@ Con \gls{omp}, el escalado para 1000 neuronas fue ligeramente subóptimo, mientr
 La situación se revirtió con \gls{cuda}.
 En tal caso la red con 1000 neuronas solo alcanzó una tasa de aceleración limitada, mientras que la red con 4000 neuronas alcanzó una gran tasa.
 
-En~\cite{HUQQANI2013349} los autores desarrollaron y analizaron dos estrategias de paralelización diferentes para redes neuronales con \emph{backpropagation} para reconocimiento de rostros.
+En~A. A. Huqqani et al. \cite{HUQQANI2013349} los autores desarrollaron y analizaron dos estrategias de paralelización diferentes para redes neuronales con \emph{backpropagation} para reconocimiento de rostros.
 El trabajo se concentró en dos ambientes de paralelización.
 Por un lado, se utilizó \gls{omp} sobre una \gls{cpu} multi-hilo convencional y por el otro lado se utilizó \gls{cuda} sobre una \gls{gpu}.
 Los autores concluyeron que la paralelización basada en \gls{gpu} se debía de preferir generalmente frente a la basada en \gls{cpu} con múltiples hilos.
@@ -338,20 +337,20 @@ Olena Schuessler y Diego Loyola~\cite{Schuessler:2011:PTA:1997052.1997062} delin
 En este trabajo, los autores usaron Hilos \gls{posix} (Pthreads) y \gls{omp} obteniendo un incremento en velocidad de cómputo muy cercano al ideal esperado (743\% utilizando 8 núcleos).
 El entrenamiento paralelo implementado en \gls{omp} devolvió resultados ligeramente mejores comparados a los Pthreads.
 
-En~\cite{Strey2003ACO}, se comparó una implementación basada en hilos sobre \gls{omp} con una implementación basada en procesos sobre \gls{mpi} en una arquitectura rápida de memoria compartida.
-Se exploraron diferentes estrategias de particionado y de datos así como el desempeño de todas las implementaciones.
+En~A. Strey \cite{Strey2003ACO}, se comparó una implementación basada en hilos sobre \gls{omp} con una implementación basada en procesos sobre \gls{mpi} en una arquitectura rápida de memoria compartida.
+Se exploraron diferentes estrategias de particionado de datos como así también el desempeño de todas las implementaciones.
 Se mostró que las implementaciones basadas en \gls{mpi} fueron significativamente más rápidas que las basadas en \gls{omp}.
 Los autores señalaron que la aceleración más baja de la implementación basada en \gls{omp} pareció ser originada en el fenómeno denominado \emph{cache line false sharing} de los arreglos de datos. Tal situación puede ser revertida utilizando varias configuraciones de números de hilos en diferentes corridas.
 
-En~\cite{6232827} los autores propusieron usar \gls{mpi} y \gls{omp} en un enfoque de \gls{eann} para \gls{tsf} basado en un \gls{eda} que evoluciona una red \gls{eann} completamente conectada (\emph{fully connected}).
+En~B. P. Gonzalez et al. \cite{6232827} los autores propusieron usar \gls{mpi} y \gls{omp} en un enfoque de \gls{eann} para \gls{tsf} basado en un \gls{eda} que evoluciona una red \gls{eann} completamente conectada (\emph{fully connected}).
 Los experimentos utilizaron varias series temporales y el número de núcleos se extendió de 1 a 6.
 De esta forma los autores mostraron que \gls{mpi} con 5 núcleos fue la mejor estrategia de paralelización, la cual tomó el menor tiempo de ejecución e hizo un uso razonable de los recursos computacionales.
 
-En~\cite{6511739} los autores reportaron una paralelización basada en \gls{omp} para la implementación de un simulador de \gls{snn} asíncrono con el objetivo de mostrar eficiencia básica de paralelización de núcleo y de hiper-hilado.
+En~M. Joldos y I. L. Muntean \cite{6511739} los autores reportaron una paralelización basada en \gls{omp} para la implementación de un simulador de \gls{snn} asíncrono con el objetivo de mostrar eficiencia básica de paralelización de núcleo y de hiper-hilado.
 Los primeros resultados mostraron una eficiencia paralela en los rangos de 0,94-0,98 con cuatro núcleos físicos y 0,86-0,89 con 8 hiper-hilos para 1000 neuronas.
 Para 4000 neuronas la eficiencia paralela estuvo en el rango de 0,86-0,87 con 4 núcleos físicos y 0,56-0,57 con 8 hiper-hilos.
 
-En~\cite{Chatzikonstantis:2016:FID:2903150.2903477} los autores presentaron una simulación del olivar inferior basada en modelos \glsfirst{hh} extendidos sobre el host y el coprocesador Intel Xeon-Xeon Phi en un sistema de un único nodo.
+En~G. Chatzikonstantis et al. \cite{Chatzikonstantis:2016:FID:2903150.2903477} los autores presentaron una simulación del olivar inferior basada en modelos \glsfirst{hh} extendidos sobre el host y el coprocesador Intel Xeon-Xeon Phi en un sistema de un único nodo.
 La implementación en \gls{mpi} tubo bajo rendimiento para el acelerador Xeon Phi ya que no utilizó los recursos de multi-hilado del coprocesador, pero se desempeñó bien en el host. 
 Una implementación híbrida mejoró sobre las implementaciones \gls{mpi} en el acelerador.
 \gls{omp}--por otro lado--fue la mejor opción en las dos plataformas para redes más pequeñas, independientemente del hecho de que su desempeño no escaló linealmente para todos los casos.
@@ -392,20 +391,21 @@ In~\cite{Chatzikonstantis:2016:FID:2903150.2903477} the authors presented an inf
 
 \iftoggle{DEBUG}{
 \subsection{Implementaciones Paralelas de \gls{ann_pl} en Sistemas de Memoria Distribuida}
-En~\cite{6821186} los autores propusieron un esquema de paralelización basado en \gls{mpi} para una red neuronal impulsiva asíncrona con más de 50.000 neuronas y 300 millones de sinapsis.
+
+En~M. Joldos et al. \cite{6821186} los autores propusieron un esquema de paralelización basado en \gls{mpi} para una red neuronal impulsiva asíncrona con más de 50.000 neuronas y 300 millones de sinapsis.
 La solución propuesta fue evaluada en un sistema de \gls{hpc} para producción, utilizando hasta 512 procesos paralelos.
 Los primeros resultados mostraron situaciones con muy buena aceleración (super-lineal relativo a procesos con un caso de referencia de 36 procesos \gls{mpi}).
 De todas maneras la estrategia de paralelización escogida tuvo la limitación de que uno de los procesos paralelos (el maestro) tuvo que hacerse cargo solo de la coordinación de los procesos de trabajo estando raramente involucrado en la computación.
 Se esperaba que con el incremento en el número de procesos de trabajo, se podría necesitar una organización jerárquica de procesos maestros.
 
-En~\cite{Pastorelli2015ScalingT1} los autores presentaron mediciones de aceleración en análisis de escalado fuerte y débil de una red de \gls{lif} corriendo en un rango de 1 a 1024 procesos de software y núcleos de hardware.
+En~E. Pastorelli et al. \cite{Pastorelli2015ScalingT1} los autores presentaron mediciones de aceleración en análisis de escalado fuerte y débil de una red de \gls{lif} corriendo en un rango de 1 a 1024 procesos de software y núcleos de hardware.
 Los autores demostraron simular una grilla de 96x96 columnas neuronales, conteniendo un total de 11.4M de neuronas \gls{lif} con adaptación a la frecuencia de disparo, y representando 20.4G sinapsis equivalentes.
 La red neuronal se distribuyó sobre un conjunto de procesos \gls{mpi} y las simulaciones se corrieron sobre una plataforma servidora compuesta de hasta 64 nodos de zócalo dual.
 En referencia al escalado fuerte, la aceleración real para una grilla de 24x24 fue de 67,3,  perdiendo un 30\% comparado con la aceleración ideal (96).
 La aceleración real para la grilla de 48x48 fue de 54,2 mientras que los recursos de hardware se incrementaron en un factor de 96.
 Para la grilla de 96x96 la aceleración fue de 10,8 (16 hubiera sido el ideal).
 
-En~\cite{hu2012biophysically} el autor propuso una implementación paralela de modelos neuronales biológicamente realistas utilizando tres estrategias de paralelización:
+En~J. Hu \cite{hu2012biophysically} el autor propuso una implementación paralela de modelos neuronales biológicamente realistas utilizando tres estrategias de paralelización:
 paralelización \gls{mpi}, paralelización \gls{mpi} con esquemas de balanceo de carga dinámicos y paralelización híbrida \gls{mpi}/\gls{omp}.
 El autor corrió experimentos en un cluster de memoria distribuida y los resultados mostraron que cuando el número de procesos fue pequeño, la implementación \gls{mpi} alcanzó un buen desempeño sin problemas de balanceo de carga.
 Sin embargo, con un incremento en el tamaño de la red neuronal y del número de procesadores, la tasa de desvalance creció considerablemente.
@@ -442,9 +442,9 @@ La Fig.~\ref{fig:EncoderColumnConnections1} muestra una representación del \gls
 Cada cilindro en la \gls{el} y en la \glsfirst{cl} representa una \glsfirst{cc} en el tejido cerebral. Cada prisma en el \glsfirst{mrstsa} representa una activación en la \gls{a1}, (implementada como una variable de valor real en el~\gls{mrstsa}).
 La figura es una visualización de una \gls{cc} (en color rojo) y sus tres campos receptivos (en color amarillo).
 El campo receptivo de una \gls{cc}--en la \gls{el} o en el \gls{cl}--es un arreglo que define un conjunto de \gls{cc_pl} con las que tal columna se podría conectar.
-El campo receptivo de una \gls{cc} sonre el \gls{mrstsa} determina un arreglo de variables reales con las que tal columna se podría conectar.
+El campo receptivo de una \gls{cc}--sonre el \gls{mrstsa}--determina un arreglo de variables reales con las que tal columna se podría conectar.
 Un subconjunto de \gls{cc_pl} en un campo receptivo (en color verde) representa un conjunto disperso y aleatorio de \gls{cc_pl} que se encuentran realmente conectadas a la \gls{cc} en color rojo.
-Una situación similar se podria describir para los primas verdes sobre el \gls{mrstsa}.
+Una situación similar se podría describir para los prismas verdes sobre el \gls{mrstsa}.
 El tamaño, la propiedad de envoltura y el porcentaje de vínculos establecidos (en color verde) dentro de un campo receptivo son parámetros ajustables para la \gls{el}.
 En este trabajo, se implementaron solo conexiones laterales.
 No hay ramas dendríticas apicales en la \gls{el} ya que, en la implementación actual, no hay \gls{cl_pl} superiores de donde traer tales conexiones.
@@ -454,7 +454,7 @@ Independientemente de ello, decidimos incluir la \gls{cl} en la Fig.~\ref{fig:En
 De esta manera, la Fig. \ref{fig:EncoderColumnConnections1} muestra el flujo de datos de la información convergiendo a una \gls{cc} dentro de la \gls{el}.
 Primero que nada, nuestro algoritmo de Generación de Corpus se utiliza para producir archivos de audio que contienen los corpus pronunciados, generados por medio de herramientas de síntesis del habla.
 El algoritmo genera archivos de marcado estándar de lenguaje para sintetizadores con formato SABLE \cite{sable}.
-En tales archivos se instruye al sintetizador \gls{festival} a generar corpus desde varios números de palabras desde diferentes vocabularios pronunciados por voces diferentes disponibles en el sintetizador. 
+En tales archivos se instruye al sintetizador \gls{festival} para generar corpus desde varios números de palabras desde diferentes vocabularios pronunciados por voces diferentes disponibles en el sintetizador. 
 La organización de los corpus tienen ciertas reglas y restricciones con el objeto de evitar sesgos en los procesos de entrenamiento.
 Las voces son escogidas secuencialmente (pseudo-aleatoriamente) con la restricción de que ninguna voz se puede utilizar una segunda vez hasta que todas las voces se hayan utilizado en sus turnos.
 Cada voz pronuncia un número de palabras por turno--en orden pseudo-aleatorio--y ninguna palabra se puede repetir hasta que todas las palabras hayan sido utilizadas por tal vos.
@@ -475,7 +475,7 @@ Con esta estrategia incorporamos fenómenos neuro-fisiológicos adicionales como
 Finalmente, la \gls{el} simula un parche de tejido cortical utilizando un arreglo n-dimensional de estructuras complejas llamadas \gls{csom_pl} que simulan \gls{cc_pl} en el cerebro.
 La \gls{el} genera \gls{sdr_pl} \cite{ahmad_2016} desde las entradas entregadas por la etapa \gls{mrstsa} y desde la historia de activación en sus propias \gls{cc_pl}.
 Las \gls{sdr_pl} exhiben propiedades matemáticas interesantes que les dan un gran rechazo al ruido y tolerancia a las fallas \cite{DBLP:journals/corr/AhmadH15}.
-Esas son características típicas en el tejido cortical donde las células individuales están lejos de ser 100\% confiables y mueren y se regeneran constantemente.
+Esas son características típicas en el tejido cortical donde las células individuales están lejos de ser 100\% confiables, muriendo y regenerándose constantemente.
 Este algoritmo incorpora fenómenos neuro-fisiológicos como la organización columnar, la formación espontánea micro-columnar aferente, las arborizaciones dendríticas próximas y distantes, la interacción inter-columnar lateral por medio de activaciones dendríticas \gls{nmda} independientes, los \gls{mfe_pl} con adaptación a estímulos contextuales, la inhibición intra-columnar lateral próxima, la \gls{ltp}, la \gls{ltd}, la \gls{stdp} y las regulaciones homeostáticas en sinapsis distales.
 
 Cada unidad celular en una \gls{cc} tiene dos tipos de ramas dendríticas; próximas y distales. Las ramas dendríticas próximas y distales conllevan a conexiones próximas y distales en una unidad celular respectivamente~\cite{10.1371/journal.pone.0217966}.
@@ -488,7 +488,7 @@ Las unidades neuronales en la \gls{el} simulan células piramidales en el tejido
     \label{fig:Pyramidal_Cell}
 \end{figure}
 
-En la Fig.~\ref{fig:EncoderColumnConnections1} las conexiones próximas están solo compuestas por conexiones aferentes desde el algoritmo \gls{mrstsa} mientras que las conexiones distales están compuestas por conexiones laterales y apicales desde columnas vecinas y desde columnas en otra capa arriba respectivamente.
+En la Fig.~\ref{fig:EncoderColumnConnections1} las conexiones próximas están solo compuestas por conexiones aferentes desde el algoritmo \gls{mrstsa} mientras que las conexiones distales están compuestas por conexiones laterales y apicales desde columnas vecinas y desde columnas en otra capa foránea respectivamente.
 La información aferente activa diferentes clusters de unidades en una \gls{cc} estableciendo una primera aproximación de los rasgos fonéticos abstraídos desde el flujo auditivo de entrada. 
 La \gls{el} refina tales rasgos crudos por medio de activaciones contextuales previas producidas en la misma \gls{cc} y/o en \gls{cc_pl} vecinas.
 Tal información contextual es enviada a cada \gls{cc} por medio de ramas dendríticas distales laterales que trabajan como elementos de procesamiento independientes en una célula (Fig.~\ref{fig:Lateral_Distal_Connections}).
@@ -594,11 +594,11 @@ From Fig.~\ref{fig:Lateral_Distal_Connections} it can be seen that the sparsenes
 \subsection{Implementación Paralela de la Generación de Corpus}
 \label{CorpGenImp}
 
-Generamos corpus con palabras mono y multi-silábicas escogidas aleatoriamente del idioma Inglés~\cite{10.1371/journal.pone.0217966} utilizando la síntesis de \emph{\gls{festival}} \cite{festival2014}.
-A tales fines, generamos archivos de marcado estándar para sintetizadores en lenguaje SABLE \cite{sable}.
+En cuanto a la producción paralela de los datos de entrada, generamos corpus con palabras mono y multi-silábicas escogidas aleatoriamente del idioma Inglés~\cite{10.1371/journal.pone.0217966} utilizando la síntesis de \emph{\gls{festival}} \cite{festival2014}.
+A tales fines, también generamos archivos de marcado estándar para sintetizadores en lenguaje SABLE \cite{sable}.
 En esos archivos instruimos \emph{\gls{festival}} a que genere archivos \texttt{wav} de audio con los corpus pronunciados por diferentes voces disponibles en el sintetizador.
 
-Todo el código que genera los corpus está implementado en Python y paralelizado por medio de un paquete \gls{mpi} para Python llamado \texttt{mpi4py}. 
+Todo el código encargado de generar los corpus está implementado en Python y paralelizado por medio de un paquete \gls{mpi} para Python llamado \texttt{mpi4py}. 
 La implementación algorítmica de esta paralelización se muestra en la Fig.~\ref{fig:CorporaGenerationParallelization}.
 En tal figura, hay una distribución de generación de corpus entre procesos \gls{mpi} en Python.
 Las tareas de generación de corpus se distribuyen entre procesos como un mazo de cartas se distribuye entre los jugadores de una partida.
@@ -611,7 +611,7 @@ De esta manera, teniendo 10 vocabularios y 3 procesos \gls{mpi}, el proceso núm
 Todos los corpus que corresponden a cierto vocabulario son procesados de manera serial por el proceso que toma a cargo tal vocabulario.
 
 La Fig.~\ref{sub:CorporaGenerationParallelization} muestra como cada proceso \gls{mpi} termina con un conjunto de vocabularios para generar los corpus correspondientes a tales vocabularios.
-Si tenemos 10 corpus por vocabulario, el proceso 0 terminará generando 40 corpus serialmente mientras que los procesos 1 y 2 generarán 30 corpus cada uno serialmente.
+Si tenemos 10 corpus por vocabulario, el proceso 0 terminará generando 40 corpus serialmente, mientras que los procesos 1 y 2 generarán 30 corpus cada uno serialmente.
 
 \begin{figure*}[tb] 
     \centering
@@ -665,7 +665,7 @@ Fig.~\ref{sub:CorporaGenerationParallelization} shows how each \gls{mpi} rank en
 
 Implementamos el algoritmo \gls{mrstsa} en C utilizando el paquete FFTW~\cite{fftw} el cual es una implementación de la \glsfirst{fft} que se encuentra disponible en Cooley.
 Utilizamos un enfoque de paralelización híbrido \gls{mpi}+\gls{omp}.
-Paralelizamos el algoritmo \gls{mrstsa} desarrollado en \cite{10.1371/journal.pone.0217966} por medio de secciones \gls{omp} utilizando una sección \gls{omp} por resolución espectral corriendo 5 hilos \gls{omp} por nodo.
+Paralelizamos el algoritmo \gls{mrstsa} desarrollado en D. Dematties et al. \cite{10.1371/journal.pone.0217966} por medio de secciones \gls{omp} utilizando una sección \gls{omp} por resolución espectral corriendo 5 hilos \gls{omp} por nodo.
 
 El esquema de paralelización completo se muestra en la Fig.~\ref{fig:MRSTSA_Parallelization}.
 Las tareas son distribuidas entre procesos \gls{mpi} como un mazo de cartas se distribuye entre los distintos jugadores en la partida.
@@ -968,7 +968,7 @@ El uso del comando \texttt{qsub} permite al usuario entregar trabajos; la entreg
 El script tendrá acceso a una variable de entorno denominada \texttt{COBALT\_NODEFILE}, que es el nombre de un archivo preparado para usar con la opción \texttt{mpiexec -f}. 
 El número de procesos \gls{mpi} que corren por trabajo depende completamente de los argumentos suministrados a \texttt{mpiexec} en el script.
 
-Como mínimo, a \texttt{qsub} se le debe proveer con el número de nodos deseados (\texttt{-n}), el tiempo asignado para el trabajo (\texttt{-t}), y la ruta al script.
+Como mínimo, a \texttt{qsub} se le debe proveer con el número de nodos deseados (\texttt{-n}), el tiempo asignado para el trabajo (\texttt{-t}) y la ruta al script.
 Si el ususario está asociado con más de un proyecto, el nombre del proyecto debe ser provisto utilizando la opción \texttt{-A}.
 Como ejemplo de un envío de trabajo utilizamos \texttt{qsub -n 9 -t 240 -A neurophon ./test\_ERRLayer9.sh} donde pedimos por 9 nodos durante 4 horas para hacer inferencia con nuestro modelo.
 
@@ -1007,7 +1007,7 @@ We ran the model using mpiexec version 3.1.4 with the following options: \texttt
 \subsection{Pruebas de Escalado para Generación de Corpus}
 \label{CG_Scaling_test}
 
-En términos de escalado Fuerte y Débil (Fig.~\ref{fig:Corpora_Scaling}), corrimos el algoritmo para crear 64 corpus desde 64 vocabularios--un corpus por vocabulario.
+En términos de escalado Fuerte y Débil (Fig.~\ref{fig:Corpora_Scaling}) corrimos el algoritmo para crear 64 corpus desde 64 vocabularios--un corpus por vocabulario.
 El código generó 64 archivos de texto SABLE para sintetizadores y luego llamó a Festival utilizando  el script \texttt{text2wav} para generar los archivos \texttt{wav} de audio que pronunciaron el texto en los archivos SABLE.
 
 \begin{figure*}[tb] 
@@ -1033,15 +1033,15 @@ Por otro lado el número de elementos de procesamiento se incrementa desde 1 a 6
 En este caso corrimos un proceso \gls{mpi} por \gls{cpu}.
 Debido a que un nodo en Cooley tiene 12 \gls{cpu_pl} solo necesitamos 1 nodo para correr 1, 2, 4 u 8 procesos, 2 nodos (24 \gls{cpu_pl}) para correr 16 procesos, 3 nodos (36 \gls{cpu_pl}) para correr 32 procesos y finalmente 6 nodos (72 \gls{cpu_pl}) para correr 64 procesos.
 
-Algo a tomar en cuenta es que para hacer que este código escale de la manera mostrada en las gráficas, todos los corpus deben tener el mismo tamaño, de otra manera--debido a que el código distribuye los corpus sobre los diferentes procesos de manera estática--algunos procesos a cargo de corpus más pequeños habrían finalizado antes que otros procesos a cargo de corpus más grandes y así habrían desperdiciado su tiempo esperando de manera inactiva por la finalización de aquellos procesos.
+Algo a tomar en cuenta es que para hacer que este código escale de la manera que se muestra en las gráficas, todos los corpus deben tener el mismo tamaño, de otra manera--debido a que el código distribuye los corpus sobre los diferentes procesos de manera estática--algunos procesos a cargo de corpus más pequeños habrían finalizado antes que otros procesos a cargo de corpus más grandes y así habrían desperdiciado su tiempo esperando de manera inactiva por la finalización de aquellos procesos.
 Por lo tanto es necesario realizar una distribución de vocabularios sobre procesos de manera dinámica--así como la planificación dinámica en \gls{omp}.
-De todas formas, tratar de balancear la carga entre los diferentes procesos \gls{mpi} podría producir una degradación severa de la Eficiencia originada en el ingremento de la carga en \gls{ipc} que tales técnicas requieren~\cite{hu2012biophysically}.
+De todas maneras, tratar de balancear la carga entre los diferentes procesos \gls{mpi} podría producir una degradación severa de la Eficiencia originada en el ingremento de la carga en \gls{ipc} que tales técnicas requieren~\cite{hu2012biophysically}.
 
-Sea $t_1$ la cantidad de tiempo requerida para completar una unidad de trabajo con $1$ elemento de procesamiento, y $t_N$ la cantidad de tiempo para completar la misma unidad de trabajo con $N$ elementos de procesamiento, la Eficiencia de Escalado Fuerte es: $t_1 / (N * t_N) * 100$. En la Fig.~\ref{sub:Corpora_Strong_Scaling_Efficiency} podemos ver que la eficiencia mínima de escalado fuerte está bien arriba del 75\%.
+Sea $t_1$ la cantidad de tiempo requerida para completar una unidad de trabajo con $1$ elemento de procesamiento, y $t_N$ la cantidad de tiempo para completar la misma unidad de trabajo con $N$ elementos de procesamiento, la Eficiencia de Escalado Fuerte es: $t_1 / (N * t_N) * 100$. En la Fig.~\ref{sub:Corpora_Strong_Scaling_Efficiency} podemos ver que la eficiencia mínima de escalado fuerte está muy por encima del 75\%.
 
 En referencia al escalado débil (Fig.~\ref{sub:Corpora_Weak_Scaling}) el problema de la carga de trabajo asignada a cada elemento de procesamiento se mantiene constante y se utilizan elementos adicionales para resolver problemas más grandes (es decir mientras agregamos más \glspl{cpu} también agregamos más corpus de tal manera que siempre se genere un corpus por \gls{cpu}).
-Generamos un corpus por proceso utilizando: un corpus por proceso \gls{mpi}, dos corpus para dos procesos \gls{mpi} y así.
-Sea $t_1$ la cantidad de tiempo para completar una unidad de trabajo con $1$ elemento de procesamiento, y $t_N$ la cantidad de tiempo para completar $N$ veces la misma unidad de trabajo con $N$ elementos de procesamiento, la eficiencia de escalado débil es: $t_1 / t_N * 100$. Las líneas casi horizontales mostradas en la Fig.~\ref{sub:Corpora_Weak_Scaling} ilustran que el código también escala bien en términos de escalado débil y que--como la Fig.~\ref{sub:Corpora_Weak_Scaling_Efficiency} muestra--la eficiencia del escalado débil del código nunca estuvo por debajo del the 70\%.
+Generamos un corpus por cada proceso utilizando: un corpus por proceso \gls{mpi}, dos corpus para dos procesos \gls{mpi} y así.
+Sea $t_1$ la cantidad de tiempo para completar una unidad de trabajo con $1$ elemento de procesamiento, y $t_N$ la cantidad de tiempo para completar $N$ veces la misma unidad de trabajo con $N$ elementos de procesamiento, la eficiencia de escalado débil es: $t_1 / t_N * 100$. Las líneas casi horizontales mostradas en la Fig.~\ref{sub:Corpora_Weak_Scaling} ilustran que el código también escala bien en términos de escalado débil y que--como se muestra en la Fig.~\ref{sub:Corpora_Weak_Scaling_Efficiency}--la eficiencia del escalado débil del código nunca estuvo por debajo del the 70\%.
 }{
 \subsection{Corpora Generation Scaling Tests}
 \label{CG_Scaling_test}
@@ -1159,8 +1159,8 @@ Finally, Figs.~\ref{sub:MRSTSA_Strong_Scaling_Efficiency} and~\ref{sub:MRSTSA_We
 La Fig. \ref{fig:EL_Strong_Scaling} muestra la capacidad de escalado fuerte de nuestro código en términos del tiempo de corrida vs. el número de elementos de procesamiento utilizados para la tarea.
 En estas pruebas restringimos el código para que corra un proceso \gls{mpi} por nodo.
 Cada proceso \gls{mpi} distribuye un número específico de hilos a través de las diferentes \gls{cpu_pl} en su nodo correspondiente como se muestra en la Fig. \ref{fig:Encoder_Parallelization}.
-Como anteriormente, el tamaño del problema se mantuvo constante y se incrementó el número de elementos de procesamiento.
-Las líneas rectas en las Figs.~\ref{sub:EL_Strong_Scaling_Left} y~\ref{sub:EL_Strong_Scaling1_Left} muestran--a primera vista--un buena capacidad de escalado.
+Como se mostró anteriormente, el tamaño del problema se mantuvo constante y se incrementó el número de elementos de procesamiento.
+Las líneas rectas en las Figs.~\ref{sub:EL_Strong_Scaling_Left} y~\ref{sub:EL_Strong_Scaling1_Left} muestran--a primera vista--una buena capacidad de escalado.
 Este hecho es respaldado por las Figs.~\ref{sub:EL_Strong_Scaling_Right} y~\ref{sub:EL_Strong_Scaling1_Right} por medio de la eficiencia de escalado fuerte: $t_1 / (N * t_N) * 100$.
 
 \begin{figure*}[tb] 
@@ -1193,7 +1193,7 @@ Normal & 23 x 23                                                                
 \label{Medium_Model}
 \end{table*}
 
-Primeramente, la \gls{el} probada en las Figs.~\ref{sub:EL_Strong_Scaling_Left} y~\ref{sub:EL_Strong_Scaling_Right} tiene 529 \gls{cc_pl}.
+En primer lugar, la \gls{el} probada en las Figs.~\ref{sub:EL_Strong_Scaling_Left} y~\ref{sub:EL_Strong_Scaling_Right} tiene 529 \gls{cc_pl}.
 Para evitar la degradación en la eficiencia del escalado, la \gls{el} tiene que mantener cierto número de \gls{cc_pl} por hilo \gls{omp}.
 En general, mientras más baja sea la tasa de \glspl{cc} por hilo \gls{omp}, más baja es la eficiencia medida de escalado.
 El peor caso en la Fig.~\ref{sub:EL_Strong_Scaling_Left} es para 8 nodos corriendo 8 hilos cada uno (es decir, 64 hilos en total).
@@ -1215,16 +1215,16 @@ Grande & 128 x 128                                                              
 \label{Big_Model}
 \end{table*}
 
-Este modelo tuvo 16384 \glspl{cc} y para el peor caso en el cual hubieron 64 nodos computacionales con 8 hilos \gls{omp} cada uno (512 hilos en total), el modelo terminó distribuyendo 32 \gls{cc_pl} por hilo \gls{omp}, una tasa mucho mejor que la dada para el caso anterior.
+Este modelo tuvo 16384 \glspl{cc} y para el peor caso en el que hubieron 64 nodos computacionales con 8 hilos \gls{omp} cada uno (512 hilos en total), el modelo terminó distribuyendo 32 \gls{cc_pl} por hilo \gls{omp}, una tasa mucho mejor que la dada para el caso anterior.
 Cada \gls{cc} en este modelo tuvo 225 unidades neuronales para alcanzar un totalde 3686400 unidades neuronales.
 Cada unidad neuronal tuvo 31 sinapsis próximas (aferentes) y 432 sinapsis distales (laterales) para alcanzar un total de 1706803200 sinapsis en la \gls{el}.
 Dado el tamaño de este modelo no pudimos correr experimentos desde 1, 2 o 4 nodos computacionales ya que la cantidad de tiempo que una simulación de tales características puede tomar, exede por mucho el tiempo provisto por el comando \texttt{qsub} en Cooley.
 Por lo tanto, comenzamos las pruebas desde 8 nodos computacionales para  1, 2, 4 y 8 hilos \gls{omp} como muestra la Fig.~\ref{sub:EL_Strong_Scaling1_Left}.
 
-Como se puede ver en la Fig.~\ref{sub:EL_Strong_Scaling1_Right}, la mayor cantidad de nodos computacionales (procesos \gls{mpi}) con el consecuente crecimiento de la carga en \gls{ipc} \gls{mpi}, no afectó la eficiencia del escalado fuerte del modelo la cual estuvo bien arriba del 87\% cuando se corrieron 8 hilos por nodo, pero estuvo bien arriba del 97\% cuando se corrieron dos hilos por nodo para 64 nodos. 
+Como se puede ver en la Fig.~\ref{sub:EL_Strong_Scaling1_Right}, la mayor cantidad de nodos computacionales (procesos \gls{mpi}) con el consecuente crecimiento de la carga en \gls{ipc} \gls{mpi}, no afectó la eficiencia del escalado fuerte del modelo la cual estuvo por encima del 87\% cuando se corrieron 8 hilos por nodo, pero estuvo muy arriba del 97\% cuando se corrieron dos hilos por nodo para 64 nodos. 
 
-En referencia al escalado débil, con el fin de mantener la tasa en el número de \glspl{cc} por hilo \gls{omp} constante utilizamos las \gls{el_pl} detalladas en el Cuadro~\ref{Weak_Scaling_Models}.
-Para todos los casos detallados en el cuadro, la tasa de \gls{cc_pl} por hilo \gls{omp} fue de 32.
+En referencia al escalado débil, con el fin de mantener la tasa en el número de \glspl{cc} por hilo \gls{omp} constante, utilizamos las \gls{el_pl} detalladas en el Cuadro~\ref{Weak_Scaling_Models}.
+Para todos los casos detallados en el cuadro la tasa de \gls{cc_pl} por hilo \gls{omp} fue de 32.
 
 \begin{table*}[tb]
 \centering
@@ -1262,7 +1262,7 @@ Este escenario es especialmente evidente para el caso de un hilo \gls{omp} en cu
   \label{fig:EL_Weak_Scaling} 
 \end{figure*}
 
-Las Figs.~\ref{sub:EL_Strong_Scaling_Left} y~\ref{sub:EL_Strong_Scaling1_Left} muestran una escalabilidad fuerte inicialmente buena de nuestro código miesntras que la Fig. \ref{sub:EL_Weak_Scaling_Left} nos permite vislumbrar un buen desempeño en escalabilidad débil en supercomputadoras de alto desempeño también.
+Las Figs.~\ref{sub:EL_Strong_Scaling_Left} y~\ref{sub:EL_Strong_Scaling1_Left} muestran una escalabilidad \emph{fuerte} inicialmente buena de nuestro código miesntras que la Fig. \ref{sub:EL_Weak_Scaling_Left} nos permite vislumbrar un buen desempeño en escalabilidad \emph{débil} en supercomputadoras de alto desempeño también.
 Todos esos resultados visuales son sostenidos por buenas medidas de eficiencia.
 }{
 \subsection{\glsfirst{el} Scaling Tests}
@@ -1386,9 +1386,9 @@ En \gls{mpi} en cambio, el programador se tiene que hacer cargo del balanceo de 
 Por otro lado los hilos \gls{omp} sufren el fenómeno denominado \emph{false shearing} en las caches de las \gls{cpu_pl}, pero con un esquema de paralelización altamente flexible como el utilizado en la sección \ref{EL_Parallelization} el usuario puede variar la granularidad en la paralelización de manera flexible para alcanzar el mejor desempeño evitando que cada hilo exceda la cuota de memoria cache disponible en cada \gls{cpu}.
 
 En las Figs.~\ref{fig:Corpora_Scaling}, \ref{fig:MRSTSA_Scaling}, \ref{fig:EL_Strong_Scaling} y \ref{fig:EL_Weak_Scaling} el fenómeno de \emph{super-linear speedup} se hace presente en varios casos.
-En \cite{7733347} los autores afirmaron que: \texttt{la mejora super-lineal en el desempeño en algoritmos persistentes ocurre principalmente debido al incremento de recursos de cache en arquitecturas de computadoras paralelas, el precargado de variables compartidas en la organización de memoria compartida, o una mejor planificación en entornos heterogéneos.
+En S. Ristov et al. \cite{7733347} los autores afirmaron que: \texttt{la mejora super-lineal en el desempeño en algoritmos persistentes ocurre principalmente debido al incremento de recursos de cache en arquitecturas de computadoras paralelas, el precargado de variables compartidas en la organización de memoria compartida, o una mejor planificación en entornos heterogéneos.
 Los efectos de las arquitecturas de memoria compartida también impactan el desempeño del comportamiento de los algoritmos granulares y escalares.}
-Nosotros apoyamos dicha moción y consideramos esta sustentable como una explicación general para nuestro caso. Sin embargo, también consideramos que se requerirá un análisis más profundo de la utilización de la memoria haciendo uso de herramientas de profiling que se podrían requerir en el futuro.
+Nosotros apoyamos dicha moción y la consideramos una explicación general y válida para nuestro caso. Sin embargo, también consideramos que se requerirá un análisis más profundo de la utilización de la memoria haciendo uso de herramientas de profiling que se podrían requerir en el futuro.
 
 En la sectión~\ref{EL_Parallelization} podrían surgir algunos problemas cuando una única \gls{cc} es muy grande para compartir un nodo computacional con muchas otras.
 Si solo 2 \gls{cc_pl} entraran en un nodo, la granularidad en la paralelización sería muy pobre, pero los hilos \gls{omp} son altamente versátiles y pueden fácilmente  manejar hilado anidado.
@@ -1433,7 +1433,7 @@ La independencia de la coalescencia de los datos, la reconfiguración flexible d
 
 Consideramos tales características de fundamental importancia para el uso de este procedimiento de paralelización en escenarios científicos computacionales altamente variables con conjuntos de datos irregularmente estructurados hallados de manera típica en enfoques de investigación biológicamente inspirados.
 
-Por medio de los resultados devueltos por esta rueda de pruebas estimamos que política de paralelización como viable para ser usada en supercomputadoras líderes de muy alto desempeño en el futuro.
+Por medio de los resultados devueltos en esta rueda de pruebas estimamos la política de paralelización aquí presentada, viable para ser usada en supercomputadoras de gran desempeño en el futuro.
 }{
 \section{Conclusion}
 
