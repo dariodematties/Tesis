@@ -11,23 +11,23 @@
 
 Los datos de este trabajo están disponibles en Zenodo (\url{https://doi.org/10.5281/zenodo.2576130}; \url{https://doi.org/10.5281/zenodo.2654939}; \url{https://doi.org/10.5281/zenodo.2580396})
 
-\subsection{S1 Data.}
+\subsection{S1 Datos.}
 \label{S1_Data}
 {\bf Datos de los resultados experimentales del \glsfirst{cstm}.} Un archivo de hoja de cálculo que incluye los resultados numéricos devueltos por los experimentos así como también las pruebas de significación estadística llevadas a cabo en este trabajo \cite{dematties_dario_2019_2654939}.
 
-\subsection{S2 Data.}
+\subsection{S2 Datos.}
 \label{S2_Data}
 {\bf Datos de resultados experimentales complementarios del \gls{cstm}.} Un archivo de hoja de cálculo que incluye los resultados numéricos devueltos por un conjunto de experimentos complementarios \cite{dematties_dario_2019_2654939}.
 
-\subsection{S3 Data.}
+\subsection{S3 Datos.}
 \label{S3_Data}
 {\bf Conjunto de datos utilizados para entrenar y probar el \gls{cstm}.} Una carpeta que contiene los datos (corpus en archivos de audio) utilizados en el presente trabajo de investigación para entrenar la \gls{el} y los \glspl{svm} y para probar el \gls{cstm} completo. Esta carpeta incluye un conjunto de 840 corpus distribuidos en 2 corpus para cada configuración organizada por 2 conjuntos de voces sintetizadas, 3 condiciones silábicas, y 10 vocabularios todos distribuidos en 6 variantes acústicas, más allá de la versión original de los corpus \cite{dematties_dario_2019_2576130}.
 
-\subsection{S1 Code.}
+\subsection{S1 Código.}
 \label{S1_Code}
 {\bf Todo el código que subyace el trabajo aquí presentado.} Un repositorio GitHub con el código utilizado para implementar el \gls{cstm} así como los scripts para generar los datos utilizados en este trabajo \cite{dematties_dario_2019_2580396}.
 
-\subsection{S1 Appendix.}
+\subsection{S1 Apéndice.}
 \label{S1_Appendix}
 {\bf Arreglo Computacional y Experimentos Complementarios.} Un apéndice que incluye el arreglo computacional de nuestro \gls{cstm}, el cual describe su estructura hereditaria orientada a objetos así como también la estrategia de paralelización utilizada para su implementación en recursos de \glsfirst{hpc}. También incluimos pruabas de escalado Fuerte y Débil (Strong and Weak scaling) de la implementación en recursos de \gls{hpc}. Un apéndice que incluye una batería de experimentos complementarios y que muestran los niveles de exactitud en clasificación para diferentes instancias de la \gls{el} en el \gls{cstm} \cite{dematties_dario_2019_2654939}.
 }{
@@ -55,4 +55,77 @@ All the data in this work are available from Zenodo (\url{https://doi.org/10.528
 \label{S1_Appendix}
 {\bf Computational Setup and Complementary Experiments.} An appendix including the Computational Setup of our \gls{cstm}, which describes its object oriented inheritance structure as well as the parallelization strategy used for its implementation in \glsfirst{hpc} resources. We also include Strong and Weak scaling tests of our implementation on \gls{hpc} resources. An appendix including a battery of complementary experiments showing the classification accuracy levels of different instances of the \gls{el} in the \gls{cstm} \cite{dematties_dario_2019_2654939}.
 }
+
+
+
+
+
+\iftoggle{DEBUG}{
+\section{Disponibilidad de datos para el capítulo \ref{ch:grammar}}
+
+Los datos de este trabajo están disponibles en Zenodo (\url{https://zenodo.org/record/3653180, https://zenodo.org/record/3374889}).
+
+\subsection{Datos}
+
+En relación a los conjunto de datos \cite{dario_dematties_2019_3653180}:
+
+El archivo \texttt{Corpora.txt} contiene el corpus usado para entrenar el modelo y las diferentes instancias del clasificador.
+Es básicamente un archivo de texto con una oración por línea desde el corpus original llamado test.tsv que está disponible en \url{https://github.com/google-research-datasets/wiki-split.git}. Eliminamos los signos de signos de puntuación y los caracteres especiales en el archivo original colocando cada oración en una línea del archivo.
+
+\texttt{Enju\_Output.txt} contiene las salidas generadas por Enju en el modo -so (\emph{Output in stand-off format}) utilizando \texttt{Corpora.txt} como entrada.
+Este archivo tiene básicamente un parseo de lenguaje natural en Inglés por oración con una amplia cobertura probabilística para \glsfirst{hpsg}.
+
+El archivo \texttt{Supervision.txt} contiene las etiquetas gramaticales del corpus. Este archivo tiene una etiqueta por palabra y cada etiqueta se situa en una única línea. Las oraciones se separan por una línea en blanco mientras que las etiquetas en palabras de la misma oración se ubican en líneas adyacentes.
+
+El archivo \texttt{Word\_Category.txt} contiene la información de categorías gruesas de palabras que necesita el modelo para introducirlas a través de sus dendritas apicales. Cada palabra en el corpus tiene una etiqueta de categoría de palabra que provee restricciones adicionales a aquellas provistas por las dendritas laterales. Este archivo contiene una etiqueta por palabra ubicada en una única línea. Las oraciones se separan por una línea en blanco mientras que las etiquetas desde palabras pertenecientes a la misma oración se ubican en líneas contiguas.
+
+El archivo \texttt{SynSemTests.xlsx} contiene todos los resultados de la clasificación gramática así como los análisis estadísticos en las pruebas de clasificación.
+
+El archivo \texttt{ModelsComparison.xlsx} contiene todos los resultados de la clasificación grmática así como los análisis estadísticos en las pruebas de clasificación para la comparación entre una instancia normal del Encoder vs. una instancia del Encoder sin dendritas laterales distales.
+
+El archivo \texttt{IndividualTaggingPerformance.xlsx} contiene todos los resultados de clasificación gramática desagregada así como también los análisis estadísticos de las pruebas de clasificación  para word2vec vs. la capa Encoder Layer y para la instancia normal de la capa Encoder vs. una instancia de la capa Encoder sin dendritas laterales distales.
+
+El archivo \texttt{Supplementary\_Material.pdf} provee detalles en cuanto a la formulación algorítmica de las unidades computacionales básicas de la \gls{el} (es decir las \glsfirst{cc_pl} y las unidades celulares).
+
+Todos estos datos están disponibles en: \url{https://zenodo.org/record/3653180}.
+
+\subsection{Código}
+
+En relación al código fuente \cite{dematties_dario_2019_3374889}:
+
+Un repositorio en GitHub con el código utilizado para implementar el modelo computacional así como los \emph{scripts} para generar y manejar los conjuntos de datos usados en este trabajo están disponibles en \url{https://zenodo.org/record/3374889}.
+}{
+\section{Data availability for chapter \ref{ch:grammar}}
+
+All the data in this work are available from Zenodo (\url{https://zenodo.org/record/3653180, https://zenodo.org/record/3374889}).
+
+Regarding datasets:
+
+The file \texttt{Corpora.txt} keeps the corpus used to train the model and the different instances of the classifier. It is basically a text file with one sentence per line from the original corpus called test.tsv available at \url{https://github.com/google-research-datasets/wiki-split.git}. We eliminated punctuation marks and special characters from the original file putting each sentence per line.
+
+\texttt{Enju\_Output.txt} holds the outputs generated by Enju in -so mode (Output in stand-off format) using \texttt{Corpora.txt} as input. This file has basically a natural language English per-sentence parse with a wide-coverage probabilistic for \gls{hpsg} grammar.
+
+The file \texttt{Supervision.txt} keeps the grammatical tags of the corpus. This file holds a tag per word and each tag is situated in a single line. Sentences are separated by one empty line while tags from words in the same sentence are located in adjacent lines.
+
+The file \texttt{Word\_Category.txt} carries the coarse-grained word category information needed by the model and introduced in it by apical dendrites. Each word in the corpus has a word-category tag which provides additional constraints to those provided by lateral dendrites. This file contains a tag per word and each tag is situated in a single line. Sentences are separated by one empty line while tags from words in the same sentence are located in adjacent lines.
+
+The file \texttt{SynSemTests.xlsx} keeps all the grammar classification results as well as the statistical analysis in the classification tests.
+
+\reviewerone{The file \texttt{ModelsComparison.xlsx} keeps all the grammar classification results as well as the statistical analysis in the classification tests for the comparison of a normal instance of the Encoder Layer vs. an instance of the Encoder Layer with stripped distal lateral dendrites.}
+
+\reviewerthree{The file \texttt{IndividualTaggingPerformance.xlsx} keeps all the disaggregated grammar classification results as well as the statistical analysis in the classification tests for word2vec vs. the Encoder Layer and for a normal instance of the Encoder Layer vs. an instance of the Encoder Layer with stripped distal lateral dendrites.}
+
+\reviewerone{The file \texttt{Supplementary\_Material.pdf} provides details about the algorithmic formulation of the basic computational units of
+the \gls{el} (i.e. \glspl{cc} and cell units).}
+
+All these datasets are available at: \url{https://zenodo.org/record/3653180}.
+
+Regarding source code:
+
+A GitHub repository with the code used to implement the computational model as well as the scripts to generate and manage the datasets used in this work is available from \url{https://zenodo.org/record/3374889}.
+}
+
+
+
+
 
